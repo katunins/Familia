@@ -117,66 +117,102 @@ const watchForFirebaseAuth = function* () {
     }
 };
 
+
+// function* sagaSignUp(action: PayloadAction<{ data: IUserAuthData }>) {
+//     try {
+//         yield put(actionLoaderOn());
+//         const {email, password} = action.payload.data;
+//         const signUpResult = yield auth().createUserWithEmailAndPassword(email, password);
+//         yield put(setModal({
+//             title: 'Поздравляем!',
+//             bodyText: 'Вы успешно зарегестрированы в системе!',
+//             buttons: [{
+//                 title: 'Закрыть',
+//             }]
+//         }))
+//
+//         let userData: IUser = {
+//             id: '',
+//             uid: signUpResult.user.uid,
+//             userPic: '',
+//             name: action.payload.data.name || '',
+//             birthday: '',
+//             relatives: [],
+//             about: '',
+//             authDevice: {id: '', lastRequest: ''},
+//             email: action.payload.data.email,
+//         };
+//
+//         const newUser = yield FirebaseServices.newUser(userData);
+//         userData.id = newUser.id;
+//
+//         yield FirebaseServices.updateUser(userData);
+//
+//         yield put(
+//             actionSignIn({
+//                 data: {email, password},
+//             }),
+//         );
+//
+//         yield FirebaseServices.setAuthDevice(true, userData)
+//
+//         yield put(actionLoaderOff());
+//     } catch (error) {
+//         console.log('err', error);
+//         yield put(actionLoaderOff());
+//         if (error.code === 'auth/email-already-in-use') {
+//             yield put(setModal({
+//                 title: 'Внимание!',
+//                 bodyText: 'Ошибка авторизации. Такой пользователь уже существует в системе',
+//                 buttons: [{
+//                     title: 'Закрыть',
+//                 }]
+//             }))
+//         }
+//         if (error.code === 'auth/invalid-email') {
+//             yield put(setModal({
+//                 title: 'Внимание!',
+//                 bodyText: 'Ошибка авторизации. Не верный email',
+//                 buttons: [{
+//                     title: 'Закрыть',
+//                 }]
+//             }))
+//         }
+//     }
+// }
+
 function* sagaSignUp(action: PayloadAction<{ data: IUserAuthData }>) {
     try {
-        yield put(actionLoaderOn());
-        const {email, password} = action.payload.data;
-        const signUpResult = yield auth().createUserWithEmailAndPassword(email, password);
+        const response = yield fetch(
+            'http://localhost:3000/users',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(action.payload.data)
+            })
+        const responseData = yield response.json();
+        if (!response.ok) throw responseData.message
+    } catch (error) {
+        console.log('err', error);
+        yield put(actionLoaderOff());
+        // if (error.code === 'auth/email-already-in-use') {
+        //     yield put(setModal({
+        //         title: 'Внимание!',
+        //         bodyText: 'Ошибка авторизации. Такой пользователь уже существует в системе',
+        //         buttons: [{
+        //             title: 'Закрыть',
+        //         }]
+        //     }))
+        // }
         yield put(setModal({
-            title: 'Поздравляем!',
-            bodyText: 'Вы успешно зарегестрированы в системе!',
+            title: 'Ошибка!',
+            bodyText: error,
             buttons: [{
                 title: 'Закрыть',
             }]
         }))
-
-        let userData: IUser = {
-            id: '',
-            uid: signUpResult.user.uid,
-            userPic: '',
-            name: action.payload.data.name || '',
-            birthday: '',
-            relatives: [],
-            about: '',
-            authDevice: {id: '', lastRequest: ''},
-            email: action.payload.data.email,
-        };
-
-        const newUser = yield FirebaseServices.newUser(userData);
-        userData.id = newUser.id;
-
-        yield FirebaseServices.updateUser(userData);
-
-        yield put(
-            actionSignIn({
-                data: {email, password},
-            }),
-        );
-
-        yield FirebaseServices.setAuthDevice(true, userData)
-
-        yield put(actionLoaderOff());
-    } catch (error) {
-        console.log('err', error);
-        yield put(actionLoaderOff());
-        if (error.code === 'auth/email-already-in-use') {
-            yield put(setModal({
-                title: 'Внимание!',
-                bodyText: 'Ошибка авторизации. Такой пользователь уже существует в системе',
-                buttons: [{
-                    title: 'Закрыть',
-                }]
-            }))
-        }
-        if (error.code === 'auth/invalid-email') {
-            yield put(setModal({
-                title: 'Внимание!',
-                bodyText: 'Ошибка авторизации. Не верный email',
-                buttons: [{
-                    title: 'Закрыть',
-                }]
-            }))
-        }
     }
 }
 
