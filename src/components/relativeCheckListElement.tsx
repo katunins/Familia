@@ -5,7 +5,7 @@ import styles from "./styles";
 import CheckIcon from "../ui/svg/checkIcon";
 import FastImage from "react-native-fast-image";
 import globalStyles from "../styles/styles";
-import {relativeTypes} from "../helpers/utils";
+import {relativeTypes} from "../config";
 
 interface IProps {
     item: IRelative,

@@ -1,16 +1,13 @@
 import {rem} from '../styles/remStyles';
-import {Dispatch} from 'react';
-import {Action} from 'redux';
 import {
-    IGeneralUser,
     IRelative,
-    IRelativeIndex,
-    IUser,
+    IRelativeIndex, IUser,
 } from '../interfaces/store';
 import FirebaseServices from '../api/firebase';
 import storage from '@react-native-firebase/storage';
 import {Dimensions} from "react-native";
 import {FirebaseFirestoreTypes} from "@react-native-firebase/firestore";
+import {relativeTypes} from "../config";
 
 /**
  * Обработка ссылки на загруженную фотографию
@@ -50,58 +47,15 @@ interface IGetRelativeTypeName {
     id: string;
 }
 
-export const getRelativeType = ({
-                                    userRelatives,
-                                    id,
-                                }: IGetRelativeTypeName) => {
-    return userRelatives.filter(el => el.id === id)[0].type;
-};
-
-export const relativeTypes = {
-    daughter: 'Дочь',
-    son: 'Сын',
-    aunt: 'Тетя',
-    father: 'Отец',
-    mother: 'Мама',
-    brother: 'Брат',
-    sister: 'Сестра',
-    grandmother: 'Бабушка',
-    grandfather: 'Дедушка',
-    godmother: 'Крестная',
-    godfather: 'Крестный',
-    other: 'Дальний',
-};
-
-export const GeneralColors = {
-    $textColorGlobal: '#333333',
-    $colorBrown: '#A45B18',
-    $colorLightGrey: '#E5E5E5',
-    $colorWhite: '#FFFFFF',
-    $colorGrey: '#8B8B8B',
-    $colorDarkGrey: '#595959',
-    $colorModal: '#00000099',
-    $colorBlack: '#000000',
-    $colorBlue: '#2B32BA',
-};
-
-const InitialGeneralUserObj: IGeneralUser = {
-    id: '',
-    name: '',
-    userPic: '',
-    birthday: '',
-    relatives: [],
-    about: '',
-};
-
-export const InitialUserObj: IUser = {
-    ...InitialGeneralUserObj,
-    email: '',
-    uid: '',
-    authDevice: {
-        id: '',
-        lastRequest: ''
-    }
-};
+export const getRelativeType =
+    ({
+         userRelatives,
+         id,
+     }: IGetRelativeTypeName) => {
+        const result = userRelatives.filter(el => el.id === id)
+        if (result.length === 0) return 'other'
+        return userRelatives.filter(el => el.id === id)[0].type;
+    };
 
 export interface IGetRelativeUri {
     selectRelatives: IRelative[]
@@ -114,18 +68,16 @@ export interface IGetRelativeUri {
  * @param id
  */
 export const getRelativeUri = ({selectRelatives, id}: IGetRelativeUri) => {
-    return selectRelatives.find(item => item.id === id)?.userPic
+    return selectRelatives.find(item => item._id === id)?.userPic
 }
 
-export const initialPostData = {
-    images: [],
-    title: '',
-    description: '',
-    relatives: []
+export const splitUserId = (user: IUser | IRelative) => {
+    const userData = JSON.parse(JSON.stringify(user));
+    const id = userData._id
+    delete userData._id
+    return {id, userData}
 }
 
 export const marginHorizontal = 12
 export const containerWidth = Dimensions.get('window').width - marginHorizontal * 2
 export const squareAvatarSize = (Dimensions.get('window').width - marginHorizontal * 2) / 2 - 8
-
-export const InitialRelativeObj: IRelative = InitialGeneralUserObj;

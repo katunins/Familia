@@ -1,13 +1,22 @@
 import {createAction, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {IRelative, IUser} from '../../interfaces/store';
+import {IRelative, IRelativeIndex, IUser} from '../../interfaces/store';
 
-export const actionUserChange = createAction(
-  'user/userChange',
-  function prepare(payload: {userData:IUser | IRelative}) {
+export const actionUserUpdate = createAction(
+  'user/update',
+  function prepare(payload: {userData:IUser | IRelative, callBack: ()=>void}) {
     return {
       payload,
     };
   },
+);
+
+export const actionUserRelativeUpdate = createAction(
+    'user/updateRelative',
+    function prepare(payload: IRelativeIndex) {
+      return {
+        payload,
+      };
+    },
 );
 
 const initialState = {};

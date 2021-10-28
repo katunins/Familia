@@ -1,20 +1,17 @@
 import React from "react";
-import {IRelative} from "../interfaces/store";
+import {IRelative, IRelativeTypes} from "../interfaces/store";
 import {Pressable, Text, View} from "react-native";
 import styles from "./styles";
 import FastImage from "react-native-fast-image";
 import globalStyles from "../styles/styles";
 import EditIcon from "../ui/svg/editIcon";
-import {useNavigation} from '@react-navigation/native';
-import {relativeTypes} from "../helpers/utils";
+import {defaultUserPic, relativeTypes} from "../config";
 import TrashIcon from "../ui/svg/trashIcon";
 import {actionToDeleteRelative} from "../store/slice/relatives.slice";
 import {useDispatch} from "react-redux";
-import {NativeStackScreenProps} from "react-native-screens/native-stack";
-import {RootStackParamList} from "../interfaces/navigation";
 import {resetModal, setModal} from "../store/slice/modal.slice";
 
-interface IProps {
+interface IProps extends IRelativeTypes{
     item: IRelative,
     editButton: (data: IRelative) => void
 }
@@ -22,7 +19,8 @@ interface IProps {
 const RelativeBigComponent: React.FunctionComponent<IProps> = (
     {
         item,
-        editButton
+        editButton,
+        type
     }) => {
     const dispatch = useDispatch()
     const deleteButton = () => {
@@ -34,7 +32,7 @@ const RelativeBigComponent: React.FunctionComponent<IProps> = (
                     title: 'Удалить',
                     type: 'invert',
                     callBack: () => {
-                        dispatch(actionToDeleteRelative(item.id));
+                        dispatch(actionToDeleteRelative(item._id));
                         dispatch(resetModal());
                     },
                 },
@@ -50,7 +48,7 @@ const RelativeBigComponent: React.FunctionComponent<IProps> = (
                 <FastImage
                     style={{width: '100%', height: '100%'}}
                     source={{
-                        uri: item.userPic,
+                        uri: item.userPic || defaultUserPic,
                         priority: FastImage.priority.normal,
                     }}
                     resizeMode={FastImage.resizeMode.cover}
@@ -69,8 +67,7 @@ const RelativeBigComponent: React.FunctionComponent<IProps> = (
                 <View style={styles.rightBigComponentColumn}>
                     <Text>{item.birthday}</Text>
                     <Text style={styles.typeBigComponent}>{
-                        // @ts-ignore
-                        relativeTypes[item.type]}</Text>
+                        relativeTypes[type]}</Text>
                 </View>
             </View>
         </>

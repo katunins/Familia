@@ -1,19 +1,5 @@
 import {createAction} from '@reduxjs/toolkit';
-import {IUserAuthData} from '../../interfaces';
-import {Dispatch} from 'react';
-import {Action} from 'redux';
-
-export interface IActionLogOut {
-  type: string;
-  payload: {};
-}
-
-export interface IActionSign extends IActionLogOut {
-  type: string;
-  payload: {
-    data: IUserAuthData;
-  };
-}
+import {ILoginData, ISignUpData} from "../../interfaces";
 
 export const actionDeleteImages = createAction(
     'firebase/deleteImages',
@@ -26,7 +12,7 @@ export const actionDeleteImages = createAction(
 
 export const actionSignIn = createAction(
   'firebase/actionSignIn',
-  function prepare(payload: {data: IUserAuthData}) {
+  function prepare(payload: {data: ILoginData}) {
     return {
       payload,
     };
@@ -35,7 +21,7 @@ export const actionSignIn = createAction(
 
 export const actionSignUp = createAction(
   'firebase/actionSignUp',
-    function prepare(payload: {data: IUserAuthData}) {
+    function prepare(payload: {data: ISignUpData}) {
         return {
             payload,
         };

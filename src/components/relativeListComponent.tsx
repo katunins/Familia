@@ -5,7 +5,7 @@ import RelativeElement from './relativeElement';
 import globalStyles from '../styles/styles';
 import {IRelative} from '../interfaces/store';
 import {NavigationParams, NavigationProp, NavigationScreenProp} from 'react-navigation';
-import {InitialRelativeObj} from "../helpers/utils";
+import {initialRelative} from "../config";
 
 interface IProps {
     relativesArr: IRelative[];
@@ -13,7 +13,7 @@ interface IProps {
     navigation: NavigationScreenProp<any>;
 }
 
-const RelativeListComponent: React.FunctionComponent<IProps> =
+const oldRelativeListComponent: React.FunctionComponent<IProps> =
     ({
          relativesArr,
          editMode,
@@ -23,7 +23,7 @@ const RelativeListComponent: React.FunctionComponent<IProps> =
             navigation.navigate('relativeStack', {
                 screen: 'RelativeFormScreen',
                 params: {
-                    relativeData: InitialRelativeObj,
+                    relativeData: initialRelative,
                     navigationScreenBack: 'UserScreen'
                 }
             })
@@ -35,7 +35,7 @@ const RelativeListComponent: React.FunctionComponent<IProps> =
                 {relativesArr.map((item, index) => (
                     <RelativeElement
                         key={index}
-                        id={item.id}
+                        id={item._id}
                         name={item.name}
                         // @ts-ignore
                         type={item.type}
@@ -55,4 +55,4 @@ const RelativeListComponent: React.FunctionComponent<IProps> =
         );
     };
 
-export default RelativeListComponent;
+export default oldRelativeListComponent;

@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import EStyleSheet from "react-native-extended-stylesheet";
 import {rem} from "./src/styles/remStyles";
 import {getPersistor, getStore} from "./src/store";
-import {GeneralColors} from "./src/helpers/utils";
+import {GeneralColors} from "./src/config";
 
 EStyleSheet.build({
     "@media ios": {

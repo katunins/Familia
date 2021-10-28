@@ -34,26 +34,31 @@ export interface IRelativeIndex extends IRelativeTypes {
 export interface IGeneralUser {
     userPic: string;
     name: string;
-    id: string;
     birthday: string;
-    relatives: IRelativeIndex[];
     about: string;
 }
 
-export interface IUserAuthDevice {
-    id: string,
-    lastRequest: any
+interface IServerId {
+    _id: string
 }
 
-export interface IUser extends IGeneralUser {
-    uid: string;
-    authDevice: IUserAuthDevice
+export interface IServerUser extends IGeneralUser {
+    relatives: IRelativeIndex[];
     email: string;
 }
 
-export interface IRelative extends IGeneralUser {
-    creatorId?: string;
+export interface IUser extends IServerUser, IServerId {
+}
+
+export interface IServerRelative extends IGeneralUser {
+    access: {
+        creatorId: string;
+        shareId: string[];
+    };
     type?: IRelativeTypes
+}
+
+export interface IRelative extends IServerRelative, IServerId {
 }
 
 export interface IPostData {
@@ -65,10 +70,10 @@ export interface IPostData {
 }
 
 export interface IPost extends IPostData {
-    id: string,
+    _id: string,
     creator: string,
-    createdAt: FirebaseFirestoreTypes.FieldValue
-    updatedAt: FirebaseFirestoreTypes.FieldValue
+    createdAt: string
+    updatedAt: string
 }
 
 interface IStore extends Action {
@@ -79,6 +84,7 @@ interface IStore extends Action {
         loader: boolean;
         relatives: IRelative[];
         relativeForm: IRelative | {}
+        token: string
     };
 }
 

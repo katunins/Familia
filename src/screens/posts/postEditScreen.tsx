@@ -12,12 +12,12 @@ import styles from "./styles";
 import SeparatorComponent from "../../components/separator";
 import globalStyles from "../../styles/styles";
 import {useDispatch, useSelector} from "react-redux";
-import userSelector, {relativesSelector} from "../../store/selectors";
 import RelativeCheckListElementComponent from "../../components/relativeCheckListElement";
-import {actionAddPost, actionUpdatePost} from "../../store/slice/posts.slice";
+import {actionUpdatePost} from "../../store/slice/posts.slice";
 import firestore from "@react-native-firebase/firestore";
-import {initialPostData} from "../../helpers/utils";
 import {actionDeleteImages} from "../../store/slice/firebase.slice";
+import {relativesSelector} from "../../store/selectors";
+import {initialPost} from "../../config";
 
 type IProps = NativeStackScreenProps<RootStackParamList, 'PostEditScreen'>
 const PostEditScreen: React.FunctionComponent<IProps> = ({route, navigation}) => {
@@ -67,7 +67,7 @@ const PostEditScreen: React.FunctionComponent<IProps> = ({route, navigation}) =>
     }
 
     const cancel = () => {
-        setPost({...post, ...initialPostData})
+        setPost({...post, ...initialPost})
         setDeleteImages([])
         navigation.goBack()
     }
@@ -80,7 +80,7 @@ const PostEditScreen: React.FunctionComponent<IProps> = ({route, navigation}) =>
             },
             callback: () => {
                 if (deleteImages.length > 0) dispatch(actionDeleteImages(deleteImages))
-                setPost({...post, ...initialPostData})
+                setPost({...post, ...initialPost})
                 setDeleteImages([])
                 navigation.goBack()
                 // @ts-ignore
@@ -128,9 +128,9 @@ const PostEditScreen: React.FunctionComponent<IProps> = ({route, navigation}) =>
                             renderItem={({item}) =>
                                 <RelativeCheckListElementComponent
                                     item={item}
-                                    checked={isChecked(item.id)}
+                                    checked={isChecked(item._id)}
                                     callBack={() => {
-                                        switchCheck(item.id)
+                                        switchCheck(item._id)
                                     }}
                                 />}
                             ItemSeparatorComponent={() => <SeparatorComponent/>}

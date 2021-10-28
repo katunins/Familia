@@ -1,21 +1,17 @@
-import {View, Text, FlatList} from "react-native";
-import React, {useState} from "react";
+import {FlatList} from "react-native";
+import React from "react";
 import {useDispatch, useSelector} from "react-redux";
-import userSelector, {postsSelector, relativesSelector} from "../../store/selectors";
+import {postsSelector, relativesSelector, userSelector} from "../../store/selectors";
 import PostComponent from "../../components/post";
 import SeparatorComponent from "../../components/separator";
 import TrashIcon from "../../ui/svg/trashIcon";
 import EditIcon from "../../ui/svg/editIcon";
-import SearchLineComponent from "../../components/searchLine";
-import styles from "./styles";
 import {IPost} from "../../interfaces/store";
 import {NativeStackScreenProps} from "react-native-screens/native-stack";
 import {RootStackParamList} from "../../interfaces/navigation";
 import {actionDeletePost} from "../../store/slice/posts.slice";
-import {resetModal, setModal} from "../../store/slice/modal.slice";
-import globalStyles from "../../styles/styles";
+import {setModal} from "../../store/slice/modal.slice";
 
-// type IProps = NativeStackScreenProps<RootStackParamList, 'PostsListScreen'>
 interface IProps {
     navigation: NativeStackScreenProps<RootStackParamList, 'PostsListScreen'>
     searchText:string
@@ -63,7 +59,7 @@ const PostsListScreen = ({navigation, searchText}: IProps) => {
     }
     return (
         <FlatList
-            data={selectPosts.filter(item => item.creator === selectUser.id && filterList(item))}
+            data={selectPosts.filter(item => item.creator === selectUser._id && filterList(item))}
             // @ts-ignore
             listKey={(item, index) => `_key${index.toString()}`}
             renderItem={({item, index}) =>

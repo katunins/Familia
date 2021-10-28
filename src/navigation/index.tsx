@@ -7,18 +7,18 @@ import PersonalTabIcon from '../ui/svg/personalTabIcon';
 import InfoTabIcon from '../ui/svg/infoTabIcon';
 import HelloScreen from '../screens/helloScreen';
 import {useSelector} from 'react-redux';
-import userSelector from '../store/selectors';
 import LoginStack from './login';
 import { RelativeStack} from './relative';
 import RelativeTabIcon from '../ui/svg/relativeTabIcon';
 import UserStack from './user';
-import PostsListScreen from "../screens/posts/postsListScreen";
 import PostsListTabIcon from "../ui/svg/postListTabIcon";
 import {NewPostsStack} from "./newPost";
 import PostsListStack from "./posts";
+import {postsSelector, userSelector} from "../store/selectors";
 
 const TabsNavigator = () => {
     const selectUser = useSelector(userSelector);
+    const posts = useSelector(postsSelector)
 
     // Ключ скрытия Tab Навигатора
     const Tab = createMaterialBottomTabNavigator();
@@ -29,17 +29,17 @@ const TabsNavigator = () => {
             activeColor={EStyleSheet.value('$textColorGlobal')}
             inactiveColor={EStyleSheet.value('$colorLightGrey')}
             barStyle={styles.barStyle}
-            initialRouteName={'postsListStack'}
+            initialRouteName={posts.length === 0 ? 'personalStack':'postsListStack'}
             shifting={false}
         >
-            {!userAuth && <Tab.Screen
+            <Tab.Screen
                 name={'helloScreen'}
                 component={HelloScreen}
                 options={{
                     tabBarIcon: ({color}) => <InfoTabIcon color={color}/>,
                     title: '',
                 }}
-            />}
+            />
 
             <Tab.Screen
                 name={'postsListStack'}

@@ -1,18 +1,11 @@
 import {createAction, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {IRelative, IRelativeTypes} from '../../interfaces/store';
+import {IRelative} from '../../interfaces/store';
+import {ISaveRelativeCallback} from "../../screens/relativeFormScreen";
 
-export interface IActionNewRelative {
-    userData: IRelative;
-    creatorData: {
-        type: IRelativeTypes["type"];
-        creatorId: string;
-    };
-    // callBack?: () => void;
-}
 
 export const actionNewRelative = createAction(
     'relatives/newRelative',
-    function prepare(payload: IActionNewRelative) {
+    function prepare(payload: ISaveRelativeCallback) {
         return {
             payload,
         };
@@ -21,7 +14,7 @@ export const actionNewRelative = createAction(
 
 export const actionUpdateRelative = createAction(
     'relatives/updateRelative',
-    function prepare(payload: IActionNewRelative) {
+    function prepare(payload: ISaveRelativeCallback) {
         return {
             payload,
         };
@@ -49,11 +42,11 @@ const relativesSlice = createSlice({
             return [...state, action.payload];
         },
         actionUpdateStateRelative: (state, action: PayloadAction<IRelative>) => {
-            return state.map((item => item.id === action.payload.id ? action.payload : item))
+            return state.map((item => item._id === action.payload._id ? action.payload : item))
             // return [...state, action.payload];
         },
         actionDeleteRelative: (state, action: PayloadAction<string>) => {
-            return state.filter(item => item.id !== action.payload);
+            return state.filter(item => item._id !== action.payload);
         },
         actionResetRelatives: () => {
             return initialState;

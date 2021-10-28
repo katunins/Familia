@@ -11,7 +11,7 @@ import firestore from "@react-native-firebase/firestore";
 import {NavigationScreenProp} from "react-navigation";
 import {IPostData, IRelative} from "../../interfaces/store";
 import userSelector from "../../store/selectors";
-import {initialPostData} from "../../helpers/utils";
+import {initialPost} from "../../helpers/utils";
 
 interface IProps {
     navigation: NavigationScreenProp<{}>
@@ -33,7 +33,7 @@ const RelativesScreen = ({navigation, post, setPost, relatives}: IProps) => {
                 updatedAt: firestore.FieldValue.serverTimestamp()
             },
             callback: () => {
-                setPost(initialPostData)
+                setPost(initialPost)
                 // @ts-ignore
                 navigation.popToTop()
                 navigation.navigate('postsListStack', {screen: 'PostsListScreen'})
@@ -49,7 +49,7 @@ const RelativesScreen = ({navigation, post, setPost, relatives}: IProps) => {
         }
     }
     const cancel = () => {
-        setPost(initialPostData)
+        setPost(initialPost)
         // @ts-ignore
         navigation.popToTop()
     }

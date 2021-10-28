@@ -6,11 +6,12 @@ import modal from './slice/modal.slice';
 import relatives from './slice/relatives.slice';
 import user from './slice/user.slice';
 import posts from './slice/posts.slice'
+import token from './slice/token.slice'
 
 const appPersist = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['user', 'relatives', 'posts'],
+  whitelist: ['user', 'relatives', 'posts', 'token'],
   blacklist: [],
 };
 
@@ -19,6 +20,7 @@ const appReducers = combineReducers({
   modal,
   relatives,
   user,
-  posts
+  posts,
+  token
 });
 export const appPersistReducer = persistReducer(appPersist, appReducers);

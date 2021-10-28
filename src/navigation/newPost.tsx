@@ -7,14 +7,14 @@ import RelativesScreen from "../screens/newPosts/relativesScreen";
 import {IPostData} from "../interfaces/store";
 import {useSelector} from "react-redux";
 import {relativesSelector} from "../store/selectors";
-import {initialPostData} from "../helpers/utils";
+import {initialPost} from "../config";
 
 const NewPostsStack = () => {
     const Stack = createStackNavigator<RootStackParamList>();
     const relatives = useSelector(relativesSelector)
 
 
-    const [post, setPost] = useState<IPostData>(initialPostData)
+    const [post, setPost] = useState<IPostData>(initialPost)
 
     return (
         <Stack.Navigator>

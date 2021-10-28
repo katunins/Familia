@@ -2,8 +2,11 @@ export interface ISocialButtonComponent {
     onPress: () => void
 }
 
-export interface IUserAuthData {
-    name?: string,
+export interface ILoginData {
     email: string,
     password: string
+}
+
+export interface ISignUpData extends ILoginData {
+    name: string
 }

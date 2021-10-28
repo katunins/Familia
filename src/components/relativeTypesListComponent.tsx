@@ -2,12 +2,13 @@ import React, {useState} from 'react';
 import {Pressable, Text, View} from 'react-native';
 import globalStyles from '../styles/styles';
 import styles from './styles';
-import {relativeTypes} from '../helpers/utils';
+import {relativeTypes} from '../config';
+import {IRelativeTypes} from "../interfaces/store";
 
 interface IProps {
   editDescription: string;
   type: string;
-  setType: (data: string) => void;
+  setType: (data: IRelativeTypes["type"]) => void;
 }
 
 const RelativeTypesListComponent: React.FunctionComponent<IProps> = ({
@@ -30,6 +31,7 @@ const RelativeTypesListComponent: React.FunctionComponent<IProps> = ({
           Object.keys(relativeTypes).map(key => (
             <Pressable
               onPress={() => {
+                // @ts-ignore
                 setType(key);
                 setShowSelect(false);
               }}

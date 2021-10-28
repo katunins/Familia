@@ -1,15 +1,7 @@
 import * as Eff from 'redux-saga/effects';
-import {call, take, put, select, all} from 'redux-saga/effects';
-import auth from '@react-native-firebase/auth';
-import {eventChannel} from 'redux-saga';
+import {call, put, all} from 'redux-saga/effects';
 import FirebaseServices from '../../api/firebase';
-import userSelector from '../selectors';
-import {IRelativeIndex, IUser} from '../../interfaces/store';
-
-import {
-    actionSignIn,
-    IActionSign,
-} from '../slice/firebase.slice';
+import {IUser} from '../../interfaces/store';
 import {actionLoaderOff, actionLoaderOn} from '../slice/loader.slice';
 import {
     actionResetUser,
@@ -20,13 +12,13 @@ import {
     actionSetRelatives,
 } from '../slice/relatives.slice';
 import {PayloadAction} from '@reduxjs/toolkit';
-import {IUserAuthData} from '../../interfaces';
-
-import {Alert} from "react-native";
-import DeviceInfo from "react-native-device-info";
 import {resetPosts, setPosts} from "../slice/posts.slice";
-import {resetModal, setModal} from "../slice/modal.slice";
-import {useDispatch} from "react-redux";
+import {errorSaga} from "./error.saga";
+import {ILoginData, ISignUpData} from "../../interfaces";
+import {requestSaga} from "./network.saga";
+import {resetToken, setToken} from "../slice/token.slice";
+import {initialUser} from "../../config";
+import {sagaGetRelativesFromArray} from "./relative.saga";
 
 const takeLatest: any = Eff.takeLatest;
 
@@ -37,222 +29,60 @@ function* watchAuth() {
     yield takeLatest('firebase/actionLogOut', sagaLogOut);
 }
 
-/**
- * Функции, которые подписываются на изменения авторизации пользователя Firebase
- */
-
-const authStateChannel = function () {
-    return eventChannel(emit => {
-        const unsubscribe = auth().onAuthStateChanged(user => emit({user}));
-        return unsubscribe;
-    });
-};
-
-const watchForFirebaseAuth = function* () {
-    const channel = yield call(authStateChannel);
-    while (true) {
-        const {user} = yield take(channel);
-        yield put(actionLoaderOff());
-
-        if (user) {
-            // Данные регистрации от firebase
-            const userAuthData = user.toJSON();
-            // Хранилище данных пользователя в store
-            const userStoreData = yield select(userSelector);
-            // Если хранилище в store пустое, то запишем
-            if (Object.keys(userStoreData).length === 0) {
-                const userData: IUser = yield FirebaseServices.getUserByUID(userAuthData.uid);
-                // вдруг в хранилище есть дубликат
-                if (!userData) {
-                    yield put(actionResetUser());
-                    return;
-                }
-
-                if (userData.authDevice.id !== "" && userData.authDevice.id !== DeviceInfo.getUniqueId()) {
-                    const diffTime = (Number(new Date()) - userData.authDevice.lastRequest.toDate()) / 3600000
-                    if (diffTime < 12) {
-                        yield Alert.alert('Ошибка', 'Другое устройство в данный момент авторизовано под этими учетныи данными. Выйдете из аккаунта на другом устройстве или повторите попытку через час')
-                        yield sagaLogOut()
-                        yield put(actionLoaderOff());
-                        return
-                    }
-                }
-
-                yield put(
-                    actionSetUser({
-                        ...userData,
-                        email: userAuthData.email,
-                        uid: userAuthData.uid,
-                    }),
-                );
-
-                // загрузим родственников
-                if (userData.relatives.length > 0) {
-                    const relativesArr = userData.relatives.map(
-                        (item: IRelativeIndex) => item.id,
-                    );
-                    const relatives = yield FirebaseServices.getRelatives(relativesArr);
-                    if (relatives) yield put(actionSetRelatives(relatives));
-                }
-
-                // загрузим посты
-                const posts = yield FirebaseServices.getPosts(userData.id)
-                if (posts.length > 0) yield put(setPosts(posts))
-
-                yield FirebaseServices.setAuthDevice(true, {
-                    ...userData,
-                    email: userAuthData.email,
-                    uid: userAuthData.uid,
-                })
-            }
-        } else {
-            // logOut - очистим стейт
-            const userStoreData = yield select(userSelector);
-            // if (Object.keys(userStoreData).length === 0) return
-            if (Object.keys(userStoreData).length > 0) yield FirebaseServices.setAuthDevice(false, userStoreData)
-            yield put(actionResetUser());
-            yield put(actionResetRelatives());
-            yield put(resetPosts())
-        }
-    }
-};
-
-
-// function* sagaSignUp(action: PayloadAction<{ data: IUserAuthData }>) {
-//     try {
-//         yield put(actionLoaderOn());
-//         const {email, password} = action.payload.data;
-//         const signUpResult = yield auth().createUserWithEmailAndPassword(email, password);
-//         yield put(setModal({
-//             title: 'Поздравляем!',
-//             bodyText: 'Вы успешно зарегестрированы в системе!',
-//             buttons: [{
-//                 title: 'Закрыть',
-//             }]
-//         }))
-//
-//         let userData: IUser = {
-//             id: '',
-//             uid: signUpResult.user.uid,
-//             userPic: '',
-//             name: action.payload.data.name || '',
-//             birthday: '',
-//             relatives: [],
-//             about: '',
-//             authDevice: {id: '', lastRequest: ''},
-//             email: action.payload.data.email,
-//         };
-//
-//         const newUser = yield FirebaseServices.newUser(userData);
-//         userData.id = newUser.id;
-//
-//         yield FirebaseServices.updateUser(userData);
-//
-//         yield put(
-//             actionSignIn({
-//                 data: {email, password},
-//             }),
-//         );
-//
-//         yield FirebaseServices.setAuthDevice(true, userData)
-//
-//         yield put(actionLoaderOff());
-//     } catch (error) {
-//         console.log('err', error);
-//         yield put(actionLoaderOff());
-//         if (error.code === 'auth/email-already-in-use') {
-//             yield put(setModal({
-//                 title: 'Внимание!',
-//                 bodyText: 'Ошибка авторизации. Такой пользователь уже существует в системе',
-//                 buttons: [{
-//                     title: 'Закрыть',
-//                 }]
-//             }))
-//         }
-//         if (error.code === 'auth/invalid-email') {
-//             yield put(setModal({
-//                 title: 'Внимание!',
-//                 bodyText: 'Ошибка авторизации. Не верный email',
-//                 buttons: [{
-//                     title: 'Закрыть',
-//                 }]
-//             }))
-//         }
-//     }
-// }
-
-function* sagaSignUp(action: PayloadAction<{ data: IUserAuthData }>) {
+function* sagaSignUp(action: PayloadAction<{ data: ISignUpData }>) {
     try {
-        const response = yield fetch(
-            'http://localhost:3000/users',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(action.payload.data)
-            })
-        const responseData = yield response.json();
-        if (!response.ok) throw responseData.message
-    } catch (error) {
-        console.log('err', error);
+
+        yield put(actionLoaderOn());
+        const responseData: IUser = yield call(requestSaga, {
+            endPoint: 'users/signup',
+            data: {...initialUser, ...action.payload.data}
+        })
+
+        // установим Юзера
+        yield put(
+            actionSetUser(responseData),
+        );
+
         yield put(actionLoaderOff());
-        // if (error.code === 'auth/email-already-in-use') {
-        //     yield put(setModal({
-        //         title: 'Внимание!',
-        //         bodyText: 'Ошибка авторизации. Такой пользователь уже существует в системе',
-        //         buttons: [{
-        //             title: 'Закрыть',
-        //         }]
-        //     }))
-        // }
-        yield put(setModal({
-            title: 'Ошибка!',
-            bodyText: error,
-            buttons: [{
-                title: 'Закрыть',
-            }]
-        }))
+
+    } catch (error) {
+        yield call(errorSaga, error)
     }
 }
 
-function* sagaSignIn(action: IActionSign) {
+function* sagaSignIn(action: PayloadAction<{ data: ILoginData }>) {
     try {
-        const {email, password} = action.payload.data;
         yield put(actionLoaderOn());
-        yield auth().signInWithEmailAndPassword(email, password);
-    } catch (error) {
-        console.log('err', error.code);
+        const responseData: IUser = yield call(requestSaga, {
+            endPoint: 'users/login',
+            data: action.payload.data
+        })
+        if (!responseData) return false
+        yield put(actionSetUser(responseData));
+
+        // загрузим родственников
+        const {relatives} = responseData
+        const relativesArr = yield call(sagaGetRelativesFromArray, relatives)
+        yield put(actionSetRelatives(relativesArr))
+
+        // загрузим посты
+        // const posts = yield FirebaseServices.getPosts(responseData._id)
+        // if (posts.length > 0) yield put(setPosts(posts))
         yield put(actionLoaderOff());
-        if (error.code === 'auth/user-not-found') {
-            yield put(setModal({
-                title: 'Внимание!',
-                bodyText: 'Проверьре корректность введеного email',
-                buttons: [{
-                    title: 'Закрыть',
-                }]
-            }))
-        }
-        if (error.code === 'auth/wrong-password') {
-            yield put(setModal({
-                title: 'Внимание!',
-                bodyText: 'Проверьте корректность введеного пароль',
-                buttons: [{
-                    title: 'Закрыть'
-                }]
-            }))
-        }
+
+    } catch (error) {
+        yield call(errorSaga, error)
     }
 }
 
 function* sagaLogOut() {
     try {
-        yield put(actionLoaderOn());
-        yield auth().signOut();
-
+        yield put(actionResetUser());
+        yield put(actionResetRelatives());
+        yield put(resetPosts())
+        yield put(resetToken())
     } catch (error) {
-        console.log('err', error.code);
-        yield put(actionLoaderOff());
+        yield call(errorSaga, error)
     }
 }
 
@@ -266,4 +96,4 @@ function* sagaDeleteImages(action: { payload: string[] }) {
     }
 }
 
-export {watchAuth, watchForFirebaseAuth};
+export {watchAuth, sagaLogOut};

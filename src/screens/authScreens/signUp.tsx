@@ -1,21 +1,19 @@
 import React, {useState} from 'react';
-import {Pressable, Text, TextInput, View} from 'react-native';
+import { Text, TextInput, View} from 'react-native';
 import globalStyles from '../../styles/styles';
-import styles from './styles';
 import {useDispatch} from 'react-redux';
 import {actionSignUp} from '../../store/slice/firebase.slice';
 import ButtonComponent from "../../components/button";
-import {resetModal, setModal} from "../../store/slice/modal.slice";
-import {actionToDeleteRelative} from "../../store/slice/relatives.slice";
+import {setModal} from "../../store/slice/modal.slice";
 
 interface IProps {
 }
 
-const SignUpScreen: React.FunctionComponent<IProps> = navigation => {
-    const [email, setEmail] = useState('katunin.pavel@gmail.com');
-    const [password, setPassword] = useState('wellcome');
-    const [passwordCheck, setPasswordCheck] = useState('wellcome');
-    const [name, setName] = useState('Павел');
+const SignUpScreen: React.FunctionComponent<IProps> = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [passwordCheck, setPasswordCheck] = useState('');
+    const [name, setName] = useState('');
 
     const dispatch = useDispatch();
 

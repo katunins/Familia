@@ -22,7 +22,6 @@ const SignInScreen: React.FunctionComponent<IProps> = () => {
     dispatch(
       actionSignIn({
         data: {email: email, password: password},
-        dispatch: dispatch,
       }),
     );
   };
