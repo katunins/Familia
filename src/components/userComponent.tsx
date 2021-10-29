@@ -4,8 +4,8 @@ import globalStyles from '../styles/styles';
 import EditPersonalComponent from './editComponent';
 import CalendarComponent from './calendarComponent';
 import CloudContainer from './cloudContainer';
-import {IRelative, IUser} from '../interfaces/store';
-import ImagePicker from 'react-native-image-crop-picker';
+import {IImagePicker, IRelative, IUser} from '../interfaces/store';
+import ImagePicker, {Image} from 'react-native-image-crop-picker';
 import UserPicComponent from './userPicComponent';
 import {useDispatch} from 'react-redux';
 import RelativeTypesListComponent from './relativeTypesListComponent';
@@ -22,7 +22,7 @@ import {ISaveUserCallback} from "../screens/userScreen";
 
 interface IProps {
     initialUser: IUser
-    saveCallback: (data: ISaveUserCallback) => void;
+    saveCallback: (data: { userData: IUser; newImage: Image | undefined; callBack: () => void }) => void;
     buttonLogOut: React.ReactElement
 }
 
@@ -47,6 +47,7 @@ const UserComponent: React.FunctionComponent<IProps> =
 
         const [editMode, setEditMode] = useState(false);
         const [user, setUser] = useState(initialUser);
+        const [newImage, setNewImage] = useState<Image>();
 
         const dispatch = useDispatch();
 
@@ -54,7 +55,7 @@ const UserComponent: React.FunctionComponent<IProps> =
         const saveButton = () => {
             if (!validate()) return false;
             if (JSON.stringify(initialUser) === JSON.stringify(user)) return false
-            saveCallback({userData: user, callBack: () => setEditMode(false)});
+            saveCallback({userData: user, callBack: () => setEditMode(false), newImage});
         };
 
 
@@ -76,7 +77,8 @@ const UserComponent: React.FunctionComponent<IProps> =
                 compressImageMaxWidth: 800,
                 cropping: true,
             }).then(image => {
-                setUser({...user, userPic: image.path});
+                setNewImage(image)
+                // setUser({...user, userPic: image.path});
             }).catch(e => {
                 console.log(e)
             });
@@ -110,7 +112,7 @@ const UserComponent: React.FunctionComponent<IProps> =
                 <>
                     <UserPicComponent
                         userPic={
-                            user.userPic || defaultUserPic
+                            newImage ? newImage.sourceURL : (user.userPic || defaultUserPic)
                         }
                         editMode={editMode}
                         imageChangeButton={imageChangeButton}

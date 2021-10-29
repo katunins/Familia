@@ -10,9 +10,11 @@ import {getRelativeType} from "../helpers/utils";
 import {userSelector} from "../store/selectors";
 import RelativeComponent from "../components/relativeComponent";
 import {actionUserRelativeUpdate} from "../store/slice/user.slice";
+import {Image} from "react-native-image-crop-picker";
 
 export interface ISaveRelativeCallback extends IRelativeTypes {
     relativeData: IRelative;
+    newImage?: Image
     callBack: () => void
 }
 
@@ -36,10 +38,11 @@ const RelativeFormScreen: React.FunctionComponent<IProps> =
          * @param data - данные родственника
          */
 
-        const saveCallback = ({relativeData, type, callBack}: ISaveRelativeCallback) => {
+        const saveCallback = ({relativeData, type, callBack, newImage}: ISaveRelativeCallback) => {
             const data = {
                 relativeData,
                 type,
+                newImage,
                 callBack: () => {
                     callBack()
                     navigation.goBack()//редактирование пользователя

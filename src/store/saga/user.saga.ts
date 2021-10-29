@@ -6,7 +6,7 @@ import {actionLoaderOff, actionLoaderOn} from '../slice/loader.slice';
 import {PayloadAction} from '@reduxjs/toolkit';
 import {actionSetUser} from '../slice/user.slice';
 import {needToUpload, splitUserId} from '../../helpers/utils';
-import {requestSaga} from "./network.saga";
+import {requestSaga, uploadSaga} from "./network.saga";
 import {errorSaga} from "./error.saga";
 import {ISaveUserCallback} from "../../screens/userScreen";
 import {userSelector} from "../selectors";
@@ -25,18 +25,27 @@ function* watchUser() {
 function* sagaUserUpdate(action: PayloadAction<ISaveUserCallback>) {
     try {
         yield put(actionLoaderOn());
-        const {callBack} = action.payload
+        const {callBack, newImage} = action.payload
         const {id, userData} = yield splitUserId(action.payload.userData)
-        // const uploadUrl = yield needToUpload({
-        //     userPic: userData.userPic, id
-        // });
-        // if (uploadUrl) userData.userPic = uploadUrl;
+        const file = {
+            uri: newImage?.path, // for FormData to upload
+            type: newImage?.mime,
+            name: newImage?.filename || `${Date.now()}.jpg`,
+        }
+        if (newImage) {
+            const newImages = yield call(uploadSaga, {file, path: '/user'})
 
-        const responseData = yield call(requestSaga, {
-            endPoint: 'users/update',
-            data: {id, userData}
-        })
-
+            const responseData = yield call(requestSaga, {
+                endPoint: 'users/update',
+                data: {id, userData: {...userData, userPic:newImages[0].path}}
+            })
+        } else {
+            const responseData = yield call(requestSaga, {
+                endPoint: 'users/update',
+                data: {id, userData}
+            })
+        }
+        //
         if (responseData) {
             yield put(actionSetUser(action.payload.userData));
             callBack()

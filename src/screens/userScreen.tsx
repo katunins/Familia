@@ -8,12 +8,15 @@ import {actionUserUpdate} from '../store/slice/user.slice';
 import ButtonComponent from "../components/button";
 import {IRelative, IUser} from "../interfaces/store";
 import {initialUser} from "../config";
+import {Image} from "react-native-image-crop-picker";
 
 
 export interface ISaveUserCallback {
     userData: IUser;
+    newImage?: Image
     callBack: () => void
 }
+
 const UserScreen: React.FunctionComponent = () => {
     const dispatch = useDispatch();
     const selectRelative = useSelector(relativesSelector);

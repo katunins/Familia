@@ -88,4 +88,13 @@ interface IStore extends Action {
     };
 }
 
+export interface IImagePicker {
+    filename: string
+    height: number
+    mime: string
+    path: string
+    size: number
+    sourceURL: string
+    width: number
+}
 export default IStore;

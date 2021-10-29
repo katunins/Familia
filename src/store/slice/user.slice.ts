@@ -1,9 +1,10 @@
 import {createAction, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {IRelative, IRelativeIndex, IUser} from '../../interfaces/store';
+import {ISaveUserCallback} from "../../screens/userScreen";
 
 export const actionUserUpdate = createAction(
   'user/update',
-  function prepare(payload: {userData:IUser | IRelative, callBack: ()=>void}) {
+  function prepare(payload: ISaveUserCallback) {
     return {
       payload,
     };
