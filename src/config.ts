@@ -1,7 +1,8 @@
-import {IGeneralUser, IPost, IRelative, IUser} from "./interfaces/store";
+import {IGeneralUser, IPost, IRelative, IServerUser, IUser} from "./interfaces/store";
 
 const env = {
-    endPointUrl: 'http://localhost:3000'
+    // endPointUrl: 'http://localhost:3000'
+    endPointUrl: 'http://nestjs.ikatunin.ru:8080'
 }
 
 const initialGeneralUser = {
@@ -12,8 +13,7 @@ const initialGeneralUser = {
     about: '',
 };
 
-export const initialUser: IUser = {
-    _id: '',
+export const initialUser: IServerUser = {
     name: '',
     userPic: '',
     birthday: '',

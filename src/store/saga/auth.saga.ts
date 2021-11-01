@@ -19,6 +19,7 @@ import {requestSaga} from "./network.saga";
 import {resetToken, setToken} from "../slice/token.slice";
 import {initialUser} from "../../config";
 import {sagaGetRelativesFromArray} from "./relative.saga";
+import DeviceInfo from "react-native-device-info";
 
 const takeLatest: any = Eff.takeLatest;
 
@@ -34,7 +35,8 @@ function* sagaSignUp(action: PayloadAction<{ data: ISignUpData }>) {
 
         yield put(actionLoaderOn());
         const responseData: IUser = yield call(requestSaga, {
-            endPoint: 'users/signup',
+            endPoint: 'users',
+            method: 'POST',
             data: {...initialUser, ...action.payload.data}
         })
 
@@ -53,21 +55,22 @@ function* sagaSignUp(action: PayloadAction<{ data: ISignUpData }>) {
 function* sagaSignIn(action: PayloadAction<{ data: ILoginData }>) {
     try {
         yield put(actionLoaderOn());
+        const {email, password} = action.payload.data
         const responseData: IUser = yield call(requestSaga, {
-            endPoint: 'users/login',
-            data: action.payload.data
+            endPoint: `users?email=${email}&password=${password}&userDeviceId=${DeviceInfo.getUniqueId()}`,
+            method: 'GET'
         })
         if (!responseData) return false
         yield put(actionSetUser(responseData));
 
-        // загрузим родственников
-        const {relatives} = responseData
-        const relativesArr = yield call(sagaGetRelativesFromArray, relatives)
-        yield put(actionSetRelatives(relativesArr))
-
-        // загрузим посты
-        // const posts = yield FirebaseServices.getPosts(responseData._id)
-        // if (posts.length > 0) yield put(setPosts(posts))
+        // // загрузим родственников
+        // const {relatives} = responseData
+        // const relativesArr = yield call(sagaGetRelativesFromArray, relatives)
+        // yield put(actionSetRelatives(relativesArr))
+        //
+        // // загрузим посты
+        // // const posts = yield FirebaseServices.getPosts(responseData._id)
+        // // if (posts.length > 0) yield put(setPosts(posts))
         yield put(actionLoaderOff());
 
     } catch (error) {

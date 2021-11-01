@@ -1,5 +1,5 @@
 import React from "react";
-import {Pressable, StyleProp, Text, View} from "react-native";
+import {Pressable, StyleProp, Text, TouchableOpacity, View} from "react-native";
 import styles from "./styles";
 
 export interface IButtonsProps {
@@ -14,7 +14,7 @@ export interface IButtonsProps {
 const ButtonComponent: React.FunctionComponent<IButtonsProps> = ({type, customStyle, title, callBack, icon, disabled}) => {
 
     return (
-        <Pressable onPress={callBack} disabled={disabled}
+        <TouchableOpacity onPress={callBack} disabled={disabled}
             // @ts-ignore
                    style={[styles.buttonWrapper, type ? styles[`buttonType__${type}`] : {}, customStyle || {}, disabled ? styles.disabledButton : {}]} >
     {
@@ -23,7 +23,7 @@ const ButtonComponent: React.FunctionComponent<IButtonsProps> = ({type, customSt
     <Text
         // @ts-ignore
         style={[styles.buttonText, type ? styles[`buttonTextType__${type}`] : {}]}>{title}</Text>
-</Pressable>
+</TouchableOpacity>
 )
 }
 

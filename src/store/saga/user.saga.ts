@@ -27,32 +27,30 @@ function* sagaUserUpdate(action: PayloadAction<ISaveUserCallback>) {
         yield put(actionLoaderOn());
         const {callBack, newImage} = action.payload
         const {id, userData} = yield splitUserId(action.payload.userData)
-        const file = {
-            uri: newImage?.path, // for FormData to upload
-            type: newImage?.mime,
-            name: newImage?.filename || `${Date.now()}.jpg`,
-        }
+        let requestData = userData
         if (newImage) {
-            const newImages = yield call(uploadSaga, {file, path: '/user'})
-
-            const responseData = yield call(requestSaga, {
-                endPoint: 'users/update',
-                data: {id, userData: {...userData, userPic:newImages[0].path}}
-            })
-        } else {
-            const responseData = yield call(requestSaga, {
-                endPoint: 'users/update',
-                data: {id, userData}
-            })
+            const files = [{
+                uri: newImage.path,
+                type: newImage.mime,
+                name: newImage.filename,
+            }]
+            const filesToDelete = [userData.userPic]
+            const uploadResponse = yield call(uploadSaga, {files, filesToDelete})
+            requestData = {...userData, userPic: uploadResponse[0].path}
         }
-        //
+        const responseData = yield call(requestSaga, {
+            endPoint: 'users',
+            method: 'PATCH',
+            data: {id, userData: requestData}
+        })
         if (responseData) {
             yield put(actionSetUser(action.payload.userData));
             callBack()
         }
 
         yield put(actionLoaderOff());
-    } catch (error) {
+    } catch
+        (error) {
         yield call(errorSaga, error)
     }
 }

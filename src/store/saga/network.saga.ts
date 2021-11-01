@@ -9,6 +9,7 @@ import {setToken} from "../slice/token.slice";
 import {sagaLogOut} from "./auth.saga";
 import * as Eff from "redux-saga/effects";
 import {Image} from "react-native-image-crop-picker";
+import {FetchResult} from "react-native";
 
 
 interface IServerUserData {
@@ -27,78 +28,93 @@ function* watchNetwork() {
     yield takeLatest('network/upload', uploadSaga);
 }
 
-function* requestSaga({endPoint, data}: IRequestSaga) {
+
+interface IResponseHandlerSaga {
+    endPoint: string
+    method: 'POST' | 'GET' | 'DELETE' | 'PATCH' | 'PUT'
+    data?: any
+}
+
+function* requestSaga({method, endPoint, data}: IResponseHandlerSaga) {
     try {
         const accessToken = yield select(tokenSelector)
         const user: IUser = yield select(userSelector)
+        const params = method === 'GET' ? {
+            method
+        } : {
+            method,
+            headers: {
+                'Content-Type': 'application/json',
+                'DeviceId': DeviceInfo.getUniqueId(),
+                'Authorization': `Bearer ${accessToken}`,
+                'UserId': user._id
+            },
+            body: JSON.stringify(data)
+        }
         const response = yield fetch(
             `${env.endPointUrl}/${endPoint}`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'DeviceId': DeviceInfo.getUniqueId(),
-                    'Authorization': `Bearer ${accessToken}`,
-                    'UserId': user._id
-                },
-                body: JSON.stringify(data)
-            })
+            params
+        )
+        const responseData = yield call(_sagaResponseHeader, response)
+        return responseData
 
-        const result = yield call(_responseHandlerSaga, response)
-        return result
     } catch (error) {
         yield call(errorSaga, error)
     }
-
 }
 
-function* _responseHandlerSaga(response: Response) {
-    const responseData = yield response.json();
-    if (!response.ok) {
-        if (response.status === 401) yield call(sagaLogOut)
-        throw {name: 'Ошибка сервера', message: responseData.message}
-    }
+function* _sagaResponseHeader(response: Response) {
+    try {
+        const responseData = yield response.json();
+        if (!response.ok) {
+            if (response.status === 401) yield call(sagaLogOut)
+            throw {name: 'Ошибка сервера', message: responseData.message}
+        }
 
-    const {authorization} = response.headers.map
-    if (authorization) {
-        const bearer = authorization.split(' ')[1]
-        if (bearer) yield put(setToken(bearer))
-    }
+        // @ts-ignore
+        const {authorization} = response.headers.map
+        if (authorization) {
+            const bearer = authorization.split(' ')[1]
+            if (bearer) yield put(setToken(bearer))
+        }
 
-    return responseData
+        return responseData
+    } catch (error) {
+        yield call(errorSaga, error)
+    }
 }
 
 export interface IUploadSaga {
-    path: string
-    file: {
+    files: {
         uri?: string
         type?: string
         name?: string
-    }
+    }[],
+    filesToDelete?: string[]
 }
 
-function* uploadSaga({path, file}: IUploadSaga) {
+function* uploadSaga({files, filesToDelete = []}: IUploadSaga) {
     try {
         const accessToken = yield select(tokenSelector)
         const user: IUser = yield select(userSelector)
-
         const formdata = new FormData();
-        formdata.append("file", file)
-        formdata.append("path", path)
-        console.log(formdata)
+        files.map(item => formdata.append("file", item))
+        filesToDelete.map(item => formdata.append('filesToDelete[]', item))
         const response = yield fetch(
-            `${env.endPointUrl}/storage/uploads/user`,
+            `${env.endPointUrl}/storage`,
             {
                 method: 'POST',
                 headers: {
+                    'Content-Type': 'multipart/form-data',
                     'DeviceId': DeviceInfo.getUniqueId(),
                     'Authorization': `Bearer ${accessToken}`,
                     'UserId': user._id
                 },
-                body: formdata
+                body: formdata,
             })
-        const result = yield call(_responseHandlerSaga, response)
-        return result
+
+        const responseData = yield call(_sagaResponseHeader, response)
+        return responseData
     } catch (error) {
         yield call(errorSaga, error)
     }

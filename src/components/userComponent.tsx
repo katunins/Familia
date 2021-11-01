@@ -17,7 +17,7 @@ import {RootStackParamList} from "../interfaces/navigation";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {resetModal, setModal} from "../store/slice/modal.slice";
 import {actionToDeleteRelative} from "../store/slice/relatives.slice";
-import {defaultUserPic} from "../config";
+import config, {defaultUserPic} from "../config";
 import {ISaveUserCallback} from "../screens/userScreen";
 
 interface IProps {
@@ -54,7 +54,7 @@ const UserComponent: React.FunctionComponent<IProps> =
 
         const saveButton = () => {
             if (!validate()) return false;
-            if (JSON.stringify(initialUser) === JSON.stringify(user)) return false
+            if (JSON.stringify(initialUser) === JSON.stringify(user) && !newImage) return false
             saveCallback({userData: user, callBack: () => setEditMode(false), newImage});
         };
 
@@ -112,7 +112,7 @@ const UserComponent: React.FunctionComponent<IProps> =
                 <>
                     <UserPicComponent
                         userPic={
-                            newImage ? newImage.sourceURL : (user.userPic || defaultUserPic)
+                            newImage ? newImage.sourceURL : (user.userPic === '' ? defaultUserPic : `${config.endPointUrl}/${user.userPic}`)
                         }
                         editMode={editMode}
                         imageChangeButton={imageChangeButton}
