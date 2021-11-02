@@ -13,7 +13,7 @@ const globalStyles = createStyles({
     boldText: {fontWeight: '500'},
     bigThinText:{
         fontSize: '1.3rem',
-        fontWeight: '200'
+        fontWeight: '200',
     },
     paddingWrapper: {
         textAlign: 'left',
@@ -105,8 +105,8 @@ const globalStyles = createStyles({
         width: '100%',
     },
     miniUserPic: {
-        width: '5rem',
-        height: '5rem',
+        width: '3rem',
+        height: '3rem',
         borderRadius: 6
     },
 

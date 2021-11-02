@@ -14,7 +14,7 @@ import {Image} from "react-native-image-crop-picker";
 export interface ISaveUserCallback {
     userData: IUser;
     newImage?: Image
-    callBack: () => void
+    callBack?: (newUser: IUser) => void
 }
 
 const UserScreen: React.FunctionComponent = () => {

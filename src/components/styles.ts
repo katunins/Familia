@@ -2,7 +2,7 @@ import {createStyles} from '../helpers/style';
 import {containerWidth, squareAvatarSize} from "../helpers/utils";
 
 const styles = createStyles({
-    userPicWrapper: {width: '100%', height: 400},
+    // userPicWrapper: {width: '100%', height: 400},
     separator: {
         height: 1,
         flex: 1,
@@ -208,11 +208,12 @@ const styles = createStyles({
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: '0.5rem',
+        alignItems: 'center',
         opacity: 0.4
     },
     imageAndText: {
         flexDirection: 'row',
-        // alignItems: 'center'
+        alignItems: 'center'
     },
     relativeCheckListElementTextWrapper: {
         marginLeft: '1rem'
@@ -235,21 +236,21 @@ const styles = createStyles({
         bottom: 20,
         right: 20
     },
-    postComponentText:{
+    noteComponentText:{
         color:'$colorDarkGrey',
         marginVertical:10,
     },
-    postComponentRelativesWrapper: {
+    noteComponentRelativesWrapper: {
         flexDirection: 'row',
         flexWrap: 'wrap',
     },
-    postComponentRelativesItem: {
+    noteComponentRelativesItem: {
         width: 50,
         height: 50,
         marginRight: '0.5rem',
         borderRadius: 10
     },
-    postComponentDotsWrapper:{
+    noteComponentDotsWrapper:{
         flexDirection:'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -273,7 +274,8 @@ const styles = createStyles({
         shadowRadius: 3.84,
         elevation: 5,
     },
-    postComponentDotsLineWrapper: {
+    dotsMenuShiftDown:{bottom: -135},
+    noteComponentDotsLineWrapper: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

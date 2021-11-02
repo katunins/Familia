@@ -2,13 +2,13 @@ import * as Eff from 'redux-saga/effects';
 import {call, put, select} from 'redux-saga/effects';
 import {actionLoaderOff, actionLoaderOn} from '../slice/loader.slice';
 import {
-    actionAddRelative, actionUpdateRelative, actionUpdateStateRelative,
+    actionAddRelative, actionDeleteRelative, actionUpdateRelative, actionUpdateStateRelative,
 } from '../slice/relatives.slice';
 import {PayloadAction} from '@reduxjs/toolkit';
 import {IRelative, IRelativeIndex, IUser} from '../../interfaces/store';
-import {splitUserId} from '../../helpers/utils';
+import {splitDataAndId} from '../../helpers/utils';
 import {errorSaga} from "./error.saga";
-import {requestSaga} from "./network.saga";
+import {_sagaNewUserPic, requestSaga, uploadSaga} from "./network.saga";
 import {ISaveRelativeCallback} from "../../screens/relativeFormScreen";
 import {sagaUserUpdate} from "./user.saga";
 import {userSelector} from "../selectors";
@@ -25,38 +25,27 @@ function* watchRelative() {
 function* sagaCreateRelative(action: PayloadAction<ISaveRelativeCallback>) {
     try {
         yield put(actionLoaderOn());
-        const {relativeData, type, callBack} = action.payload
-        const {id, userData} = yield splitUserId(relativeData)
-
+        const {relativeData, type, callBack, newImage} = action.payload
+        const {data} = yield splitDataAndId(relativeData)
+        const requestData = yield call(_sagaNewUserPic, {newImage, userData: data})
         const responseData: IRelative = yield call(requestSaga, {
-            endPoint: 'relatives/create',
-            data: userData
+            endPoint: 'relatives',
+            method: 'POST',
+            data: requestData
         })
-        if (!responseData) return false
-        yield put(
-            actionAddRelative(responseData),
-        );
-        const user: IUser = yield select(userSelector)
-        yield put(actionUserUpdate({
-            userData: {...user, relatives: [...user.relatives, {id: responseData._id, type}]},
-            callBack
-        }))
-
+        if (responseData) {
+            yield put(
+                actionAddRelative(responseData),
+            );
+            const user: IUser = yield select(userSelector)
+            const relatives = [...user.relatives, {id: responseData._id, type}]
+            yield put(actionUserUpdate({
+                userData: {...user, relatives},
+                callBack
+            }))
+        }
         yield put(actionLoaderOff());
 
-    } catch (error) {
-        yield call(errorSaga, error)
-    }
-}
-
-function* sagaGetRelativesFromArray(relativesArr: IRelativeIndex[]) {
-    try {
-        if (relativesArr.length === 0) return []
-        const data = relativesArr.map(item => item.id)
-        const responseData: IRelative[] = yield call(requestSaga, {
-            endPoint: 'relatives/get', data
-        })
-        return responseData
     } catch (error) {
         yield call(errorSaga, error)
     }
@@ -65,16 +54,19 @@ function* sagaGetRelativesFromArray(relativesArr: IRelativeIndex[]) {
 function* sagaUpdateRelative(action: PayloadAction<ISaveRelativeCallback>) {
     try {
         yield put(actionLoaderOn());
-        const {relativeData, callBack} = action.payload
-        const {id, userData} = yield splitUserId(relativeData)
-
+        const {relativeData, callBack, newImage, type} = action.payload
+        const {id, data} = yield splitDataAndId(relativeData)
+        const requestData = yield call(_sagaNewUserPic, {newImage, userData: data})
         const responseData: IRelative = yield call(requestSaga, {
-            endPoint: 'relatives/update',
-            data: {id, userData}
+            endPoint: 'relatives',
+            method: 'PATCH',
+            data: {id, userData: requestData}
         })
-        if (!responseData) return false
-        yield put(actionUpdateStateRelative(relativeData));
-        callBack()
+        if (responseData) {
+            yield put(actionUpdateStateRelative({...requestData, _id: id}));
+            if (callBack) callBack()
+        }
+
         yield put(actionLoaderOff());
 
     } catch (error) {
@@ -82,20 +74,30 @@ function* sagaUpdateRelative(action: PayloadAction<ISaveRelativeCallback>) {
     }
 }
 
-function* sagaDeleteRelative(action: PayloadAction<{ data: IRelative }>) {
+function* sagaDeleteRelative(action: PayloadAction<IRelative>) {
     try {
         yield put(actionLoaderOn());
-        const {id, userData} = yield splitUserId(action.payload.data)
+        const user: IUser = yield select(userSelector)
+        const {id, data} = yield splitDataAndId(action.payload)
 
-        const responseData: IRelative = yield call(requestSaga, {
-            endPoint: 'relatives/delete',
-            data: {id, userData}
+        const result = yield call(requestSaga, {
+            endPoint: 'relatives',
+            method: 'DELETE',
+            data: {id, userData: data}
         })
 
-        // Добавим родственника в стор
-        yield put(
-            actionAddRelative(responseData),
-        );
+        if (result) {
+            // удалим родственника у юзера
+            const relatives = user.relatives.filter(item => item.id !== id)
+            yield put(actionUserUpdate({
+                userData: {...user, relatives}
+            }))
+
+            // Удалим родственника из стор
+            yield put(
+                actionDeleteRelative({id}),
+            );
+        }
 
         yield put(actionLoaderOff());
 
@@ -104,116 +106,5 @@ function* sagaDeleteRelative(action: PayloadAction<{ data: IRelative }>) {
     }
 }
 
-// function* sagaRelativeChange(action: PayloadAction<IActionNewRelative>) {
-//     try {
-//         yield put(actionLoaderOn());
-//         const relativeData = action.payload.userData;
-//         const newRelativeType = action.payload.creatorData.type
-//         // const creatorData = action.payload.creatorData;
-//         const userStoreData: IUser = yield select(userSelector);
-//
-//         const uploadUrl = yield needToUpload({
-//             userPic: relativeData.userPic,
-//             id: relativeData.id,
-//         });
-//         if (uploadUrl) relativeData.userPic = uploadUrl;
-//
-//         // Обновим тип родственника
-//         const relativeType = userStoreData.relatives.filter(item => item.id === relativeData.id)[0].type
-//         if (relativeType !== newRelativeType) {
-//             let newUserData: IUser = JSON.parse(JSON.stringify(userStoreData));
-//             newUserData.relatives = newUserData.relatives.map(item => item.id === relativeData.id && item.type !== newRelativeType ? {
-//                 ...item,
-//                 type: newRelativeType
-//             } : item)
-//             yield put(actionUserUpdate({userData: newUserData}));
-//         }
-//         // сохраним фотогарфию
-//         // if (relativeData.userPic && relativeData.userPic.indexOf('file:///') > -1) {
-//         //   const res = yield FirebaseServices.putImage({
-//         //     pathToFile: relativeData.userPic,
-//         //     remoteFolder: `${relativeData.id}/userPic`,
-//         //   });
-//         //   const url = yield storage().ref(res.metadata.fullPath).getDownloadURL();
-//         //   relativeData.userPic = url;
-//         // }
-//
-//
-//         yield put(actionUpdateStateRelative(relativeData));
-//         yield FirebaseServices.updateRelative(relativeData)
-//
-//         yield put(actionLoaderOff());
-//     } catch (e) {
-//         console.log(e);
-//     }
-// }
-//
-// /**
-//  * Сага устанавливает пользователя
-//  * @param userData - объект данных пользователя
-//  */
-// function* sagaNewRelative(action: PayloadAction<IActionNewRelative>) {
-//     try {
-//         yield put(actionLoaderOn());
-//         const relativeData = action.payload.userData;
-//         const creatorData = action.payload.creatorData;
-//         const userStoreData = yield select(userSelector);
-//
-//         const uploadUrl = yield needToUpload({
-//             userPic: relativeData.userPic,
-//             id: relativeData.id,
-//         });
-//         if (uploadUrl) relativeData.userPic = uploadUrl;
-//
-//         // сохраним фотогарфию
-//         // if (relativeData.userPic && relativeData.userPic.indexOf('file:///') > -1) {
-//         //   const res = yield FirebaseServices.putImage({
-//         //     pathToFile: relativeData.userPic,
-//         //     remoteFolder: `${relativeData.id}/userPic`,
-//         //   });
-//         //   const url = yield storage().ref(res.metadata.fullPath).getDownloadURL();
-//         //   relativeData.userPic = url;
-//         // }
-//
-//         const newRelativeUser = yield FirebaseServices.newRelative(relativeData);
-//         relativeData.id = newRelativeUser.id;
-//         yield FirebaseServices.updateRelative(relativeData); // добавим запись ID в firebase
-//
-//         yield put(actionAddRelative(relativeData));
-//         let newUserData: IUser = JSON.parse(JSON.stringify(userStoreData));
-// // @ts-ignore
-//         newUserData.relatives.push({id: relativeData.id, type: creatorData.type});
-//         yield put(actionUserUpdate({userData: newUserData}));
-//
-//         // if (action.payload.callBack) action.payload.callBack();
-//         // yield sagaSetUser(userData);
-//
-//         yield put(actionLoaderOff());
-//     } catch (error) {
-//         console.log('err', error);
-//         yield put(actionLoaderOn());
-//     }
-// }
-//
-// function* sagaEraseRelative(action: PayloadAction<string>) {
-//     try {
-//         yield put(actionLoaderOn());
-//         yield FirebaseServices.deleteRelative(action.payload);
-//         const user: IUser = yield select(userSelector);
-//         const newUserRelatives = user.relatives.filter(
-//             item => item.id !== action.payload,
-//         );
-//         console.log('newUserRelatives', action.payload, newUserRelatives, user.relatives)
-//
-//         // @ts-ignore
-//         yield put(actionUserUpdate({...user, relatives: newUserRelatives}));
-//
-//         yield put(actionDeleteRelative(action.payload));
-//         yield put(actionLoaderOff());
-//     } catch (e) {
-//         console.log(e);
-//         yield put(actionLoaderOff());
-//     }
-// }
 
-export {watchRelative, sagaGetRelativesFromArray};
+export {watchRelative};

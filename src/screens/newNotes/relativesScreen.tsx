@@ -6,66 +6,69 @@ import globalStyles from "../../styles/styles";
 import {useDispatch, useSelector} from "react-redux";
 import RelativeCheckListElementComponent from "../../components/relativeCheckListElement";
 import SeparatorComponent from "../../components/separator";
-import {actionAddPost} from "../../store/slice/posts.slice";
-import firestore from "@react-native-firebase/firestore";
 import {NavigationScreenProp} from "react-navigation";
-import {IPostData, IRelative} from "../../interfaces/store";
-import userSelector from "../../store/selectors";
-import {initialPost} from "../../helpers/utils";
+import {INoteData, IRelative, IUser} from "../../interfaces/store";
+import {actionAddNote} from "../../store/slice/notes.slice";
+import {userSelector} from "../../store/selectors";
+import {initialNote} from "../../config";
+import {getRelativeType} from "../../helpers/utils";
+import {INoteImagesProps} from "./imagesScreen";
 
 interface IProps {
     navigation: NavigationScreenProp<{}>
-    post: IPostData,
-    setPost: (post: IPostData) => void
-    relatives: IRelative[]
+    note: INoteData,
+    setNote: (note: INoteData) => void
+    relatives: IRelative[],
+    imagesProps: INoteImagesProps
 }
 
-const RelativesScreen = ({navigation, post, setPost, relatives}: IProps) => {
+const RelativesScreen = ({navigation, note, setNote, relatives, imagesProps}: IProps) => {
     const dispatch = useDispatch()
-    const selectUser = useSelector(userSelector)
+    const user: IUser = useSelector(userSelector)
+    const {newImages, setNewImages, deleteImages, setDeleteImages} = imagesProps
     const save = () => {
-        dispatch(actionAddPost({
-            post: {
-                ...post,
-                id: '',
-                creator: selectUser.id,
-                createdAt: firestore.FieldValue.serverTimestamp(),
-                updatedAt: firestore.FieldValue.serverTimestamp()
+        dispatch(actionAddNote({
+            note: {
+                ...note,
+                creator: user._id
             },
             callback: () => {
-                setPost(initialPost)
                 // @ts-ignore
                 navigation.popToTop()
-                navigation.navigate('postsListStack', {screen: 'PostsListScreen'})
-            }
+                navigation.navigate('notesListStack', {screen: 'NotesListScreen'})
+                setNote(initialNote)
+                setNewImages([])
+                setDeleteImages([])
+            },
+            newImages: newImages,
+            deleteImages: deleteImages
         }))
     }
-    const isChecked = (id: string) => post.relatives.find(item => item === id) ? true : false
+    const isChecked = (id: string) => note.relatives.find(item => item === id) ? true : false
     const switchCheck = (id: string) => {
         if (isChecked(id)) {
-            setPost({...post, relatives: post.relatives.filter(item=>item !== id)})
+            setNote({...note, relatives: note.relatives.filter(item => item !== id)})
         } else {
-            setPost({...post, relatives: [...post.relatives, id]})
+            setNote({...note, relatives: [...note.relatives, id]})
         }
     }
     const cancel = () => {
-        setPost(initialPost)
+        setNote(initialNote)
         // @ts-ignore
         navigation.popToTop()
     }
-
     return (
-        <View
-            style={styles.container}>
+        <View style={styles.container}>
             <FlatList
                 style={styles.flatListWrapper}
                 data={relatives}
                 renderItem={({item}) =>
                     <RelativeCheckListElementComponent
                         item={item}
-                        checked={isChecked(item.id)}
+                        type={getRelativeType({user, relative: item})}
+                        checked={isChecked(item._id)}
                         callBack={() => {
-                            switchCheck(item.id)
+                            switchCheck(item._id)
                         }}
                     />}
                 ItemSeparatorComponent={() => <SeparatorComponent/>}

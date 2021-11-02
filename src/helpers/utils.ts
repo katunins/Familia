@@ -1,5 +1,6 @@
 import {rem} from '../styles/remStyles';
 import {
+    INote,
     IRelative,
     IRelativeIndex, IUser,
 } from '../interfaces/store';
@@ -7,7 +8,8 @@ import FirebaseServices from '../api/firebase';
 import storage from '@react-native-firebase/storage';
 import {Dimensions} from "react-native";
 import {FirebaseFirestoreTypes} from "@react-native-firebase/firestore";
-import {relativeTypes} from "../config";
+import env, {relativeTypes} from "../config";
+import {IServerImage} from "../store/saga/network.saga";
 
 /**
  * Обработка ссылки на загруженную фотографию
@@ -42,21 +44,6 @@ export const needToUpload = async ({userPic, id}: INeedToUpload) => {
 export const remCalc: (number: number) => number = (number: number) =>
     (number / 12) * rem;
 
-interface IGetRelativeTypeName {
-    userRelatives: IRelativeIndex[];
-    id: string;
-}
-
-export const getRelativeType =
-    ({
-         userRelatives,
-         id,
-     }: IGetRelativeTypeName) => {
-        const result = userRelatives.filter(el => el.id === id)
-        if (result.length === 0) return 'other'
-        return userRelatives.filter(el => el.id === id)[0].type;
-    };
-
 export interface IGetRelativeUri {
     selectRelatives: IRelative[]
     id: string
@@ -68,14 +55,31 @@ export interface IGetRelativeUri {
  * @param id
  */
 export const getRelativeUri = ({selectRelatives, id}: IGetRelativeUri) => {
-    return selectRelatives.find(item => item._id === id)?.userPic
+    const uri = selectRelatives.find(item => item._id === id)?.userPic
+    return `${env.endPointUrl}/${uri}`
 }
 
-export const splitUserId = (user: IUser | IRelative) => {
-    const userData = JSON.parse(JSON.stringify(user));
-    const id = userData._id
-    delete userData._id
-    return {id, userData}
+export const splitDataAndId = (data: IUser | IRelative | INote) => {
+    const cloneData = JSON.parse(JSON.stringify(data));
+    const id = data._id
+    delete cloneData._id
+    return {id, data: cloneData}
+}
+
+export const checkIfHEIC = (item: IServerImage) => {
+    const {name} = item
+    if (name && name.indexOf('HEIC') > -1) item.name = name.replace(/\.[^.]+$/, '.JPG')
+    return item
+}
+
+interface IGetRelativeType {
+    user: IUser,
+    relative: IRelative
+}
+
+export const getRelativeType = ({user, relative}: IGetRelativeType) => {
+    const type = user.relatives.find(item => item.id === relative._id)?.type
+    return type || 'other'
 }
 
 export const marginHorizontal = 12

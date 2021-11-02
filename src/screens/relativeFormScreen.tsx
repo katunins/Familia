@@ -1,5 +1,4 @@
 import React from 'react';
-import UserComponent from '../components/userComponent';
 import {ScrollView} from 'react-native';
 import {IRelative, IRelativeTypes, IUser} from '../interfaces/store';
 import {useDispatch, useSelector} from 'react-redux';
@@ -9,13 +8,13 @@ import {RootStackParamList} from "../interfaces/navigation";
 import {getRelativeType} from "../helpers/utils";
 import {userSelector} from "../store/selectors";
 import RelativeComponent from "../components/relativeComponent";
-import {actionUserRelativeUpdate} from "../store/slice/user.slice";
 import {Image} from "react-native-image-crop-picker";
+import {actionUserUpdate} from "../store/slice/user.slice";
 
 export interface ISaveRelativeCallback extends IRelativeTypes {
     relativeData: IRelative;
     newImage?: Image
-    callBack: () => void
+    callBack?: () => void
 }
 
 type IProps = NativeStackScreenProps<RootStackParamList, 'RelativeFormScreen'>;
@@ -31,7 +30,7 @@ const RelativeFormScreen: React.FunctionComponent<IProps> =
          route
      }) => {
         const dispatch = useDispatch();
-        const selectUser = useSelector(userSelector);
+        const user = useSelector(userSelector);
         const initialRelativeData = route.params.relativeData
         /**
          * кнопка сохранить Родственника
@@ -44,18 +43,24 @@ const RelativeFormScreen: React.FunctionComponent<IProps> =
                 type,
                 newImage,
                 callBack: () => {
-                    callBack()
+                    if (callBack) callBack()
                     navigation.goBack()//редактирование пользователя
                 }
             }
             if (relativeData._id !== '') {
-                const relativeIndex = selectUser.relatives.find(item => item.id === relativeData._id)
-                if (relativeIndex?.type !== type) dispatch(actionUserRelativeUpdate({id: relativeData._id, type}))
+                const relativeIndex = user.relatives.find(item => item.id === relativeData._id)
+                if (relativeIndex?.type !== type) {
+                    const relatives = user.relatives.map(item => item.id === relativeData._id ? {
+                        id: relativeData._id,
+                        type
+                    } : item)
+                    dispatch(actionUserUpdate({
+                        userData: {...user, relatives}
+                    }))
+                }
             }
-            dispatch(relativeData._id === '' ?
-                actionNewRelative(data)
-                :
-                actionUpdateRelative(data)
+            dispatch(relativeData._id ?
+                actionUpdateRelative(data) : actionNewRelative(data)
             );
 
         };
@@ -72,8 +77,8 @@ const RelativeFormScreen: React.FunctionComponent<IProps> =
                     initialRelative={initialRelativeData}
                     //@ts-ignore
                     relativeType={getRelativeType({
-                        userRelatives: selectUser.relatives,
-                        id: initialRelativeData._id
+                        user,
+                        relative: initialRelativeData
                     })}
                 />
             </ScrollView>

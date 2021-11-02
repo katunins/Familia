@@ -1,35 +1,31 @@
-import React from "react";
-import { Pressable, View} from "react-native";
+import React, {useState} from "react";
+import {Dimensions, Pressable, View} from "react-native";
 import styles from "./styles";
 import FastImage from "react-native-fast-image";
 import CameraIcon from "../ui/svg/cameraIcon";
+import {containerWidth} from "../helpers/utils";
+import AutoHeightImageComponent from "./autoHeightImage";
+import {IImageUri} from "../interfaces/store";
 
 interface IProps {
-    userPic?: string,
-    editMode:boolean,
-    imageChangeButton: ()=>void
+    imageUri:IImageUri
+    editMode: boolean,
+    imageChangeButton: () => void
 }
 
-const UserPicComponent: React.FunctionComponent<IProps> = ({userPic, editMode, imageChangeButton}) => {
+const UserPicComponent: React.FunctionComponent<IProps> = ({imageUri, editMode, imageChangeButton}) => {
     return (
-    <View style={styles.userPicWrapper}>
-      <FastImage
-        style={{width: '100%', height: '100%'}}
-        source={{
-          uri: userPic,
-          priority: FastImage.priority.normal,
-        }}
-        resizeMode={FastImage.resizeMode.cover}
-      />
-      {editMode && (
-        <Pressable
-          style={[styles.iconWrapper, styles.cameraIconWrapper]}
-          onPress={imageChangeButton}>
-          <CameraIcon />
-        </Pressable>
-      )}
-    </View>
-  );
+        <>
+            <AutoHeightImageComponent imageUri={imageUri}/>
+            {editMode && (
+                <Pressable
+                    style={[styles.iconWrapper, styles.cameraIconWrapper]}
+                    onPress={imageChangeButton}>
+                    <CameraIcon/>
+                </Pressable>
+            )}
+        </>
+    );
 };
 
 export default UserPicComponent

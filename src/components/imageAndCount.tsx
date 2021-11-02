@@ -1,21 +1,24 @@
 import React from "react";
-import {Dimensions, Image, Pressable, Text, View} from "react-native";
+import {Pressable, Text, View} from "react-native";
 import styles from "./styles";
-import EditIcon from "../ui/svg/editIcon";
-import TrashIcon from "../ui/svg/trashIcon";
+import AutoHeightImageComponent from "./autoHeightImage";
+import env from "../config";
+import {IImageUri} from "../interfaces/store";
 
 interface IProps {
     width?: number,
-    images: string[]
+    callBack?: () => void
+    imageUriArr:IImageUri[]
 }
 
-const ImageAndCountComponent: React.FunctionComponent<IProps> = ({images,width = Dimensions.get('window').width}) => {
+const ImageAndCountComponent: React.FunctionComponent<IProps> = ({imageUriArr, callBack}) => {
     return (
         <View>
-            <Image source={{uri: images[0]}} style={styles.imageAndCountImage} height={width}
-                   resizeMode={'cover'}/>
-            {images.length > 1 &&
-            <Text style={styles.imageAndCountLabel}>{`+ ${images.length - 1}`}</Text>}
+            <AutoHeightImageComponent imageUri={imageUriArr[0]}/>
+            {imageUriArr.length > 1 &&
+            <Pressable onPress={callBack}>
+                <Text style={styles.imageAndCountLabel}>{`+ ${imageUriArr.length - 1}`}</Text>
+            </Pressable>}
         </View>
     )
 }

@@ -17,12 +17,13 @@ import {RootStackParamList} from "../interfaces/navigation";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {resetModal, setModal} from "../store/slice/modal.slice";
 import {actionToDeleteRelative} from "../store/slice/relatives.slice";
-import config, {defaultUserPic} from "../config";
+import config, {defaultRelativeUserPic, defaultUserPic, imagePickerDefaultOptions} from "../config";
 import {ISaveUserCallback} from "../screens/userScreen";
+import ImageLoader from "../helpers/imageLoader";
 
 interface IProps {
     initialUser: IUser
-    saveCallback: (data: { userData: IUser; newImage: Image | undefined; callBack: () => void }) => void;
+    saveCallback: (data: ISaveUserCallback) => void;
     buttonLogOut: React.ReactElement
 }
 
@@ -47,17 +48,27 @@ const UserComponent: React.FunctionComponent<IProps> =
 
         const [editMode, setEditMode] = useState(false);
         const [user, setUser] = useState(initialUser);
-        const [newImage, setNewImage] = useState<Image>();
+        const [newImages, setNewImages] = useState<Image[]>([]);
 
         const dispatch = useDispatch();
 
 
         const saveButton = () => {
             if (!validate()) return false;
-            if (JSON.stringify(initialUser) === JSON.stringify(user) && !newImage) return false
-            saveCallback({userData: user, callBack: () => setEditMode(false), newImage});
+            if (JSON.stringify(initialUser) === JSON.stringify(user) && newImages.length === 0) return false
+            saveCallback({
+                userData: user,
+                callBack: (newUser) => {
+                    setUser(newUser)
+                    resetState()
+                },
+                newImage: newImages[0]
+            });
         };
-
+        const resetState = () => {
+            setNewImages([])
+            setEditMode(false)
+        }
 
         const cancelButton = () => {
             setEditMode(false);
@@ -68,21 +79,7 @@ const UserComponent: React.FunctionComponent<IProps> =
             setEditMode(true);
         };
 
-        const imageChangeButton = () => {
-            ImagePicker.openPicker({
-                mediaType: 'photo',
-                width: 800,
-                height: 800,
-                compressImageMaxHeight: 800,
-                compressImageMaxWidth: 800,
-                cropping: true,
-            }).then(image => {
-                setNewImage(image)
-                // setUser({...user, userPic: image.path});
-            }).catch(e => {
-                console.log(e)
-            });
-        };
+        const {loadImages} = ImageLoader({newImages, setNewImages})
 
         const validate = () => {
             if (user.name.length < 2) {
@@ -103,19 +100,22 @@ const UserComponent: React.FunctionComponent<IProps> =
 
         useFocusEffect(
             React.useCallback(() => {
-                return () => setEditMode(false);
+                return () => resetState();
             }, [])
         );
-
         return (
             <KeyboardAwareScrollView style={globalStyles.scrollBottomMargin}>
                 <>
                     <UserPicComponent
-                        userPic={
-                            newImage ? newImage.sourceURL : (user.userPic === '' ? defaultUserPic : `${config.endPointUrl}/${user.userPic}`)
-                        }
+                        imageUri={newImages[0] ? {
+                            uri: newImages[0].path,
+                            local: true
+                        } : user.userPic === '' ? {
+                            uri: defaultUserPic,
+                            local: true
+                        } : {uri: user.userPic}}
                         editMode={editMode}
-                        imageChangeButton={imageChangeButton}
+                        imageChangeButton={loadImages}
                     />
 
                     <View style={[globalStyles.paddingWrapper, globalStyles.paddingTop]}>

@@ -1,27 +1,27 @@
 import {FlatList} from "react-native";
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {postsSelector, relativesSelector, userSelector} from "../../store/selectors";
-import PostComponent from "../../components/post";
 import SeparatorComponent from "../../components/separator";
 import TrashIcon from "../../ui/svg/trashIcon";
 import EditIcon from "../../ui/svg/editIcon";
-import {IPost} from "../../interfaces/store";
 import {NativeStackScreenProps} from "react-native-screens/native-stack";
 import {RootStackParamList} from "../../interfaces/navigation";
-import {actionDeletePost} from "../../store/slice/posts.slice";
 import {setModal} from "../../store/slice/modal.slice";
+import {notesSelector, relativesSelector, userSelector} from "../../store/selectors";
+import {INote} from "../../interfaces/store";
+import {actionDeleteNote} from "../../store/slice/notes.slice";
+import NoteComponent from "../../components/note";
 
 interface IProps {
-    navigation: NativeStackScreenProps<RootStackParamList, 'PostsListScreen'>
+    navigation: NativeStackScreenProps<RootStackParamList, 'NotesListScreen'>
     searchText:string
 }
-const PostsListScreen = ({navigation, searchText}: IProps) => {
-    const selectPosts = useSelector(postsSelector)
+const NotesListScreen = ({navigation, searchText}: IProps) => {
+    const selectNotes = useSelector(notesSelector)
     const selectUser = useSelector(userSelector)
     const selectRelatives = useSelector(relativesSelector)
 
-    const filterList = (item: IPost) => {
+    const filterList = (item: INote) => {
         if (searchText.length < 3 || searchText === '') return true
         if (item.title.toUpperCase().indexOf(searchText.toUpperCase()) >= 0) return true
         if (item.description.toUpperCase().indexOf(searchText.toUpperCase()) >= 0) return true
@@ -30,12 +30,12 @@ const PostsListScreen = ({navigation, searchText}: IProps) => {
 
     const dispatch = useDispatch()
 
-    const editPost = (item: IPost) => {
+    const editNote = (item: INote) => {
         // @ts-ignore
-        navigation.navigate('PostEditScreen', {post: item})
+        navigation.navigate('NoteEditScreen', {note: item})
     }
 
-    const deletePost = (post: IPost) => {
+    const deleteNote = (note: INote) => {
         dispatch(setModal({
 
             title: 'Внимание!',
@@ -44,8 +44,8 @@ const PostsListScreen = ({navigation, searchText}: IProps) => {
                 {
                     title: 'Удалить',
                     callBack: () => {
-                        dispatch(actionDeletePost({
-                            post: post,
+                        dispatch(actionDeleteNote({
+                            note,
                             callback: () => {}
                         }))
                     },
@@ -59,30 +59,31 @@ const PostsListScreen = ({navigation, searchText}: IProps) => {
     }
     return (
         <FlatList
-            data={selectPosts.filter(item => item.creator === selectUser._id && filterList(item))}
+            data={selectNotes.filter(item => item.creator === selectUser._id && filterList(item))}
             // @ts-ignore
             listKey={(item, index) => `_key${index.toString()}`}
             renderItem={({item, index}) =>
-                <PostComponent
+                <NoteComponent
                     item={item}
+                    index={index}
                     selectRelatives={selectRelatives}
                     dotsMenu={[
                         {
                             title: 'Изменить',
-                            callBack: () => editPost(item),
+                            callBack: () => editNote(item),
                             icon: <EditIcon/>
                         },
                         {
                             title: 'Удалить',
-                            callBack: () => deletePost(item),
+                            callBack: () => deleteNote(item),
                             icon: <TrashIcon/>
                         }
                     ]}
                 />}
             ItemSeparatorComponent={SeparatorComponent}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item._id}
         />
     );
 };
 
-export default PostsListScreen
+export default NotesListScreen

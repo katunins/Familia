@@ -5,13 +5,14 @@ import styles from "./styles";
 import FastImage from "react-native-fast-image";
 import globalStyles from "../styles/styles";
 import EditIcon from "../ui/svg/editIcon";
-import {defaultUserPic, relativeTypes} from "../config";
+import config, {defaultUserPic, relativeTypes} from "../config";
 import TrashIcon from "../ui/svg/trashIcon";
 import {actionToDeleteRelative} from "../store/slice/relatives.slice";
 import {useDispatch} from "react-redux";
 import {resetModal, setModal} from "../store/slice/modal.slice";
+import AutoHeightImageComponent from "./autoHeightImage";
 
-interface IProps extends IRelativeTypes{
+interface IProps extends IRelativeTypes {
     item: IRelative,
     editButton: (data: IRelative) => void
 }
@@ -32,7 +33,7 @@ const RelativeBigComponent: React.FunctionComponent<IProps> = (
                     title: 'Удалить',
                     type: 'invert',
                     callBack: () => {
-                        dispatch(actionToDeleteRelative(item._id));
+                        dispatch(actionToDeleteRelative(item));
                         dispatch(resetModal());
                     },
                 },
@@ -44,22 +45,18 @@ const RelativeBigComponent: React.FunctionComponent<IProps> = (
     }
     return (
         <>
-            <View style={[styles.userPicWrapper, globalStyles.marginBottom]}>
-                <FastImage
-                    style={{width: '100%', height: '100%'}}
-                    source={{
-                        uri: item.userPic || defaultUserPic,
-                        priority: FastImage.priority.normal,
-                    }}
-                    resizeMode={FastImage.resizeMode.cover}
-                />
+            <View style={[globalStyles.marginBottom]}>
+                <AutoHeightImageComponent
+                    imageUri={{
+                        uri: item.userPic === '' ? defaultUserPic : item.userPic
+                    }}/>
                 <View style={styles.circleIconsContainer}>
-                    <Pressable onPress={()=>editButton(item)} style={styles.circleIconWrapper}><EditIcon/></Pressable>
+                    <Pressable onPress={() => editButton(item)} style={styles.circleIconWrapper}><EditIcon/></Pressable>
                     <Pressable onPress={deleteButton} style={[styles.circleIconWrapper]}><TrashIcon/></Pressable>
                 </View>
             </View>
 
-            <View style={globalStyles.rowSpaceBetween}>
+            <View style={[globalStyles.rowSpaceBetween,  globalStyles.paddingWrapper]}>
                 <View style={styles.leftBigComponentColumn}>
                     <Text style={globalStyles.title}>{item.name}</Text>
                     <Text style={styles.aboutBigComponent}>{item.about}</Text>

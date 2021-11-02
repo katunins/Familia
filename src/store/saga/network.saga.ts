@@ -9,7 +9,7 @@ import {setToken} from "../slice/token.slice";
 import {sagaLogOut} from "./auth.saga";
 import * as Eff from "redux-saga/effects";
 import {Image} from "react-native-image-crop-picker";
-import {FetchResult} from "react-native";
+import {checkIfHEIC} from "../../helpers/utils";
 
 
 interface IServerUserData {
@@ -39,17 +39,15 @@ function* requestSaga({method, endPoint, data}: IResponseHandlerSaga) {
     try {
         const accessToken = yield select(tokenSelector)
         const user: IUser = yield select(userSelector)
-        const params = method === 'GET' ? {
-            method
-        } : {
+        const headers = new Headers()
+        headers.append('DeviceId', DeviceInfo.getUniqueId())
+        headers.append('Authorization', `Bearer ${accessToken}`)
+        headers.append('UserId', user?._id || '')
+        headers.append('Content-Type', 'application/json')
+        const params = {
             method,
-            headers: {
-                'Content-Type': 'application/json',
-                'DeviceId': DeviceInfo.getUniqueId(),
-                'Authorization': `Bearer ${accessToken}`,
-                'UserId': user._id
-            },
-            body: JSON.stringify(data)
+            headers,
+            body: method === 'GET' ? undefined : JSON.stringify(data)
         }
         const response = yield fetch(
             `${env.endPointUrl}/${endPoint}`,
@@ -84,12 +82,49 @@ function* _sagaResponseHeader(response: Response) {
     }
 }
 
+interface ISagaNewUserPic {
+    userData: IServerUser | IServerRelative
+    newImage?: Image
+}
+
+function* _sagaNewUserPic({userData, newImage}: ISagaNewUserPic) {
+    if (!newImage) return userData
+    const files = [{
+        uri: newImage.path,
+        type: newImage.mime,
+        name: newImage.filename,
+    }]
+    const filesToDelete = userData.userPic === '' ? [] : [userData.userPic]
+    const uploadResponse = yield call(uploadSaga, {files, filesToDelete})
+    return {...userData, userPic: uploadResponse[0].path}
+}
+
+interface ISagaNewPostImages {
+    newImages?: Image[]
+    deleteImages?: string[]
+}
+
+function* _sagaUpdateNotesImages({newImages = [], deleteImages = []}: ISagaNewPostImages) {
+    if ((newImages.length + deleteImages.length) === 0) return []
+    const files = newImages.map(newImage => {
+        return {
+            uri: newImage.path,
+            type: newImage.mime,
+            name: newImage.filename,
+        }
+    })
+    const uploadResponse = yield call(uploadSaga, {files, filesToDelete: deleteImages})
+    return uploadResponse
+}
+
+export interface IServerImage {
+    uri?: string
+    type?: string
+    name?: string
+}
+
 export interface IUploadSaga {
-    files: {
-        uri?: string
-        type?: string
-        name?: string
-    }[],
+    files: IServerImage[],
     filesToDelete?: string[]
 }
 
@@ -98,7 +133,9 @@ function* uploadSaga({files, filesToDelete = []}: IUploadSaga) {
         const accessToken = yield select(tokenSelector)
         const user: IUser = yield select(userSelector)
         const formdata = new FormData();
-        files.map(item => formdata.append("file", item))
+        files.map(item => {
+            formdata.append("file", checkIfHEIC(item))
+        })
         filesToDelete.map(item => formdata.append('filesToDelete[]', item))
         const response = yield fetch(
             `${env.endPointUrl}/storage`,
@@ -112,7 +149,6 @@ function* uploadSaga({files, filesToDelete = []}: IUploadSaga) {
                 },
                 body: formdata,
             })
-
         const responseData = yield call(_sagaResponseHeader, response)
         return responseData
     } catch (error) {
@@ -120,4 +156,4 @@ function* uploadSaga({files, filesToDelete = []}: IUploadSaga) {
     }
 }
 
-export {requestSaga, watchNetwork, uploadSaga};
+export {requestSaga, watchNetwork, uploadSaga, _sagaNewUserPic, _sagaUpdateNotesImages};

@@ -5,8 +5,8 @@ import {IRelativeIndex, IRelativeTypes, IUser} from '../../interfaces/store';
 import {actionLoaderOff, actionLoaderOn} from '../slice/loader.slice';
 import {PayloadAction} from '@reduxjs/toolkit';
 import {actionSetUser} from '../slice/user.slice';
-import {needToUpload, splitUserId} from '../../helpers/utils';
-import {requestSaga, uploadSaga} from "./network.saga";
+import {needToUpload, splitDataAndId} from '../../helpers/utils';
+import {_sagaNewUserPic, requestSaga, uploadSaga} from "./network.saga";
 import {errorSaga} from "./error.saga";
 import {ISaveUserCallback} from "../../screens/userScreen";
 import {userSelector} from "../selectors";
@@ -15,62 +15,29 @@ const takeLatest: any = Eff.takeLatest;
 
 function* watchUser() {
     yield takeLatest('user/update', sagaUserUpdate);
-    yield takeLatest('user/updateRelative', sagaUserUpdateRelativeType)
 }
 
-/**
- * Сага отслеживает изменение параметра пользователя и сохраняет изменения в Firebase
- * @param action
- */
 function* sagaUserUpdate(action: PayloadAction<ISaveUserCallback>) {
     try {
         yield put(actionLoaderOn());
         const {callBack, newImage} = action.payload
-        const {id, userData} = yield splitUserId(action.payload.userData)
-        let requestData = userData
-        if (newImage) {
-            const files = [{
-                uri: newImage.path,
-                type: newImage.mime,
-                name: newImage.filename,
-            }]
-            const filesToDelete = [userData.userPic]
-            const uploadResponse = yield call(uploadSaga, {files, filesToDelete})
-            requestData = {...userData, userPic: uploadResponse[0].path}
-        }
+        const {id, data} = yield splitDataAndId(action.payload.userData)
+
+        const requestData = yield call(_sagaNewUserPic, {newImage, userData: data})
         const responseData = yield call(requestSaga, {
             endPoint: 'users',
             method: 'PATCH',
             data: {id, userData: requestData}
         })
         if (responseData) {
-            yield put(actionSetUser(action.payload.userData));
-            callBack()
+            const newUserData = {...requestData, _id: id}
+            yield put(actionSetUser({...requestData, _id: id}));
+            if (callBack) callBack(newUserData)
         }
 
         yield put(actionLoaderOff());
     } catch
         (error) {
-        yield call(errorSaga, error)
-    }
-}
-
-function* sagaUserUpdateRelativeType(action: PayloadAction<IRelativeIndex>) {
-    try {
-        yield put(actionLoaderOn());
-        const newRelativeIndex = action.payload
-        const user: IUser = yield select(userSelector)
-        const newUserRelatives = user.relatives.map(item => item.id === newRelativeIndex.id ? newRelativeIndex : item)
-        // @ts-ignore
-        yield call(sagaUserUpdate, {
-            payload: {
-                userData: {...user, relatives: newUserRelatives},
-                callBack: () => {
-                }
-            }
-        })
-        yield put(actionLoaderOff());
-    } catch (error) {
         yield call(errorSaga, error)
     }
 }

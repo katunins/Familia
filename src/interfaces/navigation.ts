@@ -1,5 +1,4 @@
-import {IPost, IPostData, IRelative} from "./store";
-import {NewPostsStack} from "../navigation/newPost";
+import {INote, IRelative} from "./store";
 
 export type RootStackParamList = {
     UserScreen: undefined;
@@ -9,10 +8,10 @@ export type RootStackParamList = {
     AuthScreen:undefined
     SignUpScreen:undefined
     SignInScreen:undefined
-    NewPostsStack:undefined
-    NewPostImages:undefined
-    NewPostDescription:undefined
-    NewPostRelatives: undefined
-    PostsListScreen: undefined
-    PostEditScreen:{post:IPost}
+    NewNotesStack:undefined
+    NewNoteImages:undefined
+    NewNoteDescription:undefined
+    NewNoteRelatives: undefined
+    NotesListScreen: undefined
+    NoteEditScreen:{note:INote}
 };

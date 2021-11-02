@@ -23,7 +23,7 @@ export const actionUpdateRelative = createAction(
 
 export const actionToDeleteRelative = createAction(
     'relatives/deleteRelative',
-    function prepare(payload: string) {
+    function prepare(payload: IRelative) {
         return {
             payload,
         };
@@ -45,8 +45,8 @@ const relativesSlice = createSlice({
             return state.map((item => item._id === action.payload._id ? action.payload : item))
             // return [...state, action.payload];
         },
-        actionDeleteRelative: (state, action: PayloadAction<string>) => {
-            return state.filter(item => item._id !== action.payload);
+        actionDeleteRelative: (state, action: PayloadAction<{ id: string }>) => {
+            return state.filter(item => item._id !== action.payload.id);
         },
         actionResetRelatives: () => {
             return initialState;

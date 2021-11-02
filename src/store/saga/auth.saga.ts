@@ -1,32 +1,28 @@
 import * as Eff from 'redux-saga/effects';
-import {call, put, all} from 'redux-saga/effects';
-import FirebaseServices from '../../api/firebase';
-import {IUser} from '../../interfaces/store';
+import {call, put} from 'redux-saga/effects';
+import {IRelative, IUser} from '../../interfaces/store';
 import {actionLoaderOff, actionLoaderOn} from '../slice/loader.slice';
 import {
     actionResetUser,
     actionSetUser,
 } from '../slice/user.slice';
 import {
-    actionResetRelatives,
-    actionSetRelatives,
+    actionResetRelatives, actionSetRelatives,
 } from '../slice/relatives.slice';
 import {PayloadAction} from '@reduxjs/toolkit';
-import {resetPosts, setPosts} from "../slice/posts.slice";
 import {errorSaga} from "./error.saga";
 import {ILoginData, ISignUpData} from "../../interfaces";
 import {requestSaga} from "./network.saga";
-import {resetToken, setToken} from "../slice/token.slice";
+import {resetToken} from "../slice/token.slice";
 import {initialUser} from "../../config";
-import {sagaGetRelativesFromArray} from "./relative.saga";
-import DeviceInfo from "react-native-device-info";
+import * as querystring from "querystring";
+import {resetNotes, setNotes} from "../slice/notes.slice";
 
 const takeLatest: any = Eff.takeLatest;
 
 function* watchAuth() {
     yield takeLatest('firebase/actionSignUp', sagaSignUp);
     yield takeLatest('firebase/actionSignIn', sagaSignIn);
-    yield takeLatest('firebase/deleteImages', sagaDeleteImages);
     yield takeLatest('firebase/actionLogOut', sagaLogOut);
 }
 
@@ -57,20 +53,26 @@ function* sagaSignIn(action: PayloadAction<{ data: ILoginData }>) {
         yield put(actionLoaderOn());
         const {email, password} = action.payload.data
         const responseData: IUser = yield call(requestSaga, {
-            endPoint: `users?email=${email}&password=${password}&userDeviceId=${DeviceInfo.getUniqueId()}`,
+            endPoint: `users?email=${email}&password=${password}`,
             method: 'GET'
         })
         if (!responseData) return false
         yield put(actionSetUser(responseData));
 
-        // // загрузим родственников
-        // const {relatives} = responseData
-        // const relativesArr = yield call(sagaGetRelativesFromArray, relatives)
-        // yield put(actionSetRelatives(relativesArr))
-        //
-        // // загрузим посты
-        // // const posts = yield FirebaseServices.getPosts(responseData._id)
-        // // if (posts.length > 0) yield put(setPosts(posts))
+        // загрузим родственников
+        const {relatives} = responseData
+        if (relatives.length > 0) {
+            const relativesIds = relatives.map(item => item.id)
+            const relativesArr: IRelative[] = yield call(requestSaga, {
+                endPoint: `relatives?${querystring.stringify({relativesIds})}`, method: 'GET'
+            })
+            yield put(actionSetRelatives(relativesArr))
+        }
+        // загрузим посты
+        const notes = yield call(requestSaga, {
+            endPoint: `notes`, method: 'GET'
+        })
+        if (notes.length > 0) yield put(setNotes(notes))
         yield put(actionLoaderOff());
 
     } catch (error) {
@@ -82,20 +84,10 @@ function* sagaLogOut() {
     try {
         yield put(actionResetUser());
         yield put(actionResetRelatives());
-        yield put(resetPosts())
+        yield put(resetNotes())
         yield put(resetToken())
     } catch (error) {
         yield call(errorSaga, error)
-    }
-}
-
-function* sagaDeleteImages(action: { payload: string[] }) {
-    try {
-        yield all(action.payload.map(async item => {
-            await FirebaseServices.deleteImage(item)
-        }))
-    } catch (e) {
-        console.log('err', e.code);
     }
 }
 

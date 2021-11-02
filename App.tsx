@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text} from 'react-native'
+import {View, Text, LogBox} from 'react-native'
 import {NavigationContainer} from "@react-navigation/native";
 import Screens from "./src/screens";
 import {PersistGate} from "redux-persist/integration/react";
@@ -20,6 +20,8 @@ EStyleSheet.build({
     },
     ...GeneralColors
 });
+
+LogBox.ignoreAllLogs()
 const App = () => {
     const myPersistor = getPersistor();
     const myStore = getStore();

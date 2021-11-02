@@ -11,14 +11,14 @@ import LoginStack from './login';
 import { RelativeStack} from './relative';
 import RelativeTabIcon from '../ui/svg/relativeTabIcon';
 import UserStack from './user';
-import PostsListTabIcon from "../ui/svg/postListTabIcon";
-import {NewPostsStack} from "./newPost";
-import PostsListStack from "./posts";
-import {postsSelector, userSelector} from "../store/selectors";
+import NotesListStack from "./notes";
+import {notesSelector, userSelector} from "../store/selectors";
+import NotesListTabIcon from "../ui/svg/notesListTabIcon";
+import {NewNoteStack} from "./newNote";
 
 const TabsNavigator = () => {
     const selectUser = useSelector(userSelector);
-    const posts = useSelector(postsSelector)
+    const notes = useSelector(notesSelector)
 
     // Ключ скрытия Tab Навигатора
     const Tab = createMaterialBottomTabNavigator();
@@ -29,7 +29,7 @@ const TabsNavigator = () => {
             activeColor={EStyleSheet.value('$textColorGlobal')}
             inactiveColor={EStyleSheet.value('$colorLightGrey')}
             barStyle={styles.barStyle}
-            initialRouteName={posts.length === 0 ? 'personalStack':'postsListStack'}
+            initialRouteName={notes.length === 0 ? 'personalStack':'notesListStack'}
             shifting={false}
         >
             <Tab.Screen
@@ -42,17 +42,17 @@ const TabsNavigator = () => {
             />
 
             <Tab.Screen
-                name={'postsListStack'}
-                component={userAuth ? PostsListStack : LoginStack}
+                name={'notesListStack'}
+                component={userAuth ? NotesListStack : LoginStack}
                 options={{
-                    tabBarIcon: ({color}) => <PostsListTabIcon color={color} />,
+                    tabBarIcon: ({color}) => <NotesListTabIcon color={color} />,
                     title: '',
                 }}
             />
 
             <Tab.Screen
-            name={'addPostStack'}
-            component={userAuth ? NewPostsStack : LoginStack}
+            name={'addNoteStack'}
+            component={userAuth ? NewNoteStack : LoginStack}
             options={{
             tabBarIcon: ({color}) => <PlusTabIcon color={color} />,
             title: '',

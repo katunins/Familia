@@ -11,14 +11,14 @@ export const actionUserUpdate = createAction(
   },
 );
 
-export const actionUserRelativeUpdate = createAction(
-    'user/updateRelative',
-    function prepare(payload: IRelativeIndex) {
-      return {
-        payload,
-      };
-    },
-);
+// export const actionUserRelativeUpdate = createAction(
+//     'user/updateRelative',
+//     function prepare(payload: IRelativeIndex) {
+//       return {
+//         payload,
+//       };
+//     },
+// );
 
 const initialState = {};
 
@@ -29,12 +29,6 @@ const userSlice = createSlice({
     actionSetUser: (state, action: PayloadAction<IUser>) => {
       return action.payload;
     },
-    // actionChangeUser: (state, action: PayloadAction<IUser>) => {
-    //   return {
-    //     ...state,
-    //     ...action.payload,
-    //   };
-    // },
     actionResetUser: () => {
       return initialState;
     },

@@ -1,6 +1,4 @@
 import {Action} from 'redux';
-import {StyleProp, ViewStyle} from 'react-native';
-import firestore, {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 import {IButtonsProps} from "../components/button";
 
 export interface IModalData {
@@ -61,7 +59,7 @@ export interface IServerRelative extends IGeneralUser {
 export interface IRelative extends IServerRelative, IServerId {
 }
 
-export interface IPostData {
+export interface INoteData {
     images: string[],
     title: string,
     description: string,
@@ -69,18 +67,18 @@ export interface IPostData {
 
 }
 
-export interface IPost extends IPostData {
-    _id: string,
-    creator: string,
-    createdAt: string
-    updatedAt: string
+export interface IServerNote extends INoteData {
+    creator: string
+}
+
+export interface INote extends IServerNote, IServerId {
 }
 
 interface IStore extends Action {
     data: {
         modal: IModal;
         user: IUser;
-        posts: IPost[]
+        notes: INote[]
         loader: boolean;
         relatives: IRelative[];
         relativeForm: IRelative | {}
@@ -97,4 +95,10 @@ export interface IImagePicker {
     sourceURL: string
     width: number
 }
+
 export default IStore;
+
+export interface IImageUri {
+    uri: string,
+    local?: boolean
+}

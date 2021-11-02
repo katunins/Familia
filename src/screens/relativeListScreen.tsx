@@ -33,24 +33,16 @@ const RelativeListScreen: React.FunctionComponent<IProps> = ({navigation}) => {
         // @ts-ignore
         navigation.navigate('RelativeFormScreen', {relativeData: item});
     }
-
-    // let relativesArr: IRelative[] = [];
-    // selectRelatives.map(item => {
-    //     const result: IRelativeIndex[] = selectUser.relatives.filter(el => el.id === item._id);
-    //     if (result.length > 0) {
-    //         // @ts-ignore
-    //         relativesArr.push({...item, type: result[0].type});
-    //     }
-    // });
     return (
-        <View style={globalStyles.paddingWrapper}>
+        <View>
             <FlatList data={selectRelatives}
                       renderItem={({item}) => <RelativeBigComponent item={item} type={getRelativeType({
-                          userRelatives: selectUser.relatives,
-                          id: item._id
+                          relative: item,
+                          user: selectUser
                       })} editButton={editRelative}/>}
                       ItemSeparatorComponent={SeparatorComponent}
                       showsVerticalScrollIndicator={false}
+                      ListFooterComponentStyle={globalStyles.paddingWrapper}
                       ListFooterComponent={
                           <Pressable
                               style={[globalStyles.strokeForm, globalStyles.marginTop, globalStyles.marginBottom]}

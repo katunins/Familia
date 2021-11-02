@@ -1,4 +1,4 @@
-import {IGeneralUser, IPost, IRelative, IServerUser, IUser} from "./interfaces/store";
+import {INoteData, IServerNote, IServerRelative, IServerUser} from "./interfaces/store";
 
 const env = {
     // endPointUrl: 'http://localhost:3000'
@@ -21,8 +21,7 @@ export const initialUser: IServerUser = {
     about: '',
     email: '',
 };
-export const initialRelative: IRelative = {
-    _id: '',
+export const initialRelative: IServerRelative = {
     name: '',
     userPic: '',
     birthday: '',
@@ -32,19 +31,22 @@ export const initialRelative: IRelative = {
         shareId: []
     }
 };
-export const initialPost: IPost = {
-    _id: '',
+export const initialNote: INoteData = {
     images: [],
     title: '',
     description: '',
     relatives: [],
-    creator: '',
-    createdAt: '',
-    updatedAt: ''
 }
 
 export const defaultUserPic = 'https://alpinabook.ru/resize/1100x1600/upload/iblock/6f9/6f9f5be9fb84ad912ca92b5a0839d9ef.jpg'
-
+export const defaultRelativeUserPic = 'https://alpinabook.ru/resize/1100x1600/upload/iblock/6f9/6f9f5be9fb84ad912ca92b5a0839d9ef.jpg'
+export const imagePickerDefaultOptions = {
+    freeStyleCropEnabled: true,
+    forceJpg: true,
+    cropping: true,
+    width: 2000,
+    height: 2000
+}
 export const relativeTypes = {
     daughter: 'Дочь',
     son: 'Сын',

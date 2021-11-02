@@ -5,7 +5,7 @@ import EditPersonalComponent from './editComponent';
 import CalendarComponent from './calendarComponent';
 import CloudContainer from './cloudContainer';
 import {IRelative, IRelativeTypes, IUser} from '../interfaces/store';
-import ImagePicker from 'react-native-image-crop-picker';
+import ImagePicker, {Image} from 'react-native-image-crop-picker';
 import UserPicComponent from './userPicComponent';
 import {useDispatch} from 'react-redux';
 import RelativeTypesListComponent from './relativeTypesListComponent';
@@ -14,6 +14,8 @@ import ButtonComponent from "./button";
 import {ISaveRelativeCallback} from "../screens/relativeFormScreen";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {setModal} from "../store/slice/modal.slice";
+import config, {defaultRelativeUserPic, defaultUserPic, imagePickerDefaultOptions} from "../config";
+import ImageLoader from "../helpers/imageLoader";
 
 interface IProps {
     initialRelative: IRelative;
@@ -47,22 +49,32 @@ const RelativeComponent: React.FunctionComponent<IProps> =
         const [editMode, setEditMode] = useState(defaultEditMode);
         const [relative, setRelative] = useState(initialRelative);
         const [type, setType] = useState(relativeType);
+        const [newImages, setNewImages] = useState<Image[]>([]);
 
         const dispatch = useDispatch();
 
 
         const saveButton = () => {
             if (!validate()) return false;
-            if (JSON.stringify(initialRelative) === JSON.stringify(relative) && relativeType === type) return false
+            if (JSON.stringify(initialRelative) === JSON.stringify(relative) && relativeType === type && newImages.length === 0) return false
             saveCallback({
                 relativeData: relative,
                 type,
-                callBack: () => setEditMode(false)
+                newImage: newImages[0],
+                callBack: () => {
+                    resetState()
+                }
             });
         };
 
+        const resetState = () => {
+            setNewImages([])
+            setEditMode(false)
+        }
+
 
         const cancelButton = () => {
+            resetState()
             setEditMode(false);
             if (cancelCallback) cancelCallback()
         }
@@ -71,21 +83,7 @@ const RelativeComponent: React.FunctionComponent<IProps> =
         const editButton = () => {
             setEditMode(true);
         };
-
-        const imageChangeButton = () => {
-            ImagePicker.openPicker({
-                mediaType: 'photo',
-                width: 800,
-                height: 800,
-                compressImageMaxHeight: 800,
-                compressImageMaxWidth: 800,
-                cropping: true,
-            }).then(image => {
-                setRelative({...relative, userPic: image.path});
-            }).catch(e => {
-                console.log(e)
-            });
-        };
+        const {loadImages} = ImageLoader({newImages, setNewImages})
 
         const validate = () => {
             if (relative.name.length < 2) {
@@ -106,20 +104,22 @@ const RelativeComponent: React.FunctionComponent<IProps> =
 
         useFocusEffect(
             React.useCallback(() => {
-                return () => setEditMode(false);
+                return () => resetState();
             }, [])
         );
-
         return (
             <KeyboardAwareScrollView style={globalStyles.scrollBottomMargin}>
                 <>
                     <UserPicComponent
-                        userPic={
-                            relative.userPic ||
-                            'https://alpinabook.ru/resize/1100x1600/upload/iblock/6f9/6f9f5be9fb84ad912ca92b5a0839d9ef.jpg'
-                        }
+                        imageUri={newImages[0] ? {
+                            uri: newImages[0].path,
+                            local: true
+                        } : relative.userPic === '' ? {
+                            uri: defaultRelativeUserPic,
+                            local: true
+                        } : {uri: relative.userPic}}
                         editMode={editMode}
-                        imageChangeButton={imageChangeButton}
+                        imageChangeButton={loadImages}
                     />
 
                     <View style={[globalStyles.paddingWrapper, globalStyles.paddingTop]}>
