@@ -6,10 +6,20 @@ const globalStyles = createStyles({
         borderColor:'$colorGrey',
         borderWidth: 1
     },
+    headerFont:{
+        fontSize: '1.2rem',
+        fontWeight:'700',
+        width: '100%',
+        textAlign:'center'
+    },
+
+    headerWrapper: {
+        marginRight: 10
+    },
     scrollBottomMargin:{
         marginBottom:20
     },
-    body: {width: '100%', height: '100%'},
+    body: {width: '100%', flex: 1},
     boldText: {fontWeight: '500'},
     bigThinText:{
         fontSize: '1.3rem',

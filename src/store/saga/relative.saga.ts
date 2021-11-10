@@ -1,49 +1,69 @@
 import * as Eff from 'redux-saga/effects';
-import {call, put, select} from 'redux-saga/effects';
+import {call, put, select, delay} from 'redux-saga/effects';
 import {actionLoaderOff, actionLoaderOn} from '../slice/loader.slice';
 import {
-    actionAddRelative, actionDeleteRelative, actionUpdateRelative, actionUpdateStateRelative,
+    actionAddRelative, actionDeleteRelative, actionLoadRelatives,
+    actionUpdateRelative,
+    addRelative,
+    deleteRelative,
+    setRelatives,
+    updateAndConvertTempRelative,
+    updateRelative,
 } from '../slice/relatives.slice';
 import {PayloadAction} from '@reduxjs/toolkit';
 import {IRelative, IRelativeIndex, IUser} from '../../interfaces/store';
-import {splitDataAndId} from '../../helpers/utils';
+import {idGenerator, splitDataAndId} from '../../helpers/utils';
 import {errorSaga} from "./error.saga";
-import {_sagaNewUserPic, requestSaga, uploadSaga} from "./network.saga";
+import {_sagaNewUserPic, requestSaga} from "./network.saga";
 import {ISaveRelativeCallback} from "../../screens/relativeFormScreen";
-import {sagaUserUpdate} from "./user.saga";
 import {userSelector} from "../selectors";
 import {actionUserUpdate} from "../slice/user.slice";
+import querystring from "querystring";
 
 const takeLatest: any = Eff.takeLatest;
 
 function* watchRelative() {
-    yield takeLatest('relatives/newRelative', sagaCreateRelative);
-    yield takeLatest('relatives/updateRelative', sagaUpdateRelative);
-    yield takeLatest('relatives/deleteRelative', sagaDeleteRelative);
+    yield takeLatest(actionAddRelative.type, sagaAddRelative);
+    yield takeLatest(actionUpdateRelative.type, sagaUpdateRelative);
+    yield takeLatest(actionDeleteRelative.type, sagaDeleteRelative);
+    yield takeLatest(actionLoadRelatives.type, sagaLoadRelatives);
 }
 
-function* sagaCreateRelative(action: PayloadAction<ISaveRelativeCallback>) {
+function* sagaLoadRelatives(action: PayloadAction<IRelativeIndex[]>) {
+    try {
+        const relativesIds = action.payload.map(item => item.id)
+        const relativesArr: IRelative[] = yield call(requestSaga, {
+            endPoint: `relatives?${querystring.stringify({relativesIds})}`, method: 'GET'
+        })
+        yield put(setRelatives(relativesArr))
+    } catch (error) {
+        yield call(errorSaga, error)
+    }
+}
+
+function* sagaAddRelative(action: PayloadAction<ISaveRelativeCallback>) {
     try {
         yield put(actionLoaderOn());
         const {relativeData, type, callBack, newImage} = action.payload
+        const tempId = idGenerator()
+        yield put(addRelative({...relativeData, _id: tempId, userPic: newImage ? newImage.path : relativeData.userPic}))
         const {data} = yield splitDataAndId(relativeData)
-        const requestData = yield call(_sagaNewUserPic, {newImage, userData: data})
+        let newRelativeData = Object.assign({}, data)
+        newRelativeData.userPic = yield call(_sagaNewUserPic, {newImage, userPic: relativeData.userPic})
         const responseData: IRelative = yield call(requestSaga, {
             endPoint: 'relatives',
             method: 'POST',
-            data: requestData
+            data: newRelativeData
         })
-        if (responseData) {
-            yield put(
-                actionAddRelative(responseData),
-            );
-            const user: IUser = yield select(userSelector)
-            const relatives = [...user.relatives, {id: responseData._id, type}]
-            yield put(actionUserUpdate({
-                userData: {...user, relatives},
-                callBack
-            }))
-        }
+        if (!responseData) return
+        yield put(updateAndConvertTempRelative({newRelative: responseData, tempId}));
+
+        const user: IUser = yield select(userSelector)
+        const relatives = [...user.relatives, {id: responseData._id, type}]
+        yield put(actionUserUpdate({
+            userData: {...user, relatives},
+            callBack
+        }))
         yield put(actionLoaderOff());
 
     } catch (error) {
@@ -54,19 +74,20 @@ function* sagaCreateRelative(action: PayloadAction<ISaveRelativeCallback>) {
 function* sagaUpdateRelative(action: PayloadAction<ISaveRelativeCallback>) {
     try {
         yield put(actionLoaderOn());
-        const {relativeData, callBack, newImage, type} = action.payload
+        const {relativeData, callBack, newImage} = action.payload
+        yield put(updateRelative({...relativeData, userPic: newImage ? newImage.path : relativeData.userPic}))
         const {id, data} = yield splitDataAndId(relativeData)
-        const requestData = yield call(_sagaNewUserPic, {newImage, userData: data})
+        let newRelativeData = Object.assign({}, data)
+        newRelativeData.userPic = yield call(_sagaNewUserPic, {newImage, userPic: relativeData.userPic})
         const responseData: IRelative = yield call(requestSaga, {
             endPoint: 'relatives',
             method: 'PATCH',
-            data: {id, userData: requestData}
+            data: {id, userData: newRelativeData}
         })
-        if (responseData) {
-            yield put(actionUpdateStateRelative({...requestData, _id: id}));
-            if (callBack) callBack()
-        }
-
+        if (!responseData) return
+        newRelativeData._id = id
+        yield put(updateRelative(newRelativeData))
+        callBack && callBack()
         yield put(actionLoaderOff());
 
     } catch (error) {
@@ -79,26 +100,19 @@ function* sagaDeleteRelative(action: PayloadAction<IRelative>) {
         yield put(actionLoaderOn());
         const user: IUser = yield select(userSelector)
         const {id, data} = yield splitDataAndId(action.payload)
-
-        const result = yield call(requestSaga, {
+        // Удалим родственника из стор
+        yield put(deleteRelative({id}));
+        const responseData = yield call(requestSaga, {
             endPoint: 'relatives',
             method: 'DELETE',
             data: {id, userData: data}
         })
-
-        if (result) {
-            // удалим родственника у юзера
-            const relatives = user.relatives.filter(item => item.id !== id)
-            yield put(actionUserUpdate({
-                userData: {...user, relatives}
-            }))
-
-            // Удалим родственника из стор
-            yield put(
-                actionDeleteRelative({id}),
-            );
-        }
-
+        if (!responseData) return
+        // удалим родственника у юзера
+        const relatives = user.relatives.filter(item => item.id !== id)
+        yield put(actionUserUpdate({
+            userData: {...user, relatives}
+        }))
         yield put(actionLoaderOff());
 
     } catch (error) {
@@ -107,4 +121,4 @@ function* sagaDeleteRelative(action: PayloadAction<IRelative>) {
 }
 
 
-export {watchRelative};
+export {watchRelative, sagaLoadRelatives};

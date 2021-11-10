@@ -254,7 +254,6 @@ const styles = createStyles({
         flexDirection:'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        zIndex: 1
     },
 
     dotsMenu:{
@@ -263,8 +262,7 @@ const styles = createStyles({
         padding: '1.5rem',
         borderRadius: 5,
         backgroundColor: '$colorWhite',
-        right: 0,
-        bottom:25,
+        right: 12,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -273,12 +271,18 @@ const styles = createStyles({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
+        // zIndex: 10000
     },
-    dotsMenuShiftDown:{bottom: -135},
     noteComponentDotsLineWrapper: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        paddingVertical: 6,
+        paddingHorizontal: 12,
+    },
+    noteComponentDotsLineText: {
+        fontSize: '1.1rem',
+        fontWeight: '600',
     },
     searchLineContainer:{
         backgroundColor:'$colorWhite',
@@ -287,6 +291,10 @@ const styles = createStyles({
         alignItems: 'center',
         paddingRight: 10
     },
-    searchLine:{width: '100%'}
+    searchLine:{width: '100%'},
+    loaderWrapper:{
+        marginRight: '1rem',
+        backgroundColor: 'red'
+    }
 });
 export default styles;

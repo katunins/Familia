@@ -22,7 +22,7 @@ const HelloScreen = () => {
   useEffect(ArrowShift, []);
   return (
     <ImageBackground
-      source={require("../../ui/images/photocamera.jpg")}
+      source={require("../../ui/images/photocamera_.jpg")}
       resizeMode="cover"
       style={[styles.backgroundImageContainer, globalStyles.container]}>
       <View style={styles.bigLogo}>

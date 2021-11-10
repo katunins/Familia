@@ -5,13 +5,12 @@ import styles from "./styles";
 import CameraIcon from "../../ui/svg/cameraIcon";
 import GalleryIcon from "../../ui/svg/galeryIcon";
 import globalStyles from "../../styles/styles";
-import ImagePicker from "react-native-image-crop-picker";
-import {IImageUri, INoteData} from "../../interfaces/store";
+import {INoteData} from "../../interfaces/store";
 import {NavigationScreenProp} from "react-navigation";
 import NoteImageComponent from "../../components/noteImage";
-import {imagePickerDefaultOptions} from "../../config";
 import {Image} from 'react-native-image-crop-picker'
 import ImageLoader from "../../helpers/imageLoader";
+import {isServerUri} from "../../helpers/utils";
 
 export interface INoteImagesProps {
     newImages: Image[]
@@ -30,34 +29,29 @@ interface IProps {
 const ImagesScreen = ({navigation, note, setNote, imagesProps}: IProps) => {
 
     const {newImages, setNewImages, deleteImages, setDeleteImages} = imagesProps
-    const {loadImages, loadCamera} = ImageLoader({newImages, setNewImages})
+    const {loadImages, loadCamera} = ImageLoader({setNewImage: (image: Image) => setNewImages([...newImages, image])})
 
-    const deleteImage = ({uri, local}:IImageUri) => {
-        if (local) {
+    const deleteImage = (uri: string) => {
+        // if (isServerUri(uri)) {
+        //     setDeleteImages([...deleteImages, uri])
+        //     setNote({...note, images: note.images.filter(item => item !== uri)})
+        // } else {
             setNewImages(newImages.filter(item => item.path !== uri))
-        } else {
-            setDeleteImages([...deleteImages, uri])
-            setNote({...note, images: note.images.filter(item => item !== uri)})
-        }
+        // }
     }
 
     const nextStep = () => {
         navigation.navigate('NewNoteDescription')
     }
-    const newImagesStack = newImages.map(item => {
-        return {uri: item.path, local: true}
-    })
-    const noteImagesStack = note.images.map(item => {
-        return {uri: item}
-    })
 
     return (
         <>
             <FlatList
-                data={[...newImagesStack, ...noteImagesStack]}
+                data={[...newImages.map(item => item.path), ...note.images]}
                 renderItem={({item, index}) => <NoteImageComponent
-                        eraseCallback={() => deleteImage(item)}
-                        imageUri={item} key={index}/>}
+                    eraseCallback={() => deleteImage(item)}
+                    uri={item}
+                    key={index}/>}
                 ItemSeparatorComponent={() => <View style={styles.separator}/>}
             />
             <View style={styles.container}>

@@ -83,20 +83,20 @@ function* _sagaResponseHeader(response: Response) {
 }
 
 interface ISagaNewUserPic {
-    userData: IServerUser | IServerRelative
+    userPic: string
     newImage?: Image
 }
 
-function* _sagaNewUserPic({userData, newImage}: ISagaNewUserPic) {
-    if (!newImage) return userData
+function* _sagaNewUserPic({userPic, newImage}: ISagaNewUserPic) {
+    if (!newImage) return userPic
     const files = [{
         uri: newImage.path,
         type: newImage.mime,
         name: newImage.filename,
     }]
-    const filesToDelete = userData.userPic === '' ? [] : [userData.userPic]
-    const uploadResponse = yield call(uploadSaga, {files, filesToDelete})
-    return {...userData, userPic: uploadResponse[0].path}
+    const filesToDelete = userPic === '' ? [] : [userPic]
+    const uploadResponse: IUploadResponseSaga = yield call(uploadSaga, {files, filesToDelete})
+    return uploadResponse[0].thumbnail
 }
 
 interface ISagaNewPostImages {
@@ -105,16 +105,20 @@ interface ISagaNewPostImages {
 }
 
 function* _sagaUpdateNotesImages({newImages = [], deleteImages = []}: ISagaNewPostImages) {
-    if ((newImages.length + deleteImages.length) === 0) return []
-    const files = newImages.map(newImage => {
-        return {
-            uri: newImage.path,
-            type: newImage.mime,
-            name: newImage.filename,
-        }
-    })
-    const uploadResponse = yield call(uploadSaga, {files, filesToDelete: deleteImages})
-    return uploadResponse
+    try {
+        if ((newImages.length + deleteImages.length) === 0) return []
+        const files = newImages.map(newImage => {
+            return {
+                uri: newImage.path,
+                type: newImage.mime,
+                name: newImage.filename,
+            }
+        })
+        const uploadResponse: IUploadResponseSaga = yield call(uploadSaga, {files, filesToDelete: deleteImages})
+        return uploadResponse.map(item=>item.thumbnail)
+    } catch (error) {
+        yield call(errorSaga, error)
+    }
 }
 
 export interface IServerImage {
@@ -126,6 +130,12 @@ export interface IServerImage {
 export interface IUploadSaga {
     files: IServerImage[],
     filesToDelete?: string[]
+}
+
+export interface IUploadResponseSaga extends Array<{
+    thumbnail: string,
+    hd: string
+}> {
 }
 
 function* uploadSaga({files, filesToDelete = []}: IUploadSaga) {

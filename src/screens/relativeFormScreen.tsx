@@ -1,11 +1,11 @@
 import React from 'react';
 import {ScrollView} from 'react-native';
-import {IRelative, IRelativeTypes, IUser} from '../interfaces/store';
+import {IRelative, IRelativeTypes} from '../interfaces/store';
 import {useDispatch, useSelector} from 'react-redux';
-import {actionNewRelative, actionUpdateRelative} from '../store/slice/relatives.slice';
+import {actionAddRelative, actionUpdateRelative, updateRelative} from '../store/slice/relatives.slice';
 import {NativeStackScreenProps} from "react-native-screens/native-stack";
 import {RootStackParamList} from "../interfaces/navigation";
-import {getRelativeType} from "../helpers/utils";
+import {getRelativeType, idGenerator} from "../helpers/utils";
 import {userSelector} from "../store/selectors";
 import RelativeComponent from "../components/relativeComponent";
 import {Image} from "react-native-image-crop-picker";
@@ -38,15 +38,20 @@ const RelativeFormScreen: React.FunctionComponent<IProps> =
          */
 
         const saveCallback = ({relativeData, type, callBack, newImage}: ISaveRelativeCallback) => {
+            // @ts-ignore
+            navigation.navigate('RelativeListScreen')
             const data = {
                 relativeData,
                 type,
                 newImage,
                 callBack: () => {
-                    if (callBack) callBack()
-                    navigation.goBack()//редактирование пользователя
+                    callBack && callBack()
                 }
             }
+            dispatch(relativeData._id ?
+                actionUpdateRelative(data) : actionAddRelative(data)
+            );
+
             if (relativeData._id !== '') {
                 const relativeIndex = user.relatives.find(item => item.id === relativeData._id)
                 if (relativeIndex?.type !== type) {
@@ -59,15 +64,13 @@ const RelativeFormScreen: React.FunctionComponent<IProps> =
                     }))
                 }
             }
-            dispatch(relativeData._id ?
-                actionUpdateRelative(data) : actionNewRelative(data)
-            );
 
         };
 
         const cancelCallback = () => {
             navigation.goBack()
         }
+
         return (
             <ScrollView>
                 <RelativeComponent

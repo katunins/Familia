@@ -21,6 +21,6 @@ const appReducers = combineReducers({
   relatives,
   user,
   notes,
-  token
+  token,
 });
 export const appPersistReducer = persistReducer(appPersist, appReducers);

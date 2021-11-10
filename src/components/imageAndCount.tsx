@@ -2,22 +2,20 @@ import React from "react";
 import {Pressable, Text, View} from "react-native";
 import styles from "./styles";
 import AutoHeightImageComponent from "./autoHeightImage";
-import env from "../config";
-import {IImageUri} from "../interfaces/store";
 
 interface IProps {
     width?: number,
     callBack?: () => void
-    imageUriArr:IImageUri[]
+    uriArr: string[]
 }
 
-const ImageAndCountComponent: React.FunctionComponent<IProps> = ({imageUriArr, callBack}) => {
+const ImageAndCountComponent: React.FunctionComponent<IProps> = ({uriArr, callBack}) => {
     return (
         <View>
-            <AutoHeightImageComponent imageUri={imageUriArr[0]}/>
-            {imageUriArr.length > 1 &&
+            <AutoHeightImageComponent uri={uriArr[0]}/>
+            {uriArr.length > 1 &&
             <Pressable onPress={callBack}>
-                <Text style={styles.imageAndCountLabel}>{`+ ${imageUriArr.length - 1}`}</Text>
+                <Text style={styles.imageAndCountLabel}>{`+ ${uriArr.length - 1}`}</Text>
             </Pressable>}
         </View>
     )

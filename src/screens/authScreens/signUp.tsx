@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import { Text, TextInput, View} from 'react-native';
 import globalStyles from '../../styles/styles';
 import {useDispatch} from 'react-redux';
-import {actionSignUp} from '../../store/slice/firebase.slice';
 import ButtonComponent from "../../components/button";
 import {setModal} from "../../store/slice/modal.slice";
+import {actionSignUp} from "../../store/slice/user.slice";
 
 interface IProps {
 }

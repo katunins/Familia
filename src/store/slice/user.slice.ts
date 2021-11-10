@@ -1,39 +1,53 @@
 import {createAction, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {IRelative, IRelativeIndex, IUser} from '../../interfaces/store';
+import {IUser} from '../../interfaces/store';
 import {ISaveUserCallback} from "../../screens/userScreen";
+import {ILoginData, ISignUpData} from "../../interfaces";
 
 export const actionUserUpdate = createAction(
-  'user/update',
-  function prepare(payload: ISaveUserCallback) {
-    return {
-      payload,
-    };
-  },
+    '_user/update',
+    function prepare(payload: ISaveUserCallback) {
+        return {
+            payload,
+        };
+    },
 );
 
-// export const actionUserRelativeUpdate = createAction(
-//     'user/updateRelative',
-//     function prepare(payload: IRelativeIndex) {
-//       return {
-//         payload,
-//       };
-//     },
-// );
+export const actionSignIn = createAction(
+    '_actionSignIn',
+    function prepare(payload: { data: ILoginData }) {
+        return {
+            payload,
+        };
+    },
+);
+
+export const actionSignUp = createAction(
+    '_actionSignUp',
+    function prepare(payload: { data: ISignUpData }) {
+        return {
+            payload,
+        };
+    },
+);
+
+export const actionLogOut = createAction(
+    '_actionLogOut'
+);
 
 const initialState = {};
 
 const userSlice = createSlice({
-  name: 'user',
-  initialState,
-  reducers: {
-    actionSetUser: (state, action: PayloadAction<IUser>) => {
-      return action.payload;
+    name: 'user',
+    initialState,
+    reducers: {
+        setUser: (state, action: PayloadAction<IUser>) => {
+            return action.payload;
+        },
+        resetUser: () => {
+            return initialState;
+        }
     },
-    actionResetUser: () => {
-      return initialState;
-    },
-  },
 });
 
-export const {actionResetUser, actionSetUser} = userSlice.actions;
+export const {setUser, resetUser} = userSlice.actions;
 export default userSlice.reducer;

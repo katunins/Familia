@@ -31,22 +31,17 @@ export const initialRelative: IServerRelative = {
         shareId: []
     }
 };
-export const initialNote: INoteData = {
+export const initialNote: IServerNote = {
     images: [],
     title: '',
     description: '',
     relatives: [],
+    creator:'',
 }
 
 export const defaultUserPic = 'https://alpinabook.ru/resize/1100x1600/upload/iblock/6f9/6f9f5be9fb84ad912ca92b5a0839d9ef.jpg'
 export const defaultRelativeUserPic = 'https://alpinabook.ru/resize/1100x1600/upload/iblock/6f9/6f9f5be9fb84ad912ca92b5a0839d9ef.jpg'
-export const imagePickerDefaultOptions = {
-    freeStyleCropEnabled: true,
-    forceJpg: true,
-    cropping: true,
-    width: 2000,
-    height: 2000
-}
+
 export const relativeTypes = {
     daughter: 'Дочь',
     son: 'Сын',

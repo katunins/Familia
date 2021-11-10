@@ -1,40 +1,36 @@
 import * as Eff from 'redux-saga/effects';
-import {call, put, select} from 'redux-saga/effects';
-import FirebaseServices from '../../api/firebase';
-import {IRelativeIndex, IRelativeTypes, IUser} from '../../interfaces/store';
+import {call, put} from 'redux-saga/effects';
 import {actionLoaderOff, actionLoaderOn} from '../slice/loader.slice';
 import {PayloadAction} from '@reduxjs/toolkit';
-import {actionSetUser} from '../slice/user.slice';
-import {needToUpload, splitDataAndId} from '../../helpers/utils';
-import {_sagaNewUserPic, requestSaga, uploadSaga} from "./network.saga";
+import {splitDataAndId} from '../../helpers/utils';
+import {_sagaNewUserPic, requestSaga} from "./network.saga";
 import {errorSaga} from "./error.saga";
 import {ISaveUserCallback} from "../../screens/userScreen";
-import {userSelector} from "../selectors";
+import {actionUserUpdate, setUser} from "../slice/user.slice";
 
 const takeLatest: any = Eff.takeLatest;
 
 function* watchUser() {
-    yield takeLatest('user/update', sagaUserUpdate);
+    yield takeLatest(actionUserUpdate.type, sagaUserUpdate);
 }
 
 function* sagaUserUpdate(action: PayloadAction<ISaveUserCallback>) {
     try {
         yield put(actionLoaderOn());
-        const {callBack, newImage} = action.payload
-        const {id, data} = yield splitDataAndId(action.payload.userData)
-
-        const requestData = yield call(_sagaNewUserPic, {newImage, userData: data})
+        const {callBack, userData, newImage} = action.payload
+        yield put(setUser(userData));
+        const {id, data} = yield splitDataAndId(userData)
+        let newUserData = Object.assign({}, data)
+        newUserData.userPic = yield call(_sagaNewUserPic, {newImage, userPic: userData.userPic})
         const responseData = yield call(requestSaga, {
             endPoint: 'users',
             method: 'PATCH',
-            data: {id, userData: requestData}
+            data: {id, userData: newUserData}
         })
-        if (responseData) {
-            const newUserData = {...requestData, _id: id}
-            yield put(actionSetUser({...requestData, _id: id}));
-            if (callBack) callBack(newUserData)
-        }
-
+        if (!responseData) return
+        newUserData._id = id
+        yield put(setUser(newUserData));
+        callBack && callBack(newUserData)
         yield put(actionLoaderOff());
     } catch
         (error) {

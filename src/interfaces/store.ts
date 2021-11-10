@@ -67,11 +67,16 @@ export interface INoteData {
 
 }
 
+export interface IServerTimeStamps {
+    createdAt?: string
+    updatedAt?: string
+}
+
 export interface IServerNote extends INoteData {
     creator: string
 }
 
-export interface INote extends IServerNote, IServerId {
+export interface INote extends IServerNote, IServerId, IServerTimeStamps {
 }
 
 interface IStore extends Action {
@@ -86,19 +91,4 @@ interface IStore extends Action {
     };
 }
 
-export interface IImagePicker {
-    filename: string
-    height: number
-    mime: string
-    path: string
-    size: number
-    sourceURL: string
-    width: number
-}
-
 export default IStore;
-
-export interface IImageUri {
-    uri: string,
-    local?: boolean
-}

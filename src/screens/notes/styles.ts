@@ -11,7 +11,7 @@ const styles = createStyles({
     // flex:1,
     paddingHorizontal: marginHorizontal,
     justifyContent: 'center',
-    backgroundColor: '$colorWhite'
+    // backgroundColor: '$colorWhite'
   },
   separator: {
     height:10

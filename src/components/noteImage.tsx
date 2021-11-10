@@ -3,18 +3,17 @@ import {Pressable} from "react-native";
 import styles from "./styles";
 import DeleteIcon from "../ui/svg/deleteIcon";
 import AutoHeightImageComponent from "./autoHeightImage";
-import {IImageUri} from "../interfaces/store";
 
 interface IProps {
-    eraseCallback: (imageUri:IImageUri) => void
-    imageUri:IImageUri
+    eraseCallback: (uri:string) => void
+    uri:string
 }
 
-const NoteImageComponent: React.FunctionComponent<IProps> = ({imageUri, eraseCallback}) => {
+const NoteImageComponent: React.FunctionComponent<IProps> = ({uri, eraseCallback}) => {
      return (
         <>
-            <AutoHeightImageComponent imageUri={imageUri}/>
-            <Pressable onPress={() => eraseCallback(imageUri)} style={styles.eraseImageButton}>
+            <AutoHeightImageComponent uri={uri}/>
+            <Pressable onPress={() => eraseCallback(uri)} style={styles.eraseImageButton}>
                 <DeleteIcon/>
             </Pressable>
         </>

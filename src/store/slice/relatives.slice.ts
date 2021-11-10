@@ -1,19 +1,9 @@
 import {createAction, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {IRelative} from '../../interfaces/store';
+import {IRelative, IRelativeIndex} from '../../interfaces/store';
 import {ISaveRelativeCallback} from "../../screens/relativeFormScreen";
 
-
-export const actionNewRelative = createAction(
-    'relatives/newRelative',
-    function prepare(payload: ISaveRelativeCallback) {
-        return {
-            payload,
-        };
-    },
-);
-
 export const actionUpdateRelative = createAction(
-    'relatives/updateRelative',
+    '_relatives/updateRelative',
     function prepare(payload: ISaveRelativeCallback) {
         return {
             payload,
@@ -21,9 +11,26 @@ export const actionUpdateRelative = createAction(
     },
 );
 
-export const actionToDeleteRelative = createAction(
-    'relatives/deleteRelative',
+export const actionAddRelative = createAction(
+    '_relatives/addRelative',
+    function prepare(payload: ISaveRelativeCallback) {
+        return {
+            payload,
+        };
+    },
+);
+
+export const actionDeleteRelative = createAction(
+    '_relatives/deleteRelative',
     function prepare(payload: IRelative) {
+        return {
+            payload,
+        };
+    },
+);
+
+export const actionLoadRelatives = createAction(
+    '_relatives/load', function prepare(payload: IRelativeIndex[]) {
         return {
             payload,
         };
@@ -35,30 +42,33 @@ const relativesSlice = createSlice({
     name: 'relatives',
     initialState,
     reducers: {
-        actionSetRelatives: (state, action: PayloadAction<IRelative[]>) => {
+        setRelatives: (state, action: PayloadAction<IRelative[]>) => {
             return action.payload;
         },
-        actionAddRelative: (state, action: PayloadAction<IRelative>) => {
+        addRelative: (state, action: PayloadAction<IRelative>) => {
             return [...state, action.payload];
         },
-        actionUpdateStateRelative: (state, action: PayloadAction<IRelative>) => {
+        updateRelative: (state, action: PayloadAction<IRelative>) => {
             return state.map((item => item._id === action.payload._id ? action.payload : item))
-            // return [...state, action.payload];
         },
-        actionDeleteRelative: (state, action: PayloadAction<{ id: string }>) => {
+        updateAndConvertTempRelative: (state, action: PayloadAction<{ newRelative: IRelative, tempId: string }>) => {
+            return state.map((item => item._id === action.payload.tempId ? action.payload.newRelative : item))
+        },
+        deleteRelative: (state, action: PayloadAction<{ id: string }>) => {
             return state.filter(item => item._id !== action.payload.id);
         },
-        actionResetRelatives: () => {
+        resetRelatives: () => {
             return initialState;
         },
     },
 });
 
 export const {
-    actionResetRelatives,
-    actionSetRelatives,
-    actionAddRelative,
-    actionDeleteRelative,
-    actionUpdateStateRelative
+    resetRelatives,
+    setRelatives,
+    addRelative,
+    deleteRelative,
+    updateRelative,
+    updateAndConvertTempRelative
 } = relativesSlice.actions;
 export default relativesSlice.reducer;

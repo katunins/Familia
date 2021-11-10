@@ -4,30 +4,38 @@ import AuthScreen from "../screens/authScreens/auth";
 import SignUpScreen from "../screens/authScreens/signUp";
 import SignInScreen from "../screens/authScreens/signIn";
 import {RootStackParamList} from "../interfaces/navigation";
+import ArrowBackIcon from "../ui/svg/arrowBack";
+import HeaderComponent from "../components/header";
+import LoaderComponent from "../components/loader";
+
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 const LoginStack = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        options={{
-          title: 'Авторизация',
-        }}
-        name="AuthScreen" component={AuthScreen}/>
-      <Stack.Screen
-        options={{
-          title: 'Регистрация',
-        }}
-        name="SignUpScreen" component={SignUpScreen}/>
-      <Stack.Screen
-      options={{
-        title: 'Вход',
-      }}
-      name="SignInScreen" component={SignInScreen}/>
-    </Stack.Navigator>
+    return (
+        <Stack.Navigator>
+            <Stack.Screen
+                options={{
+                    title: 'Авторизация',
+                    headerRight: ()=><LoaderComponent/>
+                }}
+                name="AuthScreen" component={AuthScreen}/>
+            <Stack.Screen
+                options={{
+                    title: 'Регистрация',
+                    headerRight: ()=><LoaderComponent/>
 
-  );
+                }}
+                name="SignUpScreen" component={SignUpScreen}/>
+            <Stack.Screen
+                options={{
+                    title: 'Вход',
+                    headerRight: ()=><LoaderComponent/>
+                }}
+                name="SignInScreen" component={SignInScreen}/>
+        </Stack.Navigator>
+
+    );
 }
 
 export default LoginStack

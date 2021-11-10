@@ -1,22 +1,25 @@
-import {FlatList} from "react-native";
+import {FlatList, Pressable, RefreshControl, Text, View} from "react-native";
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import SeparatorComponent from "../../components/separator";
 import TrashIcon from "../../ui/svg/trashIcon";
 import EditIcon from "../../ui/svg/editIcon";
 import {NativeStackScreenProps} from "react-native-screens/native-stack";
-import {RootStackParamList} from "../../interfaces/navigation";
+import {INavigation, RootStackParamList} from "../../interfaces/navigation";
 import {setModal} from "../../store/slice/modal.slice";
 import {notesSelector, relativesSelector, userSelector} from "../../store/selectors";
 import {INote} from "../../interfaces/store";
-import {actionDeleteNote} from "../../store/slice/notes.slice";
+import {actionDeleteNote, actionLoadNotes} from "../../store/slice/notes.slice";
 import NoteComponent from "../../components/note";
+import globalStyles from "../../styles/styles";
+import styles from "./styles";
 
-interface IProps {
-    navigation: NativeStackScreenProps<RootStackParamList, 'NotesListScreen'>
-    searchText:string
+interface IProps extends INavigation {
+    searchText: string
+    setSearchText: (searchText: string) => void
 }
-const NotesListScreen = ({navigation, searchText}: IProps) => {
+
+const NotesListScreen = ({navigation, searchText, setSearchText}: IProps) => {
     const selectNotes = useSelector(notesSelector)
     const selectUser = useSelector(userSelector)
     const selectRelatives = useSelector(relativesSelector)
@@ -35,6 +38,15 @@ const NotesListScreen = ({navigation, searchText}: IProps) => {
         navigation.navigate('NoteEditScreen', {note: item})
     }
 
+    const addNewNote = () => {
+        // @ts-ignore
+        navigation.navigate('addNoteStack')
+    }
+
+    const onRefresh = () => {
+        dispatch(actionLoadNotes())
+    }
+
     const deleteNote = (note: INote) => {
         dispatch(setModal({
 
@@ -44,10 +56,7 @@ const NotesListScreen = ({navigation, searchText}: IProps) => {
                 {
                     title: 'Удалить',
                     callBack: () => {
-                        dispatch(actionDeleteNote({
-                            note,
-                            callback: () => {}
-                        }))
+                        dispatch(actionDeleteNote({note}))
                     },
                     type: 'invert'
                 },
@@ -62,6 +71,13 @@ const NotesListScreen = ({navigation, searchText}: IProps) => {
             data={selectNotes.filter(item => item.creator === selectUser._id && filterList(item))}
             // @ts-ignore
             listKey={(item, index) => `_key${index.toString()}`}
+            refreshing={true}
+            refreshControl={
+                <RefreshControl
+                    refreshing={false}
+                    onRefresh={onRefresh}
+                />
+            }
             renderItem={({item, index}) =>
                 <NoteComponent
                     item={item}
@@ -81,6 +97,15 @@ const NotesListScreen = ({navigation, searchText}: IProps) => {
                     ]}
                 />}
             ItemSeparatorComponent={SeparatorComponent}
+            ListFooterComponent={
+                <View style={styles.container}>
+                    <Pressable
+                        style={[globalStyles.strokeForm, globalStyles.marginTop, globalStyles.marginBottom]}
+                        onPress={addNewNote}>
+                        <Text>Добавить запись</Text>
+                    </Pressable>
+                </View>
+            }
             keyExtractor={item => item._id}
         />
     );

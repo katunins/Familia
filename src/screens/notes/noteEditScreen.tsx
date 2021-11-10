@@ -5,17 +5,17 @@ import React, {useState} from "react";
 import ButtonComponent from "../../components/button";
 import CameraIcon from "../../ui/svg/cameraIcon";
 import GalleryIcon from "../../ui/svg/galeryIcon";
-import ImagePicker, {Image} from "react-native-image-crop-picker";
+import {Image} from "react-native-image-crop-picker";
 import styles from "./styles";
 import SeparatorComponent from "../../components/separator";
 import globalStyles from "../../styles/styles";
 import {useDispatch, useSelector} from "react-redux";
 import RelativeCheckListElementComponent from "../../components/relativeCheckListElement";
 import {relativesSelector, userSelector} from "../../store/selectors";
-import {IImageUri, INote} from "../../interfaces/store";
-import {imagePickerDefaultOptions, initialNote} from "../../config";
+import {INote} from "../../interfaces/store";
+import {initialNote} from "../../config";
 import NoteImageComponent from "../../components/noteImage";
-import {getRelativeType} from "../../helpers/utils";
+import {getRelativeType, isRelativeChecked, isServerUri} from "../../helpers/utils";
 import ImageLoader from "../../helpers/imageLoader";
 import {actionUpdateNote} from "../../store/slice/notes.slice";
 
@@ -28,60 +28,48 @@ const NoteEditScreen: React.FunctionComponent<IProps> = ({route, navigation}) =>
     const [note, setNote] = useState<INote>(route.params.note)
     const [newImages, setNewImages] = useState<Image[]>([])
     const [deleteImages, setDeleteImages] = useState<string[]>([])
+    const save = () => {
+        navigation.popToTop()
+        dispatch(actionUpdateNote({
+            note,
+            newImages,
+            deleteImages,
+            callback: reset
+        }))
+    }
+    const {loadImages, loadCamera} = ImageLoader({setNewImage: (image: Image) => setNewImages([...newImages, image])})
 
-    const {loadImages, loadCamera} = ImageLoader({newImages, setNewImages})
-
-    const isChecked = (id: string) => note.relatives.find(item => item === id) ? true : false
     const switchCheck = (id: string) => {
-        if (isChecked(id)) {
+        if (isRelativeChecked({id, relatives: note.relatives})) {
             setNote({...note, relatives: note.relatives.filter(item => item !== id)})
         } else {
             setNote({...note, relatives: [...note.relatives, id]})
         }
     }
 
-    const cancel = () => {
-        setNote({...note, ...initialNote})
-        navigation.goBack()
+    const reset = () => {
+        setNote({...initialNote, _id:''})
         setNewImages([])
         setDeleteImages([])
     }
 
-    const disableSaveButton = (newImages.length + deleteImages.length) === 0 && JSON.stringify(note) === JSON.stringify(route.params.note)
-    const save = () => {
-        dispatch(actionUpdateNote({
-            note,
-            newImages,
-            deleteImages,
-            callback: () => {
-                setNote({...note, ...initialNote})
-                setDeleteImages([])
-                navigation.goBack()
-            }
-        }))
-    }
-
-    const deleteImage = ({uri, local}: IImageUri) => {
-        if (local) {
-            setNewImages(newImages.filter(item => item.path !== uri))
-        } else {
+    const deleteImage = (uri: string) => {
+        if (isServerUri(uri)) {
             setDeleteImages([...deleteImages, uri])
             setNote({...note, images: note.images.filter(item => item !== uri)})
+        } else {
+            setNewImages(newImages.filter(item => item.path !== uri))
         }
     }
-    const newImagesStack = newImages.map(item => {
-        return {uri: item.path, local: true}
-    })
-    const noteImagesStack = note.images.map(item => {
-        return {uri: item}
-    })
+
     return (
         <View>
             <FlatList
-                data={[...newImagesStack, ...noteImagesStack]}
+                data={[...newImages.map(item => item.path), ...note.images]}
                 renderItem={(({item, index}) => <NoteImageComponent
                     eraseCallback={() => deleteImage(item)}
-                    imageUri={item} key={index}/>)}
+                    uri={item}
+                    key={index}/>)}
                 ItemSeparatorComponent={() => <View style={styles.separator}/>}
                 ListFooterComponent={
                     <View style={styles.container}>
@@ -114,7 +102,7 @@ const NoteEditScreen: React.FunctionComponent<IProps> = ({route, navigation}) =>
                             renderItem={({item}) =>
                                 <RelativeCheckListElementComponent
                                     item={item}
-                                    checked={isChecked(item._id)}
+                                    checked={isRelativeChecked({id: item._id, relatives: note.relatives})}
                                     callBack={() => {
                                         switchCheck(item._id)
                                     }}
@@ -124,8 +112,11 @@ const NoteEditScreen: React.FunctionComponent<IProps> = ({route, navigation}) =>
                         />
                         <View style={globalStyles.marginLine}>
                             <ButtonComponent title={'Сохранить'} callBack={save} type={'invert'}
-                                             disabled={disableSaveButton}/>
-                            <ButtonComponent title={'Отменить'} callBack={cancel}/>
+                                             disabled={(newImages.length + deleteImages.length) === 0 && JSON.stringify(note) === JSON.stringify(route.params.note)}/>
+                            <ButtonComponent title={'Отменить'} callBack={()=> {
+                                reset()
+                                navigation.popToTop()
+                            }}/>
                         </View>
                     </View>
                 }

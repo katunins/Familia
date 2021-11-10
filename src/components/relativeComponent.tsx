@@ -1,21 +1,20 @@
 import React, {useState} from 'react';
-import {Keyboard, KeyboardAvoidingView, Platform, Pressable, Text, TouchableWithoutFeedback, View} from 'react-native';
+import {View} from 'react-native';
 import globalStyles from '../styles/styles';
 import EditPersonalComponent from './editComponent';
 import CalendarComponent from './calendarComponent';
 import CloudContainer from './cloudContainer';
-import {IRelative, IRelativeTypes, IUser} from '../interfaces/store';
-import ImagePicker, {Image} from 'react-native-image-crop-picker';
+import {IRelative, IRelativeTypes} from '../interfaces/store';
+import {Image} from 'react-native-image-crop-picker';
 import UserPicComponent from './userPicComponent';
-import {useDispatch} from 'react-redux';
 import RelativeTypesListComponent from './relativeTypesListComponent';
 import {useFocusEffect} from "@react-navigation/native";
 import ButtonComponent from "./button";
 import {ISaveRelativeCallback} from "../screens/relativeFormScreen";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
-import {setModal} from "../store/slice/modal.slice";
-import config, {defaultRelativeUserPic, defaultUserPic, imagePickerDefaultOptions} from "../config";
 import ImageLoader from "../helpers/imageLoader";
+import {idGenerator} from "../helpers/utils";
+import {defaultUserPic} from "../config";
 
 interface IProps {
     initialRelative: IRelative;
@@ -43,85 +42,68 @@ const RelativeComponent: React.FunctionComponent<IProps> =
          saveCallback,
          relativeType,
          defaultEditMode = false,
-         cancelCallback
+        cancelCallback
      }) => {
 
         const [editMode, setEditMode] = useState(defaultEditMode);
         const [relative, setRelative] = useState(initialRelative);
         const [type, setType] = useState(relativeType);
-        const [newImages, setNewImages] = useState<Image[]>([]);
+        const [newImage, setNewImage] = useState<Image>();
 
-        const dispatch = useDispatch();
-
+        // const dispatch = useDispatch();
 
         const saveButton = () => {
             if (!validate()) return false;
-            if (JSON.stringify(initialRelative) === JSON.stringify(relative) && relativeType === type && newImages.length === 0) return false
+            setEditMode(false)
             saveCallback({
                 relativeData: relative,
                 type,
-                newImage: newImages[0],
-                callBack: () => {
-                    resetState()
-                }
+                newImage,
+                callBack: reset,
             });
         };
 
-        const resetState = () => {
-            setNewImages([])
+        const cancelButton = () => {
+            setEditMode(false);
+            cancelCallback && cancelCallback()
+        }
+        const reset = () => {
+            setNewImage(undefined)
+            setRelative(initialRelative)
             setEditMode(false)
         }
-
-
-        const cancelButton = () => {
-            resetState()
-            setEditMode(false);
-            if (cancelCallback) cancelCallback()
-        }
-
-
-        const editButton = () => {
-            setEditMode(true);
-        };
-        const {loadImages} = ImageLoader({newImages, setNewImages})
+        const {loadImages} = ImageLoader({setNewImage})
 
         const validate = () => {
             if (relative.name.length < 2) {
-                dispatch(setModal({
-                    title: 'Внимание!',
-                    bodyText: 'Проверьте имя!',
-                    buttons: [
-                        {
-                            title: 'Закрыть',
-                        },
-                    ],
-                }))
+                // dispatch(setModal({
+                //     title: 'Внимание!',
+                //     bodyText: 'Проверьте имя!',
+                //     buttons: [
+                //         {
+                //             title: 'Закрыть',
+                //         },
+                //     ],
+                // }))
                 return false;
             }
 
             return true;
         };
 
-        useFocusEffect(
-            React.useCallback(() => {
-                return () => resetState();
-            }, [])
-        );
+        // useFocusEffect(
+        //     React.useCallback(() => {
+        //         return () => reset
+        //     }, [])
+        // );
         return (
             <KeyboardAwareScrollView style={globalStyles.scrollBottomMargin}>
                 <>
                     <UserPicComponent
-                        imageUri={newImages[0] ? {
-                            uri: newImages[0].path,
-                            local: true
-                        } : relative.userPic === '' ? {
-                            uri: defaultRelativeUserPic,
-                            local: true
-                        } : {uri: relative.userPic}}
+                        uri={newImage?.path || relative.userPic || defaultUserPic}
                         editMode={editMode}
                         imageChangeButton={loadImages}
                     />
-
                     <View style={[globalStyles.paddingWrapper, globalStyles.paddingTop]}>
                         <EditPersonalComponent
                             text={relative.name}
@@ -156,18 +138,9 @@ const RelativeComponent: React.FunctionComponent<IProps> =
                         style={[
                             globalStyles.paddingWrapper, globalStyles.paddingTop
                         ]}>
-                        {editMode ?
-                            <>
-                                {/*{showSaveButton && (*/}
-                                <ButtonComponent title={'Сохранить'} callBack={saveButton} type={'invert'}/>
-                                {/*)}*/}
-                                <ButtonComponent title={'Отменить'} callBack={cancelButton}/>
-                            </>
-                            :
-                            <>
-                                <ButtonComponent title={'Редактировать'} callBack={editButton} type={'invert'}/>
-                            </>
-                        }
+                        <ButtonComponent title={'Сохранить'} callBack={saveButton} type={'invert'}
+                                         disabled={(JSON.stringify(initialRelative) === JSON.stringify(relative) && !newImage && type === relativeType) || !editMode}/>
+                        <ButtonComponent title={'Отменить'} callBack={cancelButton}/>
                     </View>
                 </>
             </KeyboardAwareScrollView>

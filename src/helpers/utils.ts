@@ -2,7 +2,7 @@ import {rem} from '../styles/remStyles';
 import {
     INote,
     IRelative,
-    IRelativeIndex, IUser,
+    IRelativeIndex, IServerNote, IUser,
 } from '../interfaces/store';
 import FirebaseServices from '../api/firebase';
 import storage from '@react-native-firebase/storage';
@@ -55,16 +55,28 @@ export interface IGetRelativeUri {
  * @param id
  */
 export const getRelativeUri = ({selectRelatives, id}: IGetRelativeUri) => {
-    const uri = selectRelatives.find(item => item._id === id)?.userPic
-    return `${env.endPointUrl}/${uri}`
+    const uri = selectRelatives.find(item => item?._id === id)?.userPic
+    return uri ? `${env.endPointUrl}/${uri}`: undefined
 }
 
 export const splitDataAndId = (data: IUser | IRelative | INote) => {
-    const cloneData = JSON.parse(JSON.stringify(data));
+    const cloneData = Object.assign({}, data)
     const id = data._id
     delete cloneData._id
     return {id, data: cloneData}
 }
+
+export const splitDataIdAndTimeStamps = (data: INote) => {
+    const cloneData = Object.assign({}, data)
+    const id = data._id
+    const {createdAt, updatedAt} = data
+    delete cloneData._id
+    delete cloneData.createdAt
+    delete cloneData.updatedAt
+    return {id, createdAt, updatedAt, data: cloneData}
+}
+
+export const idGenerator = () => `tempID_${Math.random().toString(16).slice(2)}`
 
 export const checkIfHEIC = (item: IServerImage) => {
     const {name} = item
@@ -81,6 +93,18 @@ export const getRelativeType = ({user, relative}: IGetRelativeType) => {
     const type = user.relatives.find(item => item.id === relative._id)?.type
     return type || 'other'
 }
+
+export const uriParse = (uri: string): { uri: string } => {
+    if (uri === '' || !uri) return {uri: ''}
+    if (uri.indexOf('uploads/') > -1) return {uri:`${env.endPointUrl}/${uri}`}
+    return {uri}
+}
+
+export const isServerUri = (uri: string) =>{
+    return uri.indexOf('uploads/') > -1
+}
+
+export const isRelativeChecked = ({id, relatives}:{id: string, relatives:string[]}) => !!relatives.find(item => item === id)
 
 export const marginHorizontal = 12
 export const containerWidth = Dimensions.get('window').width - marginHorizontal * 2

@@ -37,16 +37,11 @@ const DescriptionScreen = ({navigation, note, setNote, newImages}: IProps) => {
         }
         navigation.navigate('NewNoteRelatives')
     }
-    const newImagesStack = newImages.map(item => {
-        return {uri: item.path, local: true}
-    })
-    const noteImagesStack = note.images.map(item => {
-        return {uri: item}
-    })
     return (
-        <KeyboardAwareScrollView>
-            <ImageAndCountComponent imageUriArr={[...newImagesStack, ...noteImagesStack]}
-                                    width={containerWidth} callBack={() => navigation.goBack()}/>
+        <KeyboardAwareScrollView  style={globalStyles.scrollBottomMargin}>
+            <ImageAndCountComponent
+                uriArr={[...newImages.map(item => item.path), ...note.images]}
+                width={containerWidth} callBack={() => navigation.goBack()}/>
             <View style={styles.container}>
                 <View style={globalStyles.marginLine}/>
                 <TextInput
@@ -66,6 +61,7 @@ const DescriptionScreen = ({navigation, note, setNote, newImages}: IProps) => {
                     style={[globalStyles.strokeForm, globalStyles.textAreaForm, globalStyles.buttonMargin, styles.paddingTextArea]}
                 />
                 <ButtonComponent title={'Далее'} callBack={nextStep} type={'invert'}/>
+                <ButtonComponent title={'Назад'} callBack={navigation.goBack}/>
             </View>
         </KeyboardAwareScrollView>
     );

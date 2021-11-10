@@ -3,8 +3,8 @@ import {Pressable, Text, TextInput, View} from 'react-native';
 import styles from './styles';
 import {useDispatch} from 'react-redux';
 import globalStyles from '../../styles/styles';
-import {actionSignIn} from '../../store/slice/firebase.slice';
 import ButtonComponent from "../../components/button";
+import {actionSignIn} from "../../store/slice/user.slice";
 
 interface IProps {}
 

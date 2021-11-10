@@ -10,7 +10,6 @@ import globalStyles from "../styles/styles";
 const Screens = () => {
 
     const selectModal = useSelector(modalSelector);
-    const selectLoader = useSelector(loaderSelector);
 
     return (
         <SafeAreaView style={globalStyles.body}>
@@ -20,7 +19,6 @@ const Screens = () => {
                 bodyText={selectModal.data.bodyText}
                 buttons={selectModal.data.buttons}
             />}
-            {selectLoader && <Loader/>}
         </SafeAreaView>
     );
 };

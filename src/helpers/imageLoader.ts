@@ -1,32 +1,28 @@
-import ImagePicker, {Image} from "react-native-image-crop-picker";
-import {imagePickerDefaultOptions} from "../config";
+import ImagePicker, {Image, Options} from "react-native-image-crop-picker";
 
 interface IProps {
-    newImages: Image[]
-    setNewImages: (newImages: Image[]) => void
+    setNewImage: (newImages: Image) => void
 }
 
-const ImageLoader = ({newImages, setNewImages}: IProps) => {
-
+const ImageLoader = ({setNewImage}: IProps) => {
+    const options: Options = {
+        mediaType: 'photo',
+        freeStyleCropEnabled: true,
+        forceJpg: true,
+        cropping: true,
+        width: 2000,
+        height: 2000
+    }
+    const callBack = (image: Image) => {
+        setNewImage(image)
+    }
     const loadImages = () => {
-        ImagePicker.openPicker({
-            mediaType: 'photo',
-            ...imagePickerDefaultOptions
-        }).then(image => {
-            setNewImages([...newImages, image])
-            // nextStep()
-        }).catch(e => {
+        ImagePicker.openPicker(options).then(callBack).catch(e => {
             console.log(e)
         });
     }
     const loadCamera = () => {
-        ImagePicker.openCamera({
-            mediaType: 'photo',
-            ...imagePickerDefaultOptions
-        }).then(image => {
-            setNewImages([...newImages, image])
-            // nextStep()
-        }).catch(e => {
+        ImagePicker.openCamera(options).then(callBack).catch(e => {
             console.log(e)
         });
     }
