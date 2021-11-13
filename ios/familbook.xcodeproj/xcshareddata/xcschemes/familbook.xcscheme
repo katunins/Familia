@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "grandAlbum.app"
-               BlueprintName = "grandAlbum"
-               ReferencedContainer = "container:grandAlbum.xcodeproj">
+               BuildableName = "familbook.app"
+               BlueprintName = "familbook"
+               ReferencedContainer = "container:familbook.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "grandAlbumTests.xctest"
-               BlueprintName = "grandAlbumTests"
-               ReferencedContainer = "container:grandAlbum.xcodeproj">
+               BuildableName = "familbookTests.xctest"
+               BlueprintName = "familbookTests"
+               ReferencedContainer = "container:familbook.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "grandAlbum.app"
-            BlueprintName = "grandAlbum"
-            ReferencedContainer = "container:grandAlbum.xcodeproj">
+            BuildableName = "familbook.app"
+            BlueprintName = "familbook"
+            ReferencedContainer = "container:familbook.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "grandAlbum.app"
-            BlueprintName = "grandAlbum"
-            ReferencedContainer = "container:grandAlbum.xcodeproj">
+            BuildableName = "familbook.app"
+            BlueprintName = "familbook"
+            ReferencedContainer = "container:familbook.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

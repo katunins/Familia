@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* grandAlbumTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* grandAlbumTests.m */; };
+		00E356F31AD99517003FC87E /* familbookTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* familbookTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		17756F35932F22B13A2F8928 /* libPods-grandAlbum-grandAlbumTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DA40ED428063819B44F3906 /* libPods-grandAlbum-grandAlbumTests.a */; };
+		17756F35932F22B13A2F8928 /* libPods-familbook-familbookTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DA40ED428063819B44F3906 /* libPods-familbook-familbookTests.a */; };
 		7E20DD1B2721703400FD5C96 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7E20DD1A2721703400FD5C96 /* GoogleService-Info.plist */; };
-		7E5535A7273F03B1003C0614 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E5535A6273F03B1003C0614 /* Launch Screen.storyboard */; };
-		8992BD7C7D0FB5ECDAA23DC9 /* libPods-grandAlbum.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BAF395D08EB4A22D6DE08D51 /* libPods-grandAlbum.a */; };
+		7E5535A7273F03B1003C0614 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E5535A6273F03B1003C0614 /* LaunchScreen.storyboard */; };
+		8992BD7C7D0FB5ECDAA23DC9 /* libPods-familbook.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BAF395D08EB4A22D6DE08D51 /* libPods-familbook.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,28 +23,28 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = grandAlbum;
+			remoteInfo = familbook;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		003720A6BB29D8695A686946 /* Pods-grandAlbum.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-grandAlbum.release.xcconfig"; path = "Target Support Files/Pods-grandAlbum/Pods-grandAlbum.release.xcconfig"; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* grandAlbumTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = grandAlbumTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		003720A6BB29D8695A686946 /* Pods-familbook.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-familbook.release.xcconfig"; path = "Target Support Files/Pods-familbook/Pods-familbook.release.xcconfig"; sourceTree = "<group>"; };
+		00E356EE1AD99517003FC87E /* familbookTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = familbookTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* grandAlbumTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = grandAlbumTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* grandAlbum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = grandAlbum.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = grandAlbum/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = grandAlbum/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = grandAlbum/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = grandAlbum/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = grandAlbum/main.m; sourceTree = "<group>"; };
-		3F1D253B2E612AE29888F5DA /* Pods-grandAlbum-grandAlbumTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-grandAlbum-grandAlbumTests.debug.xcconfig"; path = "Target Support Files/Pods-grandAlbum-grandAlbumTests/Pods-grandAlbum-grandAlbumTests.debug.xcconfig"; sourceTree = "<group>"; };
-		4B62319AC127EAFBB334A61E /* Pods-grandAlbum.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-grandAlbum.debug.xcconfig"; path = "Target Support Files/Pods-grandAlbum/Pods-grandAlbum.debug.xcconfig"; sourceTree = "<group>"; };
-		6DA40ED428063819B44F3906 /* libPods-grandAlbum-grandAlbumTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-grandAlbum-grandAlbumTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356F21AD99517003FC87E /* familbookTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = familbookTests.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* familbook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = familbook.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = familbook/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = familbook/AppDelegate.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = familbook/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = familbook/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = familbook/main.m; sourceTree = "<group>"; };
+		3F1D253B2E612AE29888F5DA /* Pods-familbook-familbookTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-familbook-familbookTests.debug.xcconfig"; path = "Target Support Files/Pods-familbook-familbookTests/Pods-familbook-familbookTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4B62319AC127EAFBB334A61E /* Pods-familbook.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-familbook.debug.xcconfig"; path = "Target Support Files/Pods-familbook/Pods-familbook.debug.xcconfig"; sourceTree = "<group>"; };
+		6DA40ED428063819B44F3906 /* libPods-familbook-familbookTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-familbook-familbookTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E20DD1A2721703400FD5C96 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		7E5535A6273F03B1003C0614 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		BAF395D08EB4A22D6DE08D51 /* libPods-grandAlbum.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-grandAlbum.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E8556440AD1352D96AA2D59A /* Pods-grandAlbum-grandAlbumTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-grandAlbum-grandAlbumTests.release.xcconfig"; path = "Target Support Files/Pods-grandAlbum-grandAlbumTests/Pods-grandAlbum-grandAlbumTests.release.xcconfig"; sourceTree = "<group>"; };
+		7E5535A6273F03B1003C0614 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BAF395D08EB4A22D6DE08D51 /* libPods-familbook.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-familbook.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E8556440AD1352D96AA2D59A /* Pods-familbook-familbookTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-familbook-familbookTests.release.xcconfig"; path = "Target Support Files/Pods-familbook-familbookTests/Pods-familbook-familbookTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -53,7 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17756F35932F22B13A2F8928 /* libPods-grandAlbum-grandAlbumTests.a in Frameworks */,
+				17756F35932F22B13A2F8928 /* libPods-familbook-familbookTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,20 +61,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8992BD7C7D0FB5ECDAA23DC9 /* libPods-grandAlbum.a in Frameworks */,
+				8992BD7C7D0FB5ECDAA23DC9 /* libPods-familbook.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* grandAlbumTests */ = {
+		00E356EF1AD99517003FC87E /* familbookTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* grandAlbumTests.m */,
+				00E356F21AD99517003FC87E /* familbookTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = grandAlbumTests;
+			path = familbookTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -85,7 +85,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* grandAlbum */ = {
+		13B07FAE1A68108700A75B9A /* familbook */ = {
 			isa = PBXGroup;
 			children = (
 				7E20DD1A2721703400FD5C96 /* GoogleService-Info.plist */,
@@ -94,18 +94,18 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				7E5535A6273F03B1003C0614 /* Launch Screen.storyboard */,
+				7E5535A6273F03B1003C0614 /* LaunchScreen.storyboard */,
 			);
-			name = grandAlbum;
+			name = familbook;
 			sourceTree = "<group>";
 		};
 		1F3A558189D332C793A8577F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				4B62319AC127EAFBB334A61E /* Pods-grandAlbum.debug.xcconfig */,
-				003720A6BB29D8695A686946 /* Pods-grandAlbum.release.xcconfig */,
-				3F1D253B2E612AE29888F5DA /* Pods-grandAlbum-grandAlbumTests.debug.xcconfig */,
-				E8556440AD1352D96AA2D59A /* Pods-grandAlbum-grandAlbumTests.release.xcconfig */,
+				4B62319AC127EAFBB334A61E /* Pods-familbook.debug.xcconfig */,
+				003720A6BB29D8695A686946 /* Pods-familbook.release.xcconfig */,
+				3F1D253B2E612AE29888F5DA /* Pods-familbook-familbookTests.debug.xcconfig */,
+				E8556440AD1352D96AA2D59A /* Pods-familbook-familbookTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -114,8 +114,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				BAF395D08EB4A22D6DE08D51 /* libPods-grandAlbum.a */,
-				6DA40ED428063819B44F3906 /* libPods-grandAlbum-grandAlbumTests.a */,
+				BAF395D08EB4A22D6DE08D51 /* libPods-familbook.a */,
+				6DA40ED428063819B44F3906 /* libPods-familbook-familbookTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -130,9 +130,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* grandAlbum */,
+				13B07FAE1A68108700A75B9A /* familbook */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* grandAlbumTests */,
+				00E356EF1AD99517003FC87E /* familbookTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				1F3A558189D332C793A8577F /* Pods */,
@@ -145,8 +145,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* grandAlbum.app */,
-				00E356EE1AD99517003FC87E /* grandAlbumTests.xctest */,
+				13B07F961A680F5B00A75B9A /* familbook.app */,
+				00E356EE1AD99517003FC87E /* familbookTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -154,9 +154,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* grandAlbumTests */ = {
+		00E356ED1AD99517003FC87E /* familbookTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "grandAlbumTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "familbookTests" */;
 			buildPhases = (
 				09DDCF1C65E8AB5D52F220D3 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -170,14 +170,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = grandAlbumTests;
-			productName = grandAlbumTests;
-			productReference = 00E356EE1AD99517003FC87E /* grandAlbumTests.xctest */;
+			name = familbookTests;
+			productName = familbookTests;
+			productReference = 00E356EE1AD99517003FC87E /* familbookTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* grandAlbum */ = {
+		13B07F861A680F5B00A75B9A /* familbook */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "grandAlbum" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "familbook" */;
 			buildPhases = (
 				83921F3981BCE4B52BE91F6F /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -193,9 +193,9 @@
 			);
 			dependencies = (
 			);
-			name = grandAlbum;
-			productName = grandAlbum;
-			productReference = 13B07F961A680F5B00A75B9A /* grandAlbum.app */;
+			name = familbook;
+			productName = familbook;
+			productReference = 13B07F961A680F5B00A75B9A /* familbook.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -215,7 +215,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "grandAlbum" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "familbook" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -228,8 +228,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* grandAlbum */,
-				00E356ED1AD99517003FC87E /* grandAlbumTests */,
+				13B07F861A680F5B00A75B9A /* familbook */,
+				00E356ED1AD99517003FC87E /* familbookTests */,
 			);
 		};
 /* End PBXProject section */
@@ -246,7 +246,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E5535A7273F03B1003C0614 /* Launch Screen.storyboard in Resources */,
+				7E5535A7273F03B1003C0614 /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				7E20DD1B2721703400FD5C96 /* GoogleService-Info.plist in Resources */,
 			);
@@ -284,7 +284,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-grandAlbum-grandAlbumTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-familbook-familbookTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -297,15 +297,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-grandAlbum-grandAlbumTests/Pods-grandAlbum-grandAlbumTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-familbook-familbookTests/Pods-familbook-familbookTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-grandAlbum-grandAlbumTests/Pods-grandAlbum-grandAlbumTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-familbook-familbookTests/Pods-familbook-familbookTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-grandAlbum-grandAlbumTests/Pods-grandAlbum-grandAlbumTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-familbook-familbookTests/Pods-familbook-familbookTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		3FF2FC02CE1D2C91CC0CED26 /* [CP] Embed Pods Frameworks */ = {
@@ -314,15 +314,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-grandAlbum-grandAlbumTests/Pods-grandAlbum-grandAlbumTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-familbook-familbookTests/Pods-familbook-familbookTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-grandAlbum-grandAlbumTests/Pods-grandAlbum-grandAlbumTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-familbook-familbookTests/Pods-familbook-familbookTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-grandAlbum-grandAlbumTests/Pods-grandAlbum-grandAlbumTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-familbook-familbookTests/Pods-familbook-familbookTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		83921F3981BCE4B52BE91F6F /* [CP] Check Pods Manifest.lock */ = {
@@ -340,7 +340,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-grandAlbum-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-familbook-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -353,15 +353,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-grandAlbum/Pods-grandAlbum-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-familbook/Pods-familbook-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-grandAlbum/Pods-grandAlbum-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-familbook/Pods-familbook-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-grandAlbum/Pods-grandAlbum-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-familbook/Pods-familbook-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B85208A41D232908B3155AC0 /* [CP-User] [RNFB] Core Configuration */ = {
@@ -383,15 +383,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-grandAlbum/Pods-grandAlbum-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-familbook/Pods-familbook-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-grandAlbum/Pods-grandAlbum-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-familbook/Pods-familbook-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-grandAlbum/Pods-grandAlbum-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-familbook/Pods-familbook-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -420,7 +420,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* grandAlbumTests.m in Sources */,
+				00E356F31AD99517003FC87E /* familbookTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,7 +438,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* grandAlbum */;
+			target = 13B07F861A680F5B00A75B9A /* familbook */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -446,14 +446,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3F1D253B2E612AE29888F5DA /* Pods-grandAlbum-grandAlbumTests.debug.xcconfig */;
+			baseConfigurationReference = 3F1D253B2E612AE29888F5DA /* Pods-familbook-familbookTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = grandAlbumTests/Info.plist;
+				INFOPLIST_FILE = familbookTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -467,17 +467,17 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/grandAlbum.app/grandAlbum";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/familbook.app/familbook";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E8556440AD1352D96AA2D59A /* Pods-grandAlbum-grandAlbumTests.release.xcconfig */;
+			baseConfigurationReference = E8556440AD1352D96AA2D59A /* Pods-familbook-familbookTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = grandAlbumTests/Info.plist;
+				INFOPLIST_FILE = familbookTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -491,20 +491,20 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/grandAlbum.app/grandAlbum";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/familbook.app/familbook";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4B62319AC127EAFBB334A61E /* Pods-grandAlbum.debug.xcconfig */;
+			baseConfigurationReference = 4B62319AC127EAFBB334A61E /* Pods-familbook.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 539Z2QM2Z6;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = grandAlbum/Info.plist;
+				INFOPLIST_FILE = familbook/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -515,7 +515,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = grandAlbum;
+				PRODUCT_NAME = familbook;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -524,13 +524,13 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 003720A6BB29D8695A686946 /* Pods-grandAlbum.release.xcconfig */;
+			baseConfigurationReference = 003720A6BB29D8695A686946 /* Pods-familbook.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 539Z2QM2Z6;
-				INFOPLIST_FILE = grandAlbum/Info.plist;
+				INFOPLIST_FILE = familbook/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -541,7 +541,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = grandAlbum;
+				PRODUCT_NAME = familbook;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -675,7 +675,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "grandAlbumTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "familbookTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -684,7 +684,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "grandAlbum" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "familbook" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -693,7 +693,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "grandAlbum" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "familbook" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
