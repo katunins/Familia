@@ -9,8 +9,8 @@ import {ILoginData, ISignUpData} from "../../interfaces";
 import {requestSaga} from "./network.saga";
 import {resetToken} from "../slice/token.slice";
 import {initialUser} from "../../config";
-import {actionLoadNotes, resetNotes, setNotes} from "../slice/notes.slice";
-import {actionLogOut, actionSignIn, actionSignUp, resetUser, setUser} from "../slice/user.slice";
+import {actionLoadNotes, resetNotes} from "../slice/notes.slice";
+import {actionCheckAuth, actionLogOut, actionSignIn, actionSignUp, resetUser, setUser} from "../slice/user.slice";
 
 const takeLatest: any = Eff.takeLatest;
 
@@ -18,6 +18,21 @@ function* watchAuth() {
     yield takeLatest(actionSignUp.type, sagaSignUp);
     yield takeLatest(actionSignIn.type, sagaSignIn);
     yield takeLatest(actionLogOut.type, sagaLogOut);
+    yield takeLatest(actionCheckAuth.type, sagaCheckAuth)
+}
+
+function* sagaCheckAuth() {
+    try {
+
+        yield put(actionLoaderOn());
+        const responseData: IUser = yield call(requestSaga, {
+            endPoint: 'auth',
+            method: 'GET',
+        })
+        yield put(actionLoaderOff());
+    } catch (error) {
+        yield call(errorSaga, error)
+    }
 }
 
 function* sagaSignUp(action: PayloadAction<{ data: ISignUpData }>) {

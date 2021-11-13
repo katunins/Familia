@@ -69,8 +69,7 @@ const NotesListScreen = ({navigation, searchText, setSearchText}: IProps) => {
     return (
         <FlatList
             data={selectNotes.filter(item => item.creator === selectUser._id && filterList(item))}
-            // @ts-ignore
-            listKey={(item, index) => `_key${index.toString()}`}
+            listKey={`main`}
             refreshing={true}
             refreshControl={
                 <RefreshControl

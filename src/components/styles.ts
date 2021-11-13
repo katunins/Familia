@@ -59,7 +59,7 @@ const styles = createStyles({
         opacity: 0.6,
         marginHorizontal: 5
     },
-    circleIconsContainer:{
+    circleIconsContainer: {
         flexDirection: 'row',
         position: 'absolute',
         bottom: 15,
@@ -236,9 +236,9 @@ const styles = createStyles({
         bottom: 20,
         right: 20
     },
-    noteComponentText:{
-        color:'$colorDarkGrey',
-        marginVertical:10,
+    noteComponentText: {
+        color: '$colorDarkGrey',
+        marginVertical: 10,
     },
     noteComponentRelativesWrapper: {
         flexDirection: 'row',
@@ -250,19 +250,21 @@ const styles = createStyles({
         marginRight: '0.5rem',
         borderRadius: 10
     },
-    noteComponentDotsWrapper:{
-        flexDirection:'row',
+    noteComponentDotsWrapper: {
+        flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
     },
-
-    dotsMenu:{
-        width: 200,
+    dotsMenuButton: {
+        height: 32, width: 32, alignItems: 'center', justifyContent: 'center'
+    },
+    dotsMenu: {
+        width: '13rem',
         position: 'absolute',
-        padding: '1.5rem',
+        padding: '1rem',
         borderRadius: 5,
         backgroundColor: '$colorWhite',
-        right: 12,
+        right: '3rem',
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -270,8 +272,7 @@ const styles = createStyles({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        elevation: 5,
-        // zIndex: 10000
+        elevation: 5
     },
     noteComponentDotsLineWrapper: {
         flexDirection: 'row',
@@ -284,15 +285,15 @@ const styles = createStyles({
         fontSize: '1.1rem',
         fontWeight: '600',
     },
-    searchLineContainer:{
-        backgroundColor:'$colorWhite',
-        flexDirection:'row',
-        justifyContent:'space-between',
+    searchLineContainer: {
+        backgroundColor: '$colorWhite',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
         paddingRight: 10
     },
-    searchLine:{width: '100%'},
-    loaderWrapper:{
+    searchLine: {width: '100%'},
+    loaderWrapper: {
         marginRight: '1rem',
         backgroundColor: 'red'
     }

@@ -32,12 +32,7 @@ const ImagesScreen = ({navigation, note, setNote, imagesProps}: IProps) => {
     const {loadImages, loadCamera} = ImageLoader({setNewImage: (image: Image) => setNewImages([...newImages, image])})
 
     const deleteImage = (uri: string) => {
-        // if (isServerUri(uri)) {
-        //     setDeleteImages([...deleteImages, uri])
-        //     setNote({...note, images: note.images.filter(item => item !== uri)})
-        // } else {
             setNewImages(newImages.filter(item => item.path !== uri))
-        // }
     }
 
     const nextStep = () => {
@@ -47,7 +42,7 @@ const ImagesScreen = ({navigation, note, setNote, imagesProps}: IProps) => {
     return (
         <>
             <FlatList
-                data={[...newImages.map(item => item.path), ...note.images]}
+                data={[...note.images, ...newImages.map(item => item.path)]}
                 renderItem={({item, index}) => <NoteImageComponent
                     eraseCallback={() => deleteImage(item)}
                     uri={item}

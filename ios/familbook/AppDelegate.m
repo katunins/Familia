@@ -5,6 +5,7 @@
 #import <React/RCTRootView.h>
 
 #import <Firebase.h>
+#import "RNBootSplash.h"
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -38,7 +39,7 @@ static void InitializeFlipper(UIApplication *application) {
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-                                                   moduleName:@"familbook"
+                                                   moduleName:@"Familbook"
                                             initialProperties:nil];
 
   if (@available(iOS 13.0, *)) {
@@ -52,6 +53,9 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  [RNBootSplash initWithStoryboard:@"BootSplash" rootView:rootView];
+  
   return YES;
 }
 

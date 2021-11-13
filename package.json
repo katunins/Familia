@@ -1,5 +1,5 @@
 {
-  "name": "familbook",
+  "name": "Familbook",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -28,6 +28,7 @@
     "@reduxjs/toolkit": "^1.6.1",
     "react": "^17.0.1",
     "react-native": "^0.65.1",
+    "react-native-bootsplash": "^3.2.6",
     "react-native-device-info": "^8.4.0",
     "react-native-extended-stylesheet": "^0.12.0",
     "react-native-fast-image": "^8.3.7",

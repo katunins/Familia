@@ -9,8 +9,8 @@ import {actionSignIn} from "../../store/slice/user.slice";
 interface IProps {}
 
 const SignInScreen: React.FunctionComponent<IProps> = () => {
-  const [email, setEmail] = useState('katunin.pavel@gmail.com');
-  const [password, setPassword] = useState('wellcome');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const dispatch = useDispatch();
 

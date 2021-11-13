@@ -34,6 +34,10 @@ export const actionLogOut = createAction(
     '_actionLogOut'
 );
 
+export const actionCheckAuth = createAction(
+    '_actionCheckAuth'
+);
+
 const initialState = {};
 
 const userSlice = createSlice({
