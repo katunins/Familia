@@ -1,15 +1,14 @@
 import React, {useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {RootStackParamList} from "../interfaces/navigation";
+import {INavigation, RootStackParamList} from "../interfaces/navigation";
 import NotesListScreen from "../screens/notes/notesListScreen";
 import NoteEditScreen from "../screens/notes/noteEditScreen";
 import LoaderComponent from "../components/loader";
-
+import NoteDetailScreen from "../screens/notes/noteDetailScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 const NotesListStack = () => {
-
     const [searchText, setSearchText] = useState('')
     return (
         <Stack.Navigator>
@@ -29,6 +28,13 @@ const NotesListStack = () => {
                 }}
                 name="NoteEditScreen"
                 component={NoteEditScreen}
+            />
+            <Stack.Screen
+                options={{
+                    title:'Детальная страница',
+                }}
+                name="NoteDetailScreen"
+                component={NoteDetailScreen}
             />
         </Stack.Navigator>
     );

@@ -65,7 +65,7 @@ const NoteEditScreen: React.FunctionComponent<IProps> = ({route, navigation}) =>
     return (
         <View>
             <FlatList
-                data={[...newImages.map(item => item.path), ...note.images]}
+                data={[...note.images, ...newImages.map(item => item.path)]}
                 renderItem={(({item, index}) => <NoteImageComponent
                     eraseCallback={() => deleteImage(item)}
                     uri={item}
@@ -77,7 +77,6 @@ const NoteEditScreen: React.FunctionComponent<IProps> = ({route, navigation}) =>
                         <ButtonComponent title={'Камера'} callBack={loadCamera} icon={<CameraIcon/>}/>
                         <ButtonComponent title={'Галерея'} callBack={loadImages} icon={<GalleryIcon/>}/>
                         <View style={globalStyles.marginLine}/>
-                        <SeparatorComponent/>
                         <Text style={styles.centerTitleText}>Измените описание</Text>
                         <TextInput
                             value={note.title}

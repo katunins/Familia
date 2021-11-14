@@ -37,6 +37,8 @@ const DescriptionScreen = ({navigation, note, setNote, newImages}: IProps) => {
         }
         navigation.navigate('NewNoteRelatives')
     }
+    const openDatePicker = () => {}
+
     return (
         <KeyboardAwareScrollView  style={globalStyles.scrollBottomMargin}>
             <ImageAndCountComponent
@@ -44,6 +46,9 @@ const DescriptionScreen = ({navigation, note, setNote, newImages}: IProps) => {
                 width={containerWidth} callBack={() => navigation.goBack()}/>
             <View style={styles.container}>
                 <View style={globalStyles.marginLine}/>
+                <View>
+                    <ButtonComponent title={'Выберете год'} callBack={openDatePicker} />
+                </View>
                 <TextInput
                     value={note.title}
                     autoCorrect={false}

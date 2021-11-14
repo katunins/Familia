@@ -35,6 +35,7 @@ export const initialNote: IServerNote = {
     images: [],
     title: '',
     description: '',
+    date: '',
     relatives: [],
     creator:'',
 }

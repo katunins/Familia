@@ -240,6 +240,10 @@ const styles = createStyles({
         color: '$colorDarkGrey',
         marginVertical: 10,
     },
+    noteComponentDate: {
+        color: '$colorDarkGrey',
+        marginBottom: 6,
+    },
     noteComponentRelativesWrapper: {
         flexDirection: 'row',
         flexWrap: 'wrap',

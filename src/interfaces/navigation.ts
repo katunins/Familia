@@ -17,6 +17,7 @@ export type RootStackParamList = {
     NewNoteRelatives: undefined
     NotesListScreen: undefined
     NoteEditScreen: { note: INote }
+    NoteDetailScreen: { note: INote }
 };
 
 export interface INavigation {

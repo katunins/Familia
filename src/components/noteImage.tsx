@@ -5,17 +5,17 @@ import DeleteIcon from "../ui/svg/deleteIcon";
 import AutoHeightImageComponent from "./autoHeightImage";
 
 interface IProps {
-    eraseCallback: (uri:string) => void
-    uri:string
+    eraseCallback?: (uri: string) => void
+    uri: string
 }
 
 const NoteImageComponent: React.FunctionComponent<IProps> = ({uri, eraseCallback}) => {
-     return (
+    return (
         <>
             <AutoHeightImageComponent uri={uri}/>
-            <Pressable onPress={() => eraseCallback(uri)} style={styles.eraseImageButton}>
+            {eraseCallback && <Pressable onPress={() => eraseCallback(uri)} style={styles.eraseImageButton}>
                 <DeleteIcon/>
-            </Pressable>
+            </Pressable>}
         </>
     )
 }

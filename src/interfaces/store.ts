@@ -64,7 +64,7 @@ export interface INoteData {
     title: string,
     description: string,
     relatives: string[],
-
+    date:string
 }
 
 export interface IServerTimeStamps {

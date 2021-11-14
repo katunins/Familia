@@ -1,35 +1,28 @@
 import {INote, IRelative} from "../interfaces/store";
-import {Text, View} from "react-native";
-import styles from "./styles";
 import React from "react";
 import ImageAndCountComponent from "./imageAndCount";
-import globalStyles from "../styles/styles";
-import DotsMenuComponent, {DotMenuElem} from "./dotsMenu";
-import RelativesBlockComponent from "./relativesBlock";
+import {DotMenuElem} from "./dotsMenu";
+import {INavigation} from "../interfaces/navigation";
+import NoteDataBlockComponent from "./noteDataBlock";
 
-interface IProps {
+interface IProps extends INavigation {
     item: INote,
     index: number
     selectRelatives: IRelative[]
-    dotsMenu: DotMenuElem[]
+    dotsMenu: DotMenuElem[],
 }
 
 
 const NoteComponent: React.FunctionComponent<IProps> =
-    ({item, index, selectRelatives, dotsMenu}) => {
+    ({item, index, selectRelatives, dotsMenu, navigation}) => {
         const {description, images, title, relatives} = item
+        const openDetail = images.length > 1 ? () => {
+            navigation.navigate('notesListStack', {screen: 'NoteDetailScreen', params: {note: item}})
+        } : undefined
         return (
             <>
-                {images.length > 0 && <ImageAndCountComponent uriArr={images}/>}
-                <View style={globalStyles.paddingContainer}>
-                    <View style={styles.noteComponentDotsWrapper}>
-                        <Text style={globalStyles.title}>{title}</Text>
-                        <DotsMenuComponent menuArr={dotsMenu}/>
-
-                    </View>
-                    <Text style={styles.noteComponentText}>{description}</Text>
-                    <RelativesBlockComponent relatives={relatives} selectRelatives={selectRelatives} />
-                </View>
+                {images.length > 0 && <ImageAndCountComponent uriArr={images} callBack={openDetail}/>}
+                <NoteDataBlockComponent note={item} selectRelatives={selectRelatives} dotsMenu={dotsMenu}/>
             </>
         );
     }

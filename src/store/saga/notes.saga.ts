@@ -91,7 +91,7 @@ function* sagaUpdateNote(action: PayloadAction<IActionUpdateNote>) {
         const {id, data} = splitDataIdAndTimeStamps(note)
         let newNote = Object.assign({}, data)
         const uriArr = yield call(_sagaUpdateNotesImages, {newImages, deleteImages})
-        newNote.images = [...uriArr, ...note.images]
+        newNote.images = [...note.images, ...uriArr]
         const responseData = yield call(requestSaga, {
             endPoint: 'notes',
             method: 'PATCH',

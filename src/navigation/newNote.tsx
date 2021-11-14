@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {INavigation, RootStackParamList} from "../interfaces/navigation";
-import ImagesScreen from "../screens/newNotes/imagesScreen";
-import DescriptionScreen from "../screens/newNotes/descriptionScreen";
-import RelativesScreen from "../screens/newNotes/relativesScreen";
+import ImagesScreen from "../screens/newNote/imagesScreen";
+import DescriptionScreen from "../screens/newNote/descriptionScreen";
+import RelativesScreen from "../screens/newNote/relativesScreen";
 import {useSelector} from "react-redux";
 import {relativesSelector} from "../store/selectors";
 import {initialNote} from "../config";

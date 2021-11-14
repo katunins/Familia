@@ -82,6 +82,7 @@ const NotesListScreen = ({navigation, searchText, setSearchText}: IProps) => {
                     item={item}
                     index={index}
                     selectRelatives={selectRelatives}
+                    navigation={navigation}
                     dotsMenu={[
                         {
                             title: 'Изменить',

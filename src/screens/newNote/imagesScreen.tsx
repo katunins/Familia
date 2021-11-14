@@ -10,7 +10,6 @@ import {NavigationScreenProp} from "react-navigation";
 import NoteImageComponent from "../../components/noteImage";
 import {Image} from 'react-native-image-crop-picker'
 import ImageLoader from "../../helpers/imageLoader";
-import {isServerUri} from "../../helpers/utils";
 
 export interface INoteImagesProps {
     newImages: Image[]
