@@ -20,9 +20,9 @@ const RelativeCheckListElementComponent: React.FunctionComponent<IProps> = ({ite
                 {/*@ts-ignore*/}
                 <FastImage source={{uri: `${env.endPointUrl}/${item.userPic}`}} style={globalStyles.miniUserPic}/>
                 <View style={styles.relativeCheckListElementTextWrapper}>
-                    <Text style={globalStyles.bigThinText}>{item.name}</Text>
+                    <Text style={globalStyles.boldText}>{item.name}</Text>
                     {/*@ts-ignore*/}
-                    <Text  style={globalStyles.boldText}>{relativeTypes[type]}</Text>
+                    <Text  style={globalStyles.lightText}>{relativeTypes[type]}</Text>
                 </View>
             </View>
             <CheckIcon checked={checked}/>

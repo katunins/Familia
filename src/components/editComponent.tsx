@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, TextInput, View} from 'react-native';
 import globalStyles from '../styles/styles';
 import styles from './styles';
+import EStyleSheet from "react-native-extended-stylesheet";
 
 interface IEditPersonalComponent {
   text: string;
@@ -20,6 +21,7 @@ const EditPersonalTextComponent: React.FunctionComponent<IEditPersonalComponent>
           value={text}
           onChangeText={setText}
           placeholder={'Имя'}
+          placeholderTextColor={EStyleSheet.value('$colorDarkGrey')}
           autoCompleteType={'name'}
         />
       </View>

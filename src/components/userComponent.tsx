@@ -13,6 +13,8 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {defaultUserPic} from "../config";
 import {ISaveUserCallback} from "../screens/userScreen";
 import ImageLoader from "../helpers/imageLoader";
+import {useDispatch} from "react-redux";
+import {setModal} from "../store/slice/modal.slice";
 
 interface IProps {
     initialUser: IUser
@@ -44,6 +46,8 @@ const UserComponent: React.FunctionComponent<IProps> =
         const [newImage, setNewImage] = useState<Image>();
         const {loadImages} = ImageLoader({setNewImage})
 
+        const dispatch = useDispatch()
+
         const saveButton = () => {
             if (!validate()) return false;
             setEditMode(false)
@@ -67,15 +71,15 @@ const UserComponent: React.FunctionComponent<IProps> =
         }
         const validate = () => {
             if (user.name.length < 2) {
-                // dispatch(setModal({
-                //     title: 'Внимание!',
-                //     bodyText: 'Проверьте имя!',
-                //     buttons: [
-                //         {
-                //             title: 'Закрыть',
-                //         },
-                //     ],
-                // }))
+                dispatch(setModal({
+                    title: 'Внимание!',
+                    bodyText: 'Проверьте имя!',
+                    buttons: [
+                        {
+                            title: 'Закрыть',
+                        },
+                    ],
+                }))
                 return false;
             }
 

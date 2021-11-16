@@ -1,22 +1,18 @@
 import {FlatList, Pressable, RefreshControl, Text, View} from "react-native";
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
-import SeparatorComponent from "../../components/separator";
-import TrashIcon from "../../ui/svg/trashIcon";
-import EditIcon from "../../ui/svg/editIcon";
-import {NativeStackScreenProps} from "react-native-screens/native-stack";
-import {INavigation, RootStackParamList} from "../../interfaces/navigation";
-import {setModal} from "../../store/slice/modal.slice";
+import {INavigation} from "../../interfaces/navigation";
 import {notesSelector, relativesSelector, userSelector} from "../../store/selectors";
 import {INote} from "../../interfaces/store";
-import {actionDeleteNote, actionLoadNotes} from "../../store/slice/notes.slice";
+import {actionLoadNotes} from "../../store/slice/notes.slice";
 import NoteComponent from "../../components/note";
 import globalStyles from "../../styles/styles";
 import styles from "./styles";
 
-interface IProps extends INavigation {
+interface IProps {
     searchText: string
     setSearchText: (searchText: string) => void
+    navigation: INavigation['navigation']
 }
 
 const NotesListScreen = ({navigation, searchText, setSearchText}: IProps) => {
@@ -33,13 +29,7 @@ const NotesListScreen = ({navigation, searchText, setSearchText}: IProps) => {
 
     const dispatch = useDispatch()
 
-    const editNote = (item: INote) => {
-        // @ts-ignore
-        navigation.navigate('NoteEditScreen', {note: item})
-    }
-
     const addNewNote = () => {
-        // @ts-ignore
         navigation.navigate('addNoteStack')
     }
 
@@ -47,27 +37,10 @@ const NotesListScreen = ({navigation, searchText, setSearchText}: IProps) => {
         dispatch(actionLoadNotes())
     }
 
-    const deleteNote = (note: INote) => {
-        dispatch(setModal({
 
-            title: 'Внимание!',
-            bodyText: 'Вы действительно хотите удалить запись?',
-            buttons: [
-                {
-                    title: 'Удалить',
-                    callBack: () => {
-                        dispatch(actionDeleteNote({note}))
-                    },
-                    type: 'invert'
-                },
-                {
-                    title: 'Отменить',
-                },
-            ]
-        }))
-    }
     return (
         <FlatList
+            style={globalStyles.containerColor}
             data={selectNotes.filter(item => item.creator === selectUser._id && filterList(item))}
             listKey={`main`}
             refreshing={true}
@@ -83,20 +56,8 @@ const NotesListScreen = ({navigation, searchText, setSearchText}: IProps) => {
                     index={index}
                     selectRelatives={selectRelatives}
                     navigation={navigation}
-                    dotsMenu={[
-                        {
-                            title: 'Изменить',
-                            callBack: () => editNote(item),
-                            icon: <EditIcon/>
-                        },
-                        {
-                            title: 'Удалить',
-                            callBack: () => deleteNote(item),
-                            icon: <TrashIcon/>
-                        }
-                    ]}
                 />}
-            ItemSeparatorComponent={SeparatorComponent}
+            ItemSeparatorComponent={()=><View style={globalStyles.marginLine}/>}
             ListFooterComponent={
                 <View style={styles.container}>
                     <Pressable

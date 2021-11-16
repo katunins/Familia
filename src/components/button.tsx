@@ -11,20 +11,27 @@ export interface IButtonsProps {
     disabled?: boolean
 }
 
-const ButtonComponent: React.FunctionComponent<IButtonsProps> = ({type, customStyle, title, callBack, icon, disabled}) => {
-
-    return (
-        <TouchableOpacity onPress={callBack} disabled={disabled}
-            // @ts-ignore
-                   style={[styles.buttonWrapper, type ? styles[`buttonType__${type}`] : {}, customStyle || {}, disabled ? styles.disabledButton : {}]} >
-    {
-        icon && <View style={styles.buttonIconWrapper}>{icon}</View>
+const ButtonComponent: React.FunctionComponent<IButtonsProps> =
+    ({
+         type='general',
+         customStyle,
+         title,
+         callBack,
+         icon,
+         disabled
+     }) => {
+        return (
+            <TouchableOpacity onPress={callBack} disabled={disabled}
+                // @ts-ignore
+                              style={[styles.buttonWrapper, type ? styles[`buttonType__${type}`] : {}, customStyle || {}, disabled ? styles.disabledButton : {}]}>
+                {
+                    icon && <View style={styles.buttonIconWrapper}>{icon}</View>
+                }
+                <Text
+                    // @ts-ignore
+                    style={[styles.buttonText, type ? styles[`buttonTextType__${type}`] : {}]}>{title}</Text>
+            </TouchableOpacity>
+        )
     }
-    <Text
-        // @ts-ignore
-        style={[styles.buttonText, type ? styles[`buttonTextType__${type}`] : {}]}>{title}</Text>
-</TouchableOpacity>
-)
-}
 
 export default ButtonComponent

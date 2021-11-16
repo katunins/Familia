@@ -4,6 +4,10 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import styles from './styles';
 import globalStyles from '../styles/styles';
 import CalendarIcon from '../ui/svg/calendarIcon';
+import {resetModal, setModal} from "../store/slice/modal.slice";
+import NoteDateComponent from "./noteDate";
+import {useDispatch} from "react-redux";
+import {stringDateParse} from "../helpers/utils";
 
 interface ICalendarComponent {
   editMode: boolean;
@@ -18,6 +22,8 @@ const CalendarComponent: React.FunctionComponent<ICalendarComponent> = ({
   setDate,
   editDescription,
 }) => {
+
+  const dispatch = useDispatch()
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const hideDatePicker = () => {
@@ -25,8 +31,15 @@ const CalendarComponent: React.FunctionComponent<ICalendarComponent> = ({
   };
 
   const showDatePicker = () => {
-    if (!editMode) return;
-    setDatePickerVisibility(true);
+    if (!editMode) return
+    dispatch(setModal({
+      title: 'Дата события',
+      bodyText: 'Укажите точную дату или только год',
+      component: <NoteDateComponent
+          initialDate={date}
+          saveCallback={(newDate) => setDate(newDate)}
+          closeCallback={() => dispatch(resetModal())}/>
+    }))
   };
 
   const handleDateConfirm = (date: Date) => {
@@ -52,7 +65,7 @@ const CalendarComponent: React.FunctionComponent<ICalendarComponent> = ({
           editMode ? [globalStyles.strokeForm, globalStyles.spaceBetween] : {}
         }>
         <Text style={editMode ? {} : styles.dateText}>
-          {date ? new Date(date).toLocaleDateString() : ''}
+          {date === '' ? 'Дата события' : stringDateParse(date)}
         </Text>
 
         {editMode && <CalendarIcon />}

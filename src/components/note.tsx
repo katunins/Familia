@@ -4,25 +4,73 @@ import ImageAndCountComponent from "./imageAndCount";
 import {DotMenuElem} from "./dotsMenu";
 import {INavigation} from "../interfaces/navigation";
 import NoteDataBlockComponent from "./noteDataBlock";
+import EditIcon from "../ui/svg/editIcon";
+import TrashIcon from "../ui/svg/trashIcon";
+import {setModal} from "../store/slice/modal.slice";
+import {actionDeleteNote} from "../store/slice/notes.slice";
+import {useDispatch} from "react-redux";
 
-interface IProps extends INavigation {
+interface IProps {
     item: INote,
     index: number
     selectRelatives: IRelative[]
-    dotsMenu: DotMenuElem[],
+    navigation: INavigation['navigation']
+    mini?: boolean
 }
 
 
 const NoteComponent: React.FunctionComponent<IProps> =
-    ({item, index, selectRelatives, dotsMenu, navigation}) => {
-        const {description, images, title, relatives} = item
+    ({item, index, selectRelatives, mini = false, navigation}) => {
+
+        const dispatch = useDispatch()
+        const {images} = item
+
         const openDetail = images.length > 1 ? () => {
             navigation.navigate('notesListStack', {screen: 'NoteDetailScreen', params: {note: item}})
         } : undefined
+
+        const editNote = (item: INote) => {
+            // @ts-ignore
+            navigation.navigate('NoteEditScreen', {note: item})
+        }
+        const deleteNote = (note: INote) => {
+            dispatch(setModal({
+
+                title: 'Внимание!',
+                bodyText: 'Вы действительно хотите удалить запись?',
+                buttons: [
+                    {
+                        title: 'Удалить',
+                        callBack: () => {
+                            dispatch(actionDeleteNote({note}))
+                        },
+                        type: 'invert'
+                    },
+                    {
+                        title: 'Отменить',
+                    },
+                ]
+            }))
+        }
+
         return (
             <>
                 {images.length > 0 && <ImageAndCountComponent uriArr={images} callBack={openDetail}/>}
-                <NoteDataBlockComponent note={item} selectRelatives={selectRelatives} dotsMenu={dotsMenu}/>
+                <NoteDataBlockComponent
+                    note={item} selectRelatives={selectRelatives}
+                    mini={mini}
+                    dotsMenu={[
+                        {
+                            title: 'Изменить',
+                            callBack: () => editNote(item),
+                            icon: <EditIcon/>
+                        },
+                        {
+                            title: 'Удалить',
+                            callBack: () => deleteNote(item),
+                            icon: <TrashIcon/>
+                        }
+                    ]}/>
             </>
         );
     }

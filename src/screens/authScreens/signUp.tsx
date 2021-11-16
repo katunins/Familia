@@ -5,6 +5,7 @@ import {useDispatch} from 'react-redux';
 import ButtonComponent from "../../components/button";
 import {setModal} from "../../store/slice/modal.slice";
 import {actionSignUp} from "../../store/slice/user.slice";
+import EStyleSheet from "react-native-extended-stylesheet";
 
 interface IProps {
 }
@@ -74,7 +75,7 @@ const SignUpScreen: React.FunctionComponent<IProps> = () => {
         );
     };
     return (
-        <View style={[globalStyles.verticalCentre, globalStyles.paddingWrapper]}>
+        <View style={[globalStyles.verticalCentre, globalStyles.paddingWrapper, globalStyles.containerColor]}>
             <Text style={globalStyles.title}>Авторизация</Text>
 
             <TextInput
@@ -83,6 +84,7 @@ const SignUpScreen: React.FunctionComponent<IProps> = () => {
                 onChangeText={setName}
                 placeholder={'Имя'}
                 textAlign={'center'}
+                placeholderTextColor={EStyleSheet.value('$colorDarkGrey')}
                 style={[
                     globalStyles.strokeForm,
                     globalStyles.buttonMargin,
@@ -98,6 +100,7 @@ const SignUpScreen: React.FunctionComponent<IProps> = () => {
                 placeholder={'email'}
                 textAlign={'center'}
                 keyboardType={'email-address'}
+                placeholderTextColor={EStyleSheet.value('$colorDarkGrey')}
                 style={[globalStyles.strokeForm, globalStyles.buttonMargin]}
             />
             <TextInput
@@ -108,6 +111,7 @@ const SignUpScreen: React.FunctionComponent<IProps> = () => {
                 placeholder={'Пароль'}
                 textAlign={'center'}
                 secureTextEntry={true}
+                placeholderTextColor={EStyleSheet.value('$colorDarkGrey')}
                 style={[
                     globalStyles.strokeForm,
                     globalStyles.buttonMargin,
@@ -122,6 +126,7 @@ const SignUpScreen: React.FunctionComponent<IProps> = () => {
                 placeholder={'Повторите пароль'}
                 textAlign={'center'}
                 secureTextEntry={true}
+                placeholderTextColor={EStyleSheet.value('$colorDarkGrey')}
                 style={[globalStyles.strokeForm, globalStyles.buttonMargin]}
             />
 

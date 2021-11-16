@@ -14,11 +14,10 @@ const styles = createStyles({
         paddingVertical: '1rem',
         flexDirection: 'row',
         borderWidth: 1,
-        borderColor: '$colorGrey',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 5,
-        marginVertical: '0.3rem'
+        marginVertical: '.3rem'
     },
     disabledButton: {
         opacity: 0.3
@@ -26,9 +25,13 @@ const styles = createStyles({
     buttonText: {
         fontSize: '1rem',
     },
+    buttonType__general: {
+        backgroundColor: '$colorSuperLightGrey',
+        borderColor: '#D3D3D3'
+    },
     buttonType__invert: {
-        borderColor: '$colorGrey',
-        backgroundColor: '$colorGrey'
+        backgroundColor: '$colorDarkGrey',
+        borderColor: '$colorDarkGrey'
     },
     buttonTextType__invert: {
         color: '$colorWhite'
@@ -184,7 +187,7 @@ const styles = createStyles({
         flex: 9
     },
     rightBigComponentColumn: {
-        flex: 3,
+        flex: 4,
         alignItems: 'flex-end'
     },
     typeBigComponent: {
@@ -239,6 +242,10 @@ const styles = createStyles({
     noteComponentText: {
         color: '$colorDarkGrey',
         marginVertical: 10,
+    },
+    noteDate: {
+        color: '$colorDarkGrey',
+        marginBottom: 12,
     },
     noteComponentDate: {
         color: '$colorDarkGrey',

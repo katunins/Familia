@@ -1,10 +1,12 @@
 import {Action} from 'redux';
 import {IButtonsProps} from "../components/button";
+import React from "react";
 
 export interface IModalData {
     title?: string;
-    bodyText: string;
-    buttons: IButtonsProps[];
+    bodyText?: string;
+    component?: React.ReactElement
+    buttons?: IButtonsProps[];
 }
 
 export interface IModal {

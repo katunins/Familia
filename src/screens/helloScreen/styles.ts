@@ -1,9 +1,14 @@
 import { createStyles } from "../../helpers/style";
 
 const styles = createStyles({
-  backgroundImageContainer: {
-    width: "100%",
-    height: "100%",
+  image: {
+    width: '17rem',
+    height: '17rem'
+  },
+  offer:{
+    fontSize: '1.1rem',
+    marginHorizontal: '2rem',
+    marginVertical: '1rem'
   },
   bigLogo: {
     marginTop: 100

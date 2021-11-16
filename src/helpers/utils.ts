@@ -2,14 +2,16 @@ import {rem} from '../styles/remStyles';
 import {
     INote,
     IRelative,
-    IRelativeIndex, IServerNote, IUser,
+    IUser,
 } from '../interfaces/store';
 import FirebaseServices from '../api/firebase';
 import storage from '@react-native-firebase/storage';
 import {Dimensions} from "react-native";
 import {FirebaseFirestoreTypes} from "@react-native-firebase/firestore";
-import env, {relativeTypes} from "../config";
+import env from "../config";
 import {IServerImage} from "../store/saga/network.saga";
+import moment from 'moment'
+import 'moment/locale/ru'
 
 /**
  * Обработка ссылки на загруженную фотографию
@@ -56,7 +58,7 @@ export interface IGetRelativeUri {
  */
 export const getRelativeUri = ({selectRelatives, id}: IGetRelativeUri) => {
     const uri = selectRelatives.find(item => item?._id === id)?.userPic
-    return uri ? `${env.endPointUrl}/${uri}`: undefined
+    return uri ? `${env.endPointUrl}/${uri}` : undefined
 }
 
 export const splitDataAndId = (data: IUser | IRelative | INote) => {
@@ -96,15 +98,23 @@ export const getRelativeType = ({user, relative}: IGetRelativeType) => {
 
 export const uriParse = (uri: string): { uri: string } => {
     if (uri === '' || !uri) return {uri: ''}
-    if (uri.indexOf('uploads/') > -1) return {uri:`${env.endPointUrl}/${uri}`}
+    if (uri.indexOf('uploads/') > -1) return {uri: `${env.endPointUrl}/${uri}`}
     return {uri}
 }
 
-export const isServerUri = (uri: string) =>{
+export const isServerUri = (uri: string) => {
     return uri.indexOf('uploads/') > -1
 }
 
-export const isRelativeChecked = ({id, relatives}:{id: string, relatives:string[]}) => !!relatives.find(item => item === id)
+export const stringDateParse = (stringDate: string) => {
+    moment.locale('ru')
+    return stringDate.length === 4 ? `${stringDate} г.` : moment(stringDate).format('DD MMMM YYYY')
+}
+
+export const isRelativeChecked = ({
+                                      id,
+                                      relatives
+                                  }: { id: string, relatives: string[] }) => !!relatives.find(item => item === id)
 
 export const marginHorizontal = 12
 export const containerWidth = Dimensions.get('window').width - marginHorizontal * 2

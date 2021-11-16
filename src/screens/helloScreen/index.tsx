@@ -1,46 +1,23 @@
-import { View, Text, ImageBackground, Animated, Pressable } from "react-native";
-import React, { useEffect, useRef } from "react";
-import BigLogoIcon from "../../ui/svg/bigLogoIcon";
+import { View, Text } from "react-native";
+import React from "react";
+import FastImage from "react-native-fast-image";
+import globalStyles from "../../styles/styles";
 import styles from "./styles";
 import ArrowDownIcon from "../../ui/svg/arrowDownIcon";
-import globalStyles from "../../styles/styles";
 
 const HelloScreen = () => {
-  const arrowY = useRef(new Animated.Value(0)).current;
-  const maxShift = 20
 
-  const ArrowShift = (shift = maxShift) => {
-    Animated.timing(arrowY, {
-      toValue: shift,
-      duration: 700,
-      useNativeDriver: true,
-    }).start(() => {
-      ArrowShift(shift === maxShift ? 0: maxShift);
-    });
-  };
-
-  useEffect(ArrowShift, []);
   return (
-    <ImageBackground
-      source={require("../../ui/images/photocamera_.jpg")}
-      resizeMode="cover"
-      style={[styles.backgroundImageContainer, globalStyles.container]}>
-      <View style={styles.bigLogo}>
-        <BigLogoIcon />
+      <View style={[globalStyles.containerColor, globalStyles.container, globalStyles.verticalCentre]}>
+        <Text style={globalStyles.title}>Familbook</Text>
+        <FastImage style={styles.image} source={require("../../ui/images/retroCamera.jpg")} resizeMode={'contain'}/>
+         <Text style={styles.offer}>Отсканируйте фотографии</Text>
+          <Text style={styles.offer}>Отметьте родтсвенников</Text>
+          <Text style={styles.offer}>Поделитесь с семьей</Text>
+        <View style={styles.introTextWrapper}>
+            <ArrowDownIcon />
+        </View>
       </View>
-      <View style={styles.introTextWrapper}>
-        <Text style={styles.introText}>
-          {"Отсканируйте фотографии из семейного альбома"}
-        </Text>
-        <Animated.View style={{
-          transform: [
-            { translateY: arrowY }
-          ]
-        }}>
-          <ArrowDownIcon />
-        </Animated.View>
-      </View>
-    </ImageBackground>
   );
 };
 

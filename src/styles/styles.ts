@@ -21,9 +21,8 @@ const globalStyles = createStyles({
     },
     body: {width: '100%', flex: 1},
     boldText: {fontWeight: '500'},
-    bigThinText:{
-        fontSize: '1.3rem',
-        fontWeight: '200',
+    lightText: {
+        color: '$colorDarkGrey'
     },
     paddingWrapper: {
         textAlign: 'left',
@@ -38,6 +37,9 @@ const globalStyles = createStyles({
     },
     paddingContainer:{
         padding: '1rem'
+    },
+    row: {
+        flexDirection: 'row',
     },
     rowSpaceBetween:{
         flexDirection: 'row',
@@ -104,15 +106,19 @@ const globalStyles = createStyles({
     container: {
         alignItems: 'center',
         width: '100%',
+        flex: 1
+    },
+    containerColor: {
+        backgroundColor: '$colorWhite'
     },
     textInput: {
+        width: '100%',
         height: 48,
         fontSize: '1rem',
         padding: '1rem',
         borderRadius: 5,
         borderWidth: 1,
         borderColor: '$colorGrey',
-        width: '100%',
     },
     miniUserPic: {
         width: '3rem',

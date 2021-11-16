@@ -1,27 +1,25 @@
 import {INote, IRelative, IServerRelative} from "./store";
 import {NativeStackNavigationProp} from "react-native-screens/native-stack";
-import {RouteProp} from "@react-navigation/native";
+import {NavigatorScreenParams, RouteProp} from "@react-navigation/native";
 import {initialRelative} from "../config";
 
 export type RootStackParamList = {
     UserScreen: undefined;
     RelativeListScreen: undefined
-    RelativeScreen: undefined
+    RelativeScreen: {relative: IRelative}
     RelativeFormScreen: { relativeData: IRelative }
     AuthScreen: undefined
     SignUpScreen: undefined
     SignInScreen: undefined
-    NewNotesStack: undefined
-    NewNoteImages: undefined
-    NewNoteDescription: undefined
-    NewNoteRelatives: undefined
     NotesListScreen: undefined
     NoteEditScreen: { note: INote }
     NoteDetailScreen: { note: INote }
+    AddNoteStepOne: undefined
+    AddNoteStepSecond: undefined
 };
 
 export interface INavigation {
-    navigation: NativeStackNavigationProp<RootStackParamList>;
+    navigation: NativeStackNavigationProp<RootStackParamList, 'RelativeScreen'>;
     route: RouteProp<RootStackParamList>
 }
 

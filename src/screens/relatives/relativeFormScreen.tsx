@@ -1,15 +1,15 @@
 import React from 'react';
 import {ScrollView} from 'react-native';
-import {IRelative, IRelativeTypes} from '../interfaces/store';
+import {IRelative, IRelativeTypes} from '../../interfaces/store';
 import {useDispatch, useSelector} from 'react-redux';
-import {actionAddRelative, actionUpdateRelative, updateRelative} from '../store/slice/relatives.slice';
+import {actionAddRelative, actionUpdateRelative, updateRelative} from '../../store/slice/relatives.slice';
 import {NativeStackScreenProps} from "react-native-screens/native-stack";
-import {RootStackParamList} from "../interfaces/navigation";
-import {getRelativeType, idGenerator} from "../helpers/utils";
-import {userSelector} from "../store/selectors";
-import RelativeComponent from "../components/relativeComponent";
+import {RootStackParamList} from "../../interfaces/navigation";
+import {getRelativeType, idGenerator} from "../../helpers/utils";
+import {userSelector} from "../../store/selectors";
+import RelativeComponent from "../../components/relativeComponent";
 import {Image} from "react-native-image-crop-picker";
-import {actionUserUpdate} from "../store/slice/user.slice";
+import {actionUserUpdate} from "../../store/slice/user.slice";
 
 export interface ISaveRelativeCallback extends IRelativeTypes {
     relativeData: IRelative;

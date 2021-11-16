@@ -1,11 +1,10 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import RelativeFormScreen from "../screens/relativeFormScreen";
-import RelativeListScreen from "../screens/relativeListScreen";
+import RelativeFormScreen from "../screens/relatives/relativeFormScreen";
+import RelativeListScreen from "../screens/relatives/relativeListScreen";
 import {RootStackParamList} from "../interfaces/navigation";
-import HeaderComponent from "../components/header";
-import ArrowBackIcon from "../ui/svg/arrowBack";
 import LoaderComponent from "../components/loader";
+import RelativeScreen from "../screens/relatives/relativeScreen";
 
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -25,6 +24,13 @@ const RelativeStack = () => {
                 component={RelativeFormScreen}
                 options={{
                     title: 'Редактирование родственника',
+                    headerRight: ()=><LoaderComponent/>
+                }}
+            />
+            <Stack.Screen
+                name={'RelativeScreen'}
+                component={RelativeScreen}
+                options={{
                     headerRight: ()=><LoaderComponent/>
                 }}
             />

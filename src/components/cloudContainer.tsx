@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Text, TextInput, View} from 'react-native';
 import styles from './styles';
+import EStyleSheet from "react-native-extended-stylesheet";
 
 interface ICloudContainer {
   text: string;
@@ -22,7 +23,13 @@ const CloudContainer: React.FunctionComponent<ICloudContainer> = ({
       {editMode ? (
           <>
             <Text style={styles.editDescription}>{editDescription}</Text>
-            <TextInput style={styles.cloudText} value={text} multiline={true} onChangeText={setAbout} placeholder={'Интересные истории из жизни человка ...'}/>
+            <TextInput style={styles.cloudText}
+                       value={text}
+                       multiline={true}
+                       onChangeText={setAbout}
+                       placeholder={'Интересные истории из жизни человка ...'}
+                       placeholderTextColor={EStyleSheet.value('$colorDarkGrey')}
+            />
           </>
       ) : (
         <>

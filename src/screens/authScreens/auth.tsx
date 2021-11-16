@@ -34,7 +34,7 @@ const AuthScreen: React.FunctionComponent<IProps> = ({navigation}) => {
     const [password, setPassword] = useState('');
 
     return (
-        <View style={[globalStyles.paddingWrapper, globalStyles.verticalCentre]}>
+        <View style={[globalStyles.paddingWrapper, globalStyles.verticalCentre, globalStyles.containerColor]}>
             <Text style={[globalStyles.title, globalStyles.marginBottom]}>Авторизация</Text>
 
             {/*<Pressable*/}

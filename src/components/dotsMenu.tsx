@@ -44,7 +44,9 @@ const DotsMenuComponent: React.FunctionComponent<IProps> =
                                 onPress={() => {
                                     setBottomShift(0)
                                     item.callBack()
-                                }}>
+                                }}
+                                hitSlop={32}
+                            >
                                 <View style={styles.noteComponentDotsLineWrapper}>
                                     <Text style={styles.noteComponentDotsLineText}>{item.title}</Text>
                                     {item.icon && item.icon}

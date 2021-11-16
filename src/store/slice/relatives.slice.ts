@@ -1,6 +1,6 @@
 import {createAction, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {IRelative, IRelativeIndex} from '../../interfaces/store';
-import {ISaveRelativeCallback} from "../../screens/relativeFormScreen";
+import {ISaveRelativeCallback} from "../../screens/relatives/relativeFormScreen";
 
 export const actionUpdateRelative = createAction(
     '_relatives/updateRelative',

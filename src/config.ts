@@ -62,6 +62,7 @@ export const GeneralColors = {
     $textColorGlobal: '#333333',
     $colorBrown: '#A45B18',
     $colorLightGrey: '#E5E5E5',
+    $colorSuperLightGrey: '#F3F3F3',
     $colorWhite: '#FFFFFF',
     $colorGrey: '#8B8B8B',
     $colorDarkGrey: '#595959',

@@ -10,11 +10,13 @@ import UserPicComponent from './userPicComponent';
 import RelativeTypesListComponent from './relativeTypesListComponent';
 import {useFocusEffect} from "@react-navigation/native";
 import ButtonComponent from "./button";
-import {ISaveRelativeCallback} from "../screens/relativeFormScreen";
+import {ISaveRelativeCallback} from "../screens/relatives/relativeFormScreen";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import ImageLoader from "../helpers/imageLoader";
 import {idGenerator} from "../helpers/utils";
 import {defaultUserPic} from "../config";
+import {setModal} from "../store/slice/modal.slice";
+import {useDispatch} from "react-redux";
 
 interface IProps {
     initialRelative: IRelative;
@@ -50,7 +52,7 @@ const RelativeComponent: React.FunctionComponent<IProps> =
         const [type, setType] = useState(relativeType);
         const [newImage, setNewImage] = useState<Image>();
 
-        // const dispatch = useDispatch();
+        const dispatch = useDispatch();
 
         const saveButton = () => {
             if (!validate()) return false;
@@ -76,26 +78,26 @@ const RelativeComponent: React.FunctionComponent<IProps> =
 
         const validate = () => {
             if (relative.name.length < 2) {
-                // dispatch(setModal({
-                //     title: 'Внимание!',
-                //     bodyText: 'Проверьте имя!',
-                //     buttons: [
-                //         {
-                //             title: 'Закрыть',
-                //         },
-                //     ],
-                // }))
+                dispatch(setModal({
+                    title: 'Внимание!',
+                    bodyText: 'Проверьте имя!',
+                    buttons: [
+                        {
+                            title: 'Закрыть',
+                        },
+                    ],
+                }))
                 return false;
             }
 
             return true;
         };
 
-        // useFocusEffect(
-        //     React.useCallback(() => {
-        //         return () => reset
-        //     }, [])
-        // );
+        useFocusEffect(
+            React.useCallback(() => {
+                return () => reset
+            }, [])
+        );
         return (
             <KeyboardAwareScrollView style={globalStyles.scrollBottomMargin}>
                 <>

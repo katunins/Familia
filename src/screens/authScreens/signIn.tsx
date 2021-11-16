@@ -5,6 +5,7 @@ import {useDispatch} from 'react-redux';
 import globalStyles from '../../styles/styles';
 import ButtonComponent from "../../components/button";
 import {actionSignIn} from "../../store/slice/user.slice";
+import EStyleSheet from "react-native-extended-stylesheet";
 
 interface IProps {}
 
@@ -27,7 +28,7 @@ const SignInScreen: React.FunctionComponent<IProps> = () => {
   };
 
   return (
-    <View style={[globalStyles.verticalCentre, globalStyles.paddingWrapper]}>
+    <View style={[globalStyles.verticalCentre, globalStyles.paddingWrapper, globalStyles.containerColor]}>
       <Text style={globalStyles.title}>Вход по email</Text>
 
       <TextInput
@@ -38,6 +39,7 @@ const SignInScreen: React.FunctionComponent<IProps> = () => {
         placeholder={'email'}
         textAlign={'center'}
         keyboardType={'email-address'}
+        placeholderTextColor={EStyleSheet.value('$colorDarkGrey')}
         style={[globalStyles.strokeForm, globalStyles.buttonMargin, globalStyles.marginTop]}
       />
       <TextInput
@@ -49,6 +51,7 @@ const SignInScreen: React.FunctionComponent<IProps> = () => {
         textAlign={'center'}
         secureTextEntry={true}
         style={[globalStyles.strokeForm, globalStyles.buttonMargin]}
+        placeholderTextColor={EStyleSheet.value('$colorDarkGrey')}
         onFocus={clearPassword}
       />
             <ButtonComponent title={'Вход'} callBack={buttonSubmit} type={'invert'}/>

@@ -22,7 +22,7 @@ const UserPicComponent: React.FunctionComponent<IProps> =
                     <Pressable
                         style={[styles.iconWrapper, styles.cameraIconWrapper]}
                         onPress={imageChangeButton}>
-                        <CameraIcon/>
+                        {CameraIcon()}
                     </Pressable>
                 )}
             </>

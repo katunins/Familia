@@ -11,11 +11,10 @@ const styles = createStyles({
     alignItems: "center",
   },
   window: {
-    width: '100%',
+    width: '95%',
     backgroundColor: "$colorWhite",
     borderRadius: 5,
-    paddingVertical: "2rem",
-    paddingHorizontal: "1rem",
+    padding: "1rem",
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "#000",
@@ -27,12 +26,17 @@ const styles = createStyles({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  closeButtonWrapper: {
+    width: '100%',
+    alignItems: 'flex-end',
+    // marginTop: '1rem'
+  },
   title: {
-    fontSize: "1.6rem"
+    fontSize: "1.6rem",
+    marginBottom: '1.5rem'
   },
   bodyText: {
     width: "100%",
-    marginTop: "1.5rem",
     marginBottom: "2rem",
     textAlign: 'center',
     fontSize: '1rem'

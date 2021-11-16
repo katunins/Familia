@@ -2,6 +2,7 @@ import React from "react";
 import {Pressable, Text, View} from "react-native";
 import styles from "./styles";
 import AutoHeightImageComponent from "./autoHeightImage";
+import EmptyImageComponent from "./emptyImage";
 
 interface IProps {
     width?: number,
@@ -11,13 +12,14 @@ interface IProps {
 
 const ImageAndCountComponent: React.FunctionComponent<IProps> = ({uriArr, callBack}) => {
     return (
-        <View>
-            <AutoHeightImageComponent uri={uriArr[0]}/>
-            {uriArr.length > 1 &&
-            <Pressable onPress={callBack}>
-                <Text style={styles.imageAndCountLabel}>{`+ ${uriArr.length - 1}`}</Text>
-            </Pressable>}
-        </View>
+        <Pressable onPress={uriArr.length > 1 ? callBack : undefined}>
+            {uriArr.length === 0 ? <EmptyImageComponent/> :
+                <>
+                    <AutoHeightImageComponent uri={uriArr[0]}/>
+                    {uriArr.length > 1 && <Text style={styles.imageAndCountLabel}>{`+ ${uriArr.length - 1}`}</Text>}
+                </>
+            }
+        </Pressable>
     )
 }
 export default ImageAndCountComponent

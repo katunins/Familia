@@ -26,6 +26,7 @@ const styles = createStyles({
   flatListWrapper:{
     marginTop: '1rem',
   },
+
 });
 export default styles;
 

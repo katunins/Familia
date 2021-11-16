@@ -21,9 +21,7 @@ const Screens = () => {
         <SafeAreaView style={globalStyles.body}>
             <TabsNavigator/>
             {selectModal.active && <ModalScreen
-                title={selectModal.data.title}
-                bodyText={selectModal.data.bodyText}
-                buttons={selectModal.data.buttons}
+                {...selectModal.data}
             />}
         </SafeAreaView>
     );

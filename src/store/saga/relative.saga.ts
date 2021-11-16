@@ -15,7 +15,7 @@ import {IRelative, IRelativeIndex, IUser} from '../../interfaces/store';
 import {idGenerator, splitDataAndId} from '../../helpers/utils';
 import {errorSaga} from "./error.saga";
 import {_sagaNewUserPic, requestSaga} from "./network.saga";
-import {ISaveRelativeCallback} from "../../screens/relativeFormScreen";
+import {ISaveRelativeCallback} from "../../screens/relatives/relativeFormScreen";
 import {userSelector} from "../selectors";
 import {actionUserUpdate} from "../slice/user.slice";
 import querystring from "querystring";
