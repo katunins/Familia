@@ -11,9 +11,7 @@ const HelloScreen = () => {
       <View style={[globalStyles.containerColor, globalStyles.container, globalStyles.verticalCentre]}>
         <Text style={globalStyles.title}>Familbook</Text>
         <FastImage style={styles.image} source={require("../../ui/images/retroCamera.jpg")} resizeMode={'contain'}/>
-         <Text style={styles.offer}>Отсканируйте фотографии</Text>
-          <Text style={styles.offer}>Отметьте родтсвенников</Text>
-          <Text style={styles.offer}>Поделитесь с семьей</Text>
+         <Text style={styles.offer}>Отсканируйте фотографии,отметьте родтсвенников, поделитесь с семьей</Text>
         <View style={styles.introTextWrapper}>
             <ArrowDownIcon />
         </View>

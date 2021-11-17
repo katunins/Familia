@@ -14,12 +14,16 @@ const AutoHeightImageComponent: React.FunctionComponent<IAutoHeightImageComponen
          width = Dimensions.get('window').width,
      }) => {
         const [ratio, setRatio] = useState(1)
+        const [showLoader, setShowLoader] = useState(false)
         return (
                 <FastImage
                     style={{width, height: width * ratio}}
-                    source={uriParse(uri)}
+                    source={showLoader ? require('../ui/images/fastimage_loader.jpg'):uriParse(uri)}
+                    onLoadStart={()=>setShowLoader(true)}
+//                     onLoadEnd={()=>setShowLoader(false)}
                     onLoad={event => {
                         const {width, height} = event.nativeEvent
+                        setShowLoader(false)
                         setRatio(height / width)
                     }}
                 />
