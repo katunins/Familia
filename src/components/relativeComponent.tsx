@@ -17,6 +17,8 @@ import {idGenerator} from "../helpers/utils";
 import {defaultUserPic} from "../config";
 import {setModal} from "../store/slice/modal.slice";
 import {useDispatch} from "react-redux";
+import CameraIcon from "../ui/svg/cameraIcon";
+import GalleryIcon from "../ui/svg/galeryIcon";
 
 interface IProps {
     initialRelative: IRelative;
@@ -74,7 +76,24 @@ const RelativeComponent: React.FunctionComponent<IProps> =
             setRelative(initialRelative)
             setEditMode(false)
         }
-        const {loadImages} = ImageLoader({setNewImage})
+        const {loadImages, loadCamera} = ImageLoader({setNewImage})
+        const addImageModal = () => {
+            dispatch(setModal({
+                title: 'Добавление фотографий',
+                buttons: [
+                    {
+                        title: 'Камера',
+                        icon: CameraIcon(),
+                        callBack: loadCamera
+                    },
+                    {
+                        title: 'Галерея',
+                        icon: GalleryIcon(),
+                        callBack: loadImages
+                    }
+                ]
+            }))
+        }
 
         const validate = () => {
             if (relative.name.length < 2) {
@@ -104,7 +123,7 @@ const RelativeComponent: React.FunctionComponent<IProps> =
                     <UserPicComponent
                         uri={newImage?.path || relative.userPic || defaultUserPic}
                         editMode={editMode}
-                        imageChangeButton={loadImages}
+                        imageChangeButton={addImageModal}
                     />
                     <View style={[globalStyles.paddingWrapper, globalStyles.paddingTop]}>
                         <EditPersonalComponent

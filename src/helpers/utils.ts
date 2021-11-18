@@ -80,7 +80,7 @@ export const splitDataIdAndTimeStamps = (data: INote) => {
 
 export const idGenerator = () => `tempID_${Math.random().toString(16).slice(2)}`
 
-export const checkIfHEIC = (item: IServerImage) => {
+export const checkFilename = (item: IServerImage) => {
     const {name} = item
     if (name && name.indexOf('HEIC') > -1) item.name = name.replace(/\.[^.]+$/, '.JPG')
     return item

@@ -1,17 +1,8 @@
-import {INoteData, IServerNote, IServerRelative, IServerUser} from "./interfaces/store";
+import {IServerNote, IServerRelative, IServerUser} from "./interfaces/store";
 
 const env = {
-    // endPointUrl: 'http://localhost:3000'
-    endPointUrl: 'http://nestjs.ikatunin.ru:8080'
+    endPointUrl: 'https://nestjs.ikatunin.ru'
 }
-
-const initialGeneralUser = {
-    name: '',
-    userPic: '',
-    birthday: '',
-    relatives: [],
-    about: '',
-};
 
 export const initialUser: IServerUser = {
     name: '',
@@ -37,9 +28,9 @@ export const initialNote: IServerNote = {
     description: '',
     date: '',
     relatives: [],
-    creator:'',
+    creator: '',
 }
-
+export const emptyImage = require('../src/ui/images/fastimage_loader.jpg')
 export const defaultUserPic = 'https://alpinabook.ru/resize/1100x1600/upload/iblock/6f9/6f9f5be9fb84ad912ca92b5a0839d9ef.jpg'
 export const defaultRelativeUserPic = 'https://alpinabook.ru/resize/1100x1600/upload/iblock/6f9/6f9f5be9fb84ad912ca92b5a0839d9ef.jpg'
 

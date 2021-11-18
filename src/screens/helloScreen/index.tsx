@@ -7,11 +7,12 @@ import ArrowDownIcon from "../../ui/svg/arrowDownIcon";
 
 const HelloScreen = () => {
 
-  return (
+    return (
       <View style={[globalStyles.containerColor, globalStyles.container, globalStyles.verticalCentre]}>
         <Text style={globalStyles.title}>Familbook</Text>
-        <FastImage style={styles.image} source={require("../../ui/images/retroCamera.jpg")} resizeMode={'contain'}/>
-         <Text style={styles.offer}>Отсканируйте фотографии,отметьте родтсвенников, поделитесь с семьей</Text>
+          {/*@ts-ignore*/}
+          <FastImage style={styles.image} source={require("../../ui/images/retroCamera.jpg")} resizeMode={'contain'}/>
+         <Text style={styles.offer}>Отсканируйте фотографии,{'\n'}отметьте родтсвенников{'\n'}и поделитесь с семьей</Text>
         <View style={styles.introTextWrapper}>
             <ArrowDownIcon />
         </View>

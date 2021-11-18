@@ -9,7 +9,7 @@ import {setToken} from "../slice/token.slice";
 import {sagaLogOut} from "./auth.saga";
 import * as Eff from "redux-saga/effects";
 import {Image} from "react-native-image-crop-picker";
-import {checkIfHEIC} from "../../helpers/utils";
+import {checkFilename} from "../../helpers/utils";
 
 
 interface IServerUserData {
@@ -92,7 +92,7 @@ function* _sagaNewUserPic({userPic, newImage}: ISagaNewUserPic) {
     const files = [{
         uri: newImage.path,
         type: newImage.mime,
-        name: newImage.filename,
+        name: newImage.filename || newImage.path.split('\\').pop().split('/').pop(),
     }]
     const filesToDelete = userPic === '' ? [] : [userPic]
     const uploadResponse: IUploadResponseSaga = yield call(uploadSaga, {files, filesToDelete})
@@ -144,7 +144,7 @@ function* uploadSaga({files, filesToDelete = []}: IUploadSaga) {
         const user: IUser = yield select(userSelector)
         const formdata = new FormData();
         files.map(item => {
-            formdata.append("file", checkIfHEIC(item))
+            formdata.append("file", checkFilename(item))
         })
         filesToDelete.map(item => formdata.append('filesToDelete[]', item))
         const response = yield fetch(

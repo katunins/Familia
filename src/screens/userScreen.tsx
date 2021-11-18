@@ -8,6 +8,7 @@ import ButtonComponent from "../components/button";
 import {IUser} from "../interfaces/store";
 import {initialUser} from "../config";
 import {Image} from "react-native-image-crop-picker";
+import globalStyles from "../styles/styles";
 
 
 export interface ISaveUserCallback {
@@ -28,7 +29,7 @@ const UserScreen: React.FunctionComponent = () => {
     };
 
     return (
-        <ScrollView style={{flex: 1}}>
+        <ScrollView style={globalStyles.containerColor}>
             <UserComponent
                 initialUser={selectUser || initialUser}
                 saveCallback={saveCallback}

@@ -4,9 +4,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {relativesSelector, userSelector} from "../../store/selectors";
 import globalStyles from "../../styles/styles";
 import RelativeBigComponent from "../../components/relativeBigComponent";
-import SeparatorComponent from "../../components/separator";
 import {IRelative} from "../../interfaces/store";
-import {INavigation, RootStackParamList} from "../../interfaces/navigation";
+import {RootStackParamList} from "../../interfaces/navigation";
 import {initialRelative} from "../../config";
 import {getRelativeType} from "../../helpers/utils";
 import {actionLoadRelatives} from "../../store/slice/relatives.slice";
@@ -38,7 +37,7 @@ const RelativeListScreen: React.FunctionComponent<IProps> = ({navigation, route}
         dispatch(actionLoadRelatives(selectUser.relatives))
     }
     return (
-        <View>
+        <View style={globalStyles.containerColor}>
             <FlatList
                 data={selectRelatives}
                 renderItem={({item}) =>

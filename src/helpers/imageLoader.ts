@@ -11,7 +11,7 @@ const ImageLoader = ({setNewImage}: IProps) => {
         forceJpg: true,
         cropping: true,
         width: 2000,
-        height: 2000
+        // height: 2000
     }
     const callBack = (image: Image) => {
         setNewImage(image)

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Text, TextInput, View} from 'react-native';
 import styles from './styles';
 import EStyleSheet from "react-native-extended-stylesheet";
+import globalStyles from "../styles/styles";
 
 interface ICloudContainer {
   text: string;
@@ -19,7 +20,7 @@ const CloudContainer: React.FunctionComponent<ICloudContainer> = ({
   const [showMore, setShowMore] = useState(true);
 
   return (
-    <View style={styles.cloudContainer}>
+    <View style={globalStyles.paddingContainer}>
       {editMode ? (
           <>
             <Text style={styles.editDescription}>{editDescription}</Text>
@@ -36,9 +37,9 @@ const CloudContainer: React.FunctionComponent<ICloudContainer> = ({
           <Text style={styles.cloudText} numberOfLines={showMore ? 4 : 0} ellipsizeMode={'tail'}>
             {text}
           </Text>
-          <Text style={styles.showMore} onPress={() => setShowMore(!showMore)}>
-            {showMore ? 'Развернуть' : 'Скрыть'}
-          </Text>
+          {/*<Text style={styles.showMore} onPress={() => setShowMore(!showMore)}>*/}
+          {/*  {showMore ? 'Развернуть' : 'Скрыть'}*/}
+          {/*</Text>*/}
         </>
       )}
     </View>

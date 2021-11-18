@@ -135,7 +135,8 @@ android {
         applicationId "com.grandalbum"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5
+        vectorDrawables.useSupportLibrary = true
+        versionCode 8
         versionName "1.0"
     }
     splits {

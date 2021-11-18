@@ -10,12 +10,12 @@ import styles from "./styles";
 import globalStyles from "../../styles/styles";
 import {useDispatch, useSelector} from "react-redux";
 import {relativesSelector, userSelector} from "../../store/selectors";
-import {INote} from "../../interfaces/store";
+import {INote, IServerNote} from "../../interfaces/store";
 import {initialNote} from "../../config";
 import NoteImageComponent from "../../components/noteImage";
 import {isServerUri} from "../../helpers/utils";
 import ImageLoader from "../../helpers/imageLoader";
-import {actionAddNote, actionUpdateNote} from "../../store/slice/notes.slice";
+import {actionUpdateNote} from "../../store/slice/notes.slice";
 import NoteEditDescriptionComponent from "../../components/noteEditDescription";
 import NoteEditRelativesComponent from "../../components/noteEditRelatives";
 import {setModal} from "../../store/slice/modal.slice";
@@ -30,7 +30,7 @@ const NoteEditScreen: React.FunctionComponent<IProps> = ({route, navigation}) =>
 
     const dispatch = useDispatch()
 
-    const [note, setNote] = useState<INote>(route.params.note)
+    const [note, setNote] = useState<INote|IServerNote>(route.params.note)
     const [newImages, setNewImages] = useState<Image[]>([])
     const [deleteImages, setDeleteImages] = useState<string[]>([])
 
@@ -50,19 +50,6 @@ const NoteEditScreen: React.FunctionComponent<IProps> = ({route, navigation}) =>
             }
             return
         }
-        // if (note._id === '') {
-        //     // @ts-ignore
-        //     navigation.navigate('notesListStack', {screen: 'NotesListScreen'})
-        //     let newNote = Object.assign(note, {creator: user._id})
-        //     delete (newNote._id)
-        //     dispatch(actionAddNote({
-        //         note: newNote,
-        //         newImages: newImages,
-        //         deleteImages: deleteImages,
-        //         callback: reset,
-        //     }))
-        //     return;
-        // }
 
         navigation.popToTop()
         dispatch(actionUpdateNote({

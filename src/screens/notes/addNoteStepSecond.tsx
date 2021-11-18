@@ -1,6 +1,6 @@
 import React from "react";
 import globalStyles from "../../styles/styles";
-import {View} from "react-native";
+import {ScrollView, View} from "react-native";
 import styles from "./styles";
 import ButtonComponent from "../../components/button";
 import CameraIcon from "../../ui/svg/cameraIcon";
@@ -43,24 +43,6 @@ const AddNoteStepSecondScreen: React.FunctionComponent<IProps> =
         const user = useSelector(userSelector)
         const dispatch = useDispatch()
 
-        const addImageModal = () => {
-            dispatch(setModal({
-                title: 'Добавление фотографий',
-                buttons: [
-                    {
-                        title: 'Камера',
-                        icon: CameraIcon(),
-                        callBack: loadCamera
-                    },
-                    {
-                        title: 'Галерея',
-                        icon: GalleryIcon(),
-                        callBack: loadImages
-                    }
-                ]
-            }))
-        }
-
         const save = () => {
             // @ts-ignore
             navigation.popToTop()
@@ -74,7 +56,7 @@ const AddNoteStepSecondScreen: React.FunctionComponent<IProps> =
         }
 
         return (
-            <View style={globalStyles.containerColor}>
+            <ScrollView style={globalStyles.containerColor}>
                 <ImageAndCountComponent uriArr={[...note.images, ...newImages.map(item => item.path)]}/>
                 <View style={styles.container}>
                     <NoteEditRelativesComponent note={note} setNote={setNote} relatives={relatives} user={user}/>
@@ -86,7 +68,7 @@ const AddNoteStepSecondScreen: React.FunctionComponent<IProps> =
                         }}/>
                     </View>
                 </View>
-            </View>
+            </ScrollView>
         )
     }
 

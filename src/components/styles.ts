@@ -156,14 +156,6 @@ const styles = createStyles({
         marginRight: '0.5rem'
     },
 
-    cloudContainer: {
-        backgroundColor: '#FFFFFF80',
-        width: '100%',
-        padding: '2.5rem',
-        borderRadius: 10,
-        marginTop: '0.5rem',
-        marginBottom: '0.5rem',
-    },
     cloudText: {
         fontSize: '0.9rem',
     },

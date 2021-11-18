@@ -15,6 +15,8 @@ import {ISaveUserCallback} from "../screens/userScreen";
 import ImageLoader from "../helpers/imageLoader";
 import {useDispatch} from "react-redux";
 import {setModal} from "../store/slice/modal.slice";
+import CameraIcon from "../ui/svg/cameraIcon";
+import GalleryIcon from "../ui/svg/galeryIcon";
 
 interface IProps {
     initialUser: IUser
@@ -44,7 +46,25 @@ const UserComponent: React.FunctionComponent<IProps> =
         const [editMode, setEditMode] = useState(false);
         const [user, setUser] = useState(initialUser);
         const [newImage, setNewImage] = useState<Image>();
-        const {loadImages} = ImageLoader({setNewImage})
+        const {loadImages, loadCamera} = ImageLoader({setNewImage})
+
+        const addImageModal = () => {
+            dispatch(setModal({
+                title: 'Добавление фотографий',
+                buttons: [
+                    {
+                        title: 'Камера',
+                        icon: CameraIcon(),
+                        callBack: loadCamera
+                    },
+                    {
+                        title: 'Галерея',
+                        icon: GalleryIcon(),
+                        callBack: loadImages
+                    }
+                ]
+            }))
+        }
 
         const dispatch = useDispatch()
 
@@ -96,7 +116,7 @@ const UserComponent: React.FunctionComponent<IProps> =
                     <UserPicComponent
                         uri={newImage?.path || user.userPic || defaultUserPic}
                         editMode={editMode}
-                        imageChangeButton={loadImages}
+                        imageChangeButton={addImageModal}
                     />
                     <View style={[globalStyles.paddingWrapper, globalStyles.paddingTop]}>
                         <EditPersonalComponent

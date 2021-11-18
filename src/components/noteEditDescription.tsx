@@ -38,7 +38,7 @@ const NoteEditDescriptionComponent: React.FunctionComponent<IProps> = ({note, se
                 value={note.title}
                 autoCorrect={false}
                 onChangeText={title => setNote({...note, title: title})}
-                placeholder={'Название'}
+                placeholder={'Заголовок'}
                 placeholderTextColor={EStyleSheet.value('$colorDarkGrey')}
                 style={[globalStyles.strokeForm, globalStyles.buttonMargin]}
             />
@@ -47,7 +47,7 @@ const NoteEditDescriptionComponent: React.FunctionComponent<IProps> = ({note, se
                 autoCapitalize={'none'}
                 autoCorrect={false}
                 onChangeText={description => setNote({...note, description: description})}
-                placeholder={'Опишите подробнее фотографии'}
+                placeholder={'Подробное описание'}
                 placeholderTextColor={EStyleSheet.value('$colorDarkGrey')}
                 multiline={true}
                 style={[globalStyles.strokeForm, globalStyles.textAreaForm, globalStyles.buttonMargin, styles.paddingTextArea]}
