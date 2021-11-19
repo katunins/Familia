@@ -14,6 +14,9 @@ const ImageLoader = ({setNewImage}: IProps) => {
         // height: 2000
     }
     const callBack = (image: Image) => {
+        if (!image.filename) {
+            image.filename = image.path.split('/').pop()
+        }
         setNewImage(image)
     }
     const loadImages = () => {

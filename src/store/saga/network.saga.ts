@@ -92,7 +92,7 @@ function* _sagaNewUserPic({userPic, newImage}: ISagaNewUserPic) {
     const files = [{
         uri: newImage.path,
         type: newImage.mime,
-        name: newImage.filename || newImage.path.split('\\').pop().split('/').pop(),
+        name: newImage.filename,
     }]
     const filesToDelete = userPic === '' ? [] : [userPic]
     const uploadResponse: IUploadResponseSaga = yield call(uploadSaga, {files, filesToDelete})

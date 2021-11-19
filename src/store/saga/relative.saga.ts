@@ -43,6 +43,7 @@ function* sagaLoadRelatives(action: PayloadAction<IRelativeIndex[]>) {
 
 function* sagaAddRelative(action: PayloadAction<ISaveRelativeCallback>) {
     try {
+
         yield put(actionLoaderOn());
         const {relativeData, type, callBack, newImage} = action.payload
         const tempId = idGenerator()

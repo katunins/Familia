@@ -39,6 +39,7 @@ const AddNoteStepOneScreen: React.FunctionComponent<IProps> =
             loadImages,
             loadCamera
         } = ImageLoader({setNewImage: (image: Image) => setNewImages([...newImages, image])})
+
         const dispatch = useDispatch()
 
         const deleteImage = (uri: string) => {

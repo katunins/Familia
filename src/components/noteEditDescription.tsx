@@ -22,7 +22,7 @@ const NoteEditDescriptionComponent: React.FunctionComponent<IProps> = ({note, se
 
     const dateButton = () => {
         dispatch(setModal({
-            title: 'Дата события',
+            title: 'Дата',
             bodyText: 'Укажите точную дату или только год',
             component: <NoteDateComponent
                 initialDate={note.date}

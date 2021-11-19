@@ -33,7 +33,7 @@ const CalendarComponent: React.FunctionComponent<ICalendarComponent> = ({
   const showDatePicker = () => {
     if (!editMode) return
     dispatch(setModal({
-      title: 'Дата события',
+      title: 'Выбор даты',
       bodyText: 'Укажите точную дату или только год',
       component: <NoteDateComponent
           initialDate={date}
@@ -65,7 +65,7 @@ const CalendarComponent: React.FunctionComponent<ICalendarComponent> = ({
           editMode ? [globalStyles.strokeForm, globalStyles.spaceBetween] : {}
         }>
         <Text style={editMode ? {} : styles.dateText}>
-          {date === '' ? 'Дата события' : stringDateParse(date)}
+          {date === '' ? 'Дата' : stringDateParse(date)}
         </Text>
 
         {editMode && <CalendarIcon />}

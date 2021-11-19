@@ -29,15 +29,9 @@ const AddNoteStepSecondScreen: React.FunctionComponent<IProps> =
          note,
          setNote,
          newImages,
-         setNewImages,
          navigation,
          reset
      }) => {
-
-        const {
-            loadImages,
-            loadCamera
-        } = ImageLoader({setNewImage: (image: Image) => setNewImages([...newImages, image])})
 
         const relatives = useSelector(relativesSelector)
         const user = useSelector(userSelector)
