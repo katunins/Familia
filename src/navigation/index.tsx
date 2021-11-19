@@ -14,7 +14,7 @@ import NotesListTabIcon from "../ui/svg/notesListTabIcon";
 import {NewNoteStack} from "./newNote";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 
-const npTabsNavigator = () => {
+const TabsNavigator = () => {
 
     const selectUser = useSelector(userSelector);
     const notes = useSelector(notesSelector)

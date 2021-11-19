@@ -24,7 +24,6 @@ const DotsMenuComponent: React.FunctionComponent<IProps> =
 
         const dotsButton = (event: { nativeEvent: { pageY: number } }) => {
             const bottom = event.nativeEvent.pageY > (Dimensions.get('window').height / 2) ? 25 : -100
-            // const bottom = -165
             setBottomShift(bottomShift === 0 ? bottom : 0)
         }
 
@@ -39,30 +38,19 @@ const DotsMenuComponent: React.FunctionComponent<IProps> =
                     listKey={'inner'}
                     ItemSeparatorComponent={() => <SeparatorComponent/>}
                     renderItem={({item}) =>
-                        Platform.OS === 'ios' ?
-                            <Pressable
-                                onPress={() => {
-                                    setBottomShift(0)
-                                    item.callBack()
-                                }}
-                                hitSlop={32}
-                            >
-                                <View style={styles.noteComponentDotsLineWrapper}>
-                                    <Text style={styles.noteComponentDotsLineText}>{item.title}</Text>
-                                    {item.icon && item.icon}
-                                </View>
-                            </Pressable>
-                            :
-                            <TouchableOpacity
-                                onPressIn={() => {
-                                    setBottomShift(0)
-                                    item.callBack()
-                                }}>
-                                <View style={styles.noteComponentDotsLineWrapper}>
-                                    <Text style={styles.noteComponentDotsLineText}>{item.title}</Text>
-                                    {item.icon && item.icon}
-                                </View>
-                            </TouchableOpacity>}
+                        <Pressable
+                            onPress={() => {
+                                setBottomShift(0)
+                                item.callBack()
+                            }}
+                            hitSlop={32}
+                        >
+                            <View style={styles.noteComponentDotsLineWrapper}>
+                                <Text style={styles.noteComponentDotsLineText}>{item.title}</Text>
+                                {item.icon && item.icon}
+                            </View>
+                        </Pressable>
+                    }
                 />}
             </>
         )

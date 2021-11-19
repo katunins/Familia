@@ -20,9 +20,9 @@ const NoteDataBlockComponent: React.FunctionComponent<IProps> = ({note, dotsMenu
         <View style={globalStyles.paddingContainer}>
             <View style={styles.noteComponentDotsWrapper}>
                 <Text style={globalStyles.title}>{title}</Text>
-                {dotsMenu && !mini &&<DotsMenuComponent menuArr={dotsMenu}/>}
+                {dotsMenu && !mini && <DotsMenuComponent menuArr={dotsMenu}/>}
             </View>
-            {!mini && <Text style={styles.noteComponentText}>{description}</Text>}
+            {!mini && description !=="" && <Text style={styles.noteComponentText}>{description}</Text>}
             {date !== '' && <Text style={styles.noteDate}>{stringDateParse(date)}</Text>}
             {!mini && <RelativesBlockComponent relatives={relatives} selectRelatives={selectRelatives}/>}
         </View>
