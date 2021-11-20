@@ -9,7 +9,7 @@ const HelloScreen = () => {
 
     return (
       <View style={[globalStyles.containerColor, globalStyles.container, globalStyles.verticalCentre]}>
-        <Text style={globalStyles.title}>Familbook</Text>
+        <Text style={globalStyles.title}>Familia</Text>
           {/*@ts-ignore*/}
           <FastImage style={styles.image} source={require("../../ui/images/retroCamera.jpg")} resizeMode={'contain'}/>
          <Text style={styles.offer}>Отсканируйте фотографии,{'\n'}отметьте родтсвенников{'\n'}и поделитесь с семьей</Text>

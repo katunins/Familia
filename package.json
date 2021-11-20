@@ -1,5 +1,5 @@
 {
-  "name": "Familbook",
+  "name": "Familia",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "pods": "cd ios && pod install && cd .."
+    "pods": "cd ios && pod install && cd ..",
+    "reverse": "adb reverse tcp:8081 tcp:8081"
   },
   "dependencies": {
     "@babel/preset-env": "^7.15.0",
@@ -61,9 +62,10 @@
     "@types/react-test-renderer": "^16.9.2",
     "babel-jest": "^26.6.3",
     "jest": "^26.6.3",
+    "metro-config": "^0.66.2",
     "metro-react-native-babel-preset": "^0.64.0",
     "react-native-codegen": "0.0.9",
-    "react-test-renderer": "17.0.1",
+    "react-test-renderer": "^17.0.2",
     "typescript": "^3.8.3"
   },
   "resolutions": {
