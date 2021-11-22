@@ -13,6 +13,7 @@ import {notesSelector, userSelector} from "../store/selectors";
 import NotesListTabIcon from "../ui/svg/notesListTabIcon";
 import {NewNoteStack} from "./newNote";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import TreeScreen from "../screens/tree/tree";
 
 const TabsNavigator = () => {
 
@@ -28,11 +29,12 @@ const TabsNavigator = () => {
         >
             <Tab.Screen
                 name={'helloScreen'}
-                component={HelloScreen}
+                component={TreeScreen}
+                // component={HelloScreen}
                 options={{
                     tabBarIcon: ({color}) => <InfoTabIcon color={color}/>,
                     headerShown: false,
-                    tabBarShowLabel:false
+                    tabBarShowLabel: false
                 }}
             />
 

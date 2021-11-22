@@ -46,6 +46,8 @@ export const relativeTypes = {
     grandfather: 'Дедушка',
     godmother: 'Крестная',
     godfather: 'Крестный',
+    wife: "Супруга",
+    husband: "Муж",
     other: 'Дальний',
 };
 
@@ -61,5 +63,14 @@ export const GeneralColors = {
     $colorBlack: '#000000',
     $colorBlue: '#2B32BA',
 };
+
+export const treeItemSize = {
+    width: 76,
+    height: 80,
+    verticalLine: 10,
+    verticalLongLine: 40,
+    containerWidth: 100,
+    margin: 10,
+}
 
 export default env
