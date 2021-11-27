@@ -1,11 +1,8 @@
+import {View, ViewStyle} from "react-native";
 import React from "react";
-import {View} from "react-native";
-import styles from "./styles";
-import {treeItemSize} from "../../config";
-const VerticalLineComponent:React.FunctionComponent<{scale:number, long?:boolean}> = ({scale, long}) => {
-    return (
-        <View style={[styles.verticalLine, {height: (long ? treeItemSize.verticalLongLine : treeItemSize.verticalLine) * scale}]}/>
-    )
+
+const VerticalLineComponent:React.FunctionComponent<ViewStyle> = ({alignItems = 'center'}) => {
+    return <View style={{width: 1, height: 30, backgroundColor: 'grey', alignSelf: alignItems}}/>
 }
 
 export default VerticalLineComponent

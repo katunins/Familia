@@ -38,11 +38,11 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Приложение хочет использовать доступ к фотокамере</string>
+	<string>Приложение хочет использовать доступ к фотокамере для сканирования фотографий</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Приложение хочет использовать доступ к фотографиям</string>
+	<string>Приложение хочет использовать доступ к фотографиям для добавление в записи</string>
 	<key>UILaunchStoryboardName</key>
 	<string>BootSplash</string>
 	<key>UIMainStoryboardFile</key>

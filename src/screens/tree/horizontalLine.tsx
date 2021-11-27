@@ -1,12 +1,15 @@
 import React from "react";
 import {View} from "react-native";
-import styles from "./styles";
 import {treeItemSize} from "../../config";
 
-const HorizontalLineComponent: React.FunctionComponent<{ scale: number, width: number }> = ({scale, width}) => {
-    return (
-        <View style={[styles.horizontalLine, {width: width * scale}]}/>
-    )
+const HorizontalLineComponent = ({transparent}: { transparent?: boolean }) => {
+    return <View style={[{
+        width: 40,
+        height: 1,
+        backgroundColor: 'grey',
+        alignContent: 'center',
+        marginTop: treeItemSize.height / 2 + treeItemSize.marginVertical
+    }, transparent ? {opacity: 0} : {}]}/>
 }
 
 export default HorizontalLineComponent

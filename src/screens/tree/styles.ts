@@ -1,9 +1,6 @@
 import {createStyles} from "../../helpers/style";
 
 const styles = createStyles({
-    horizontalContainer:{
-        alignItems: 'center',
-    },
     container: {
         borderRadius: 30,
         justifyContent: 'center',

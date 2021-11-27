@@ -1,56 +1,56 @@
-import React from "react";
-import {ScrollView, View} from "react-native";
-import styles from "./styles";
-import {IItemTree} from "./item";
-import LineBlockComponent from "./lineBlock";
-import globalStyles from "../../styles/styles";
+import React, {useEffect, useState} from "react";
+import {ScrollView} from "react-native";
+import TreeBlock, {ITreeRoot} from "./treeBlock";
+import {NativeStackScreenProps} from "react-native-screens/native-stack";
+import {RootStackParamList} from "../../interfaces/navigation";
+import {userSelector} from "../../store/selectors";
+import {useSelector} from "react-redux";
 
-interface IProps {
-    parents: IItemTree[][]
-    roots: IItemTree[],
-    children: IItemTree[]
+export interface ITreeItem {
+    userPic: string
+    name: string
+    type?: string
+    id?: string
+    onPress?: () => void
 }
 
-const TreeScreen: React.FunctionComponent = () => {
-    const items: IProps = {
-        parents: [],
+interface IRoots {
+    roots: ITreeRoot[]
+    children: ITreeItem[]
+}
+
+const TreeScreen: React.FunctionComponent<NativeStackScreenProps<RootStackParamList, 'TreeScreen'>> = ({
+                                                                                                           route,
+                                                                                                           navigation
+                                                                                                       }) => {
+
+    const user = useSelector(userSelector)
+    const [tree, setTree] = useState<IRoots>({
         roots: [
             {
-                uri: 'uploads/617ab0ccd34665ca9cce580f/IMG_3709__1637494506219.PNG',
-                name: 'Павел Катунин'
-            },
-            {
-                uri: 'uploads/617ab0ccd34665ca9cce580f/IMG_2387__1636353122027.JPG',
-                name: 'Ирина Катунина'
+                item: {
+                    userPic: user.userPic,
+                    name: user.name
+                },
+                parents: [],
+                brothers: []
             }
         ],
         children: []
-    }
-    const scale = 1
+    })
+
+    useEffect(() => {
+        navigation.setOptions({headerTitle: tree.roots[0].item.name, headerShown: true})
+    }, [])
+
     return (
-        <ScrollView horizontal={true} contentContainerStyle={[styles.horizontalContainer, { flex: 1}]}>
-            <ScrollView>
-                {/*Дедушки и Бабушки*/}
-                {items.parents.map((item, index) => <View style={globalStyles.row}>
-                        <LineBlockComponent
-                            items={item} scale={scale}
-                            bottomHorizontalLine={item.length > 1}
-                            bottomVerticalLine={item.length > 0}/>
-
-                    </View>
-                )}
-
-                {/*Пользователь и супруга*/}
-                <LineBlockComponent
-                    items={items.roots} scale={scale}
-                    topVerticalLine={true}
-                    // bottomVerticalLine={items.roots.length > 1}
-                    bottomHorizontalLine={items.roots.length>1}
-                />
-                {/*<LineBlockComponent items={items.children} scale={scale}/>*/}
+        <ScrollView style={{minWidth: '100%', backgroundColor: 'white'}} horizontal={true} centerContent={true}
+                    showsHorizontalScrollIndicator={false}>
+            <ScrollView centerContent={true} showsVerticalScrollIndicator={false}>
+                {/*@ts-ignore*/}
+                <TreeBlock roots={tree.roots} children={tree.children}/>
             </ScrollView>
         </ScrollView>
     )
 }
-
 export default TreeScreen

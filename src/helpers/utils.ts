@@ -111,10 +111,18 @@ export const stringDateParse = (stringDate: string) => {
     return stringDate.length === 4 ? `${stringDate} г.` : moment(stringDate).format('DD MMMM YYYY')
 }
 
-export const isRelativeChecked = ({
-                                      id,
-                                      relatives
-                                  }: { id: string, relatives: string[] }) => !!relatives.find(item => item === id)
+export const isRelativeChecked =
+    ({
+         id,
+         relatives
+     }: { id: string, relatives: string[] }) => !!relatives.find(item => item === id)
+
+export const getTreePosition = (index: number, arrLength: number) => {
+    if (arrLength === 1) return 'center'
+    if (index === 0) return 'left'
+    if (index === arrLength - 1) return 'right'
+    return 'center'
+}
 
 export const marginHorizontal = 12
 export const containerWidth = Dimensions.get('window').width - marginHorizontal * 2

@@ -3,58 +3,36 @@ import {Pressable, Text, View} from "react-native";
 import styles from "./styles";
 import FastImage from "react-native-fast-image";
 import {uriParse} from "../../helpers/utils";
-import {NativeStackScreenProps} from "react-native-screens/native-stack";
-import {RootStackParamList} from "../../interfaces/navigation";
-import globalStyles from "../../styles/styles";
 import {treeItemSize} from "../../config";
-import PlusIcon from "../../ui/svg/plusIcon";
-import VerticalLineComponent from "./verticalLine";
-import {ITreeLine} from "./lineBlock";
-
-export interface IItemTree {
-    uri: string
-    name: string
-    type?: string
-    onPress?: () => void
-}
+import {ITreeItem} from "./tree";
 
 interface IProps {
-    item: IItemTree
-    scale: number
-    between?: number
-    bottomLine?: boolean
-    topLine?: boolean
+    item: ITreeItem
+    onPress?: ()=>void
 }
-
 const ItemTreeComponent: React.FunctionComponent<IProps> =
     ({
          item,
-         scale,
-         bottomLine,
-         topLine,
-         between = 0
+        onPress,
      }) => {
-        const {onPress, name, uri, type} = item
+        const {name, userPic} = item
         const imageStyle = {
-            width: treeItemSize.width * scale,
-            height: treeItemSize.height * scale,
+            width: treeItemSize.width,
+            height: treeItemSize.height,
             ...styles.container
         }
         return (
             <View style={styles.verticalLineWrapper}>
-                {topLine && <VerticalLineComponent scale={scale}/>}
                 <Pressable onPress={onPress}
                            style={[styles.itemWrapper, {
-                               marginVertical: treeItemSize.margin,
-                               marginHorizontal: (treeItemSize.margin + between * (treeItemSize.containerWidth + treeItemSize.margin * 2) / 2) * scale,
-                               width: treeItemSize.containerWidth * scale
+                               marginVertical: treeItemSize.marginVertical,
+                               marginHorizontal: treeItemSize.marginHorizontal,
+                               width: treeItemSize.containerWidth,
                            }]}>
                     {/*@ts-ignore*/}
-                    <FastImage style={imageStyle} source={uriParse(uri)} resizeMode={'cover'}/>
+                    <FastImage style={imageStyle} source={uriParse(userPic)} resizeMode={'cover'}/>
                     <Text style={styles.name}>{name}</Text>
-                    {type && <Text style={styles.type}>{type}</Text>}
                 </Pressable>
-                {bottomLine && <VerticalLineComponent scale={scale}/>}
             </View>
         )
     }

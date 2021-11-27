@@ -24,7 +24,8 @@ const TabsNavigator = () => {
     const Tab = createBottomTabNavigator()
     return (
         <Tab.Navigator
-            initialRouteName={notes.length === 0 ? 'personalStack' : 'notesListStack'}
+            // initialRouteName={notes.length === 0 ? 'personalStack' : 'notesListStack'}
+            initialRouteName={'helloScreen'}
             screenOptions={{tabBarShowLabel: false}}
         >
             <Tab.Screen

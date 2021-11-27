@@ -8,6 +8,10 @@ export const initialUser: IServerUser = {
     name: '',
     userPic: '',
     birthday: '',
+    parents: {
+        mother: '',
+        father: ''
+    },
     relatives: [],
     about: '',
     email: '',
@@ -17,6 +21,10 @@ export const initialRelative: IServerRelative = {
     userPic: '',
     birthday: '',
     about: '',
+    parents: {
+        mother: '',
+        father: ''
+    },
     access: {
         creatorId: '',
         shareId: []
@@ -67,10 +75,11 @@ export const GeneralColors = {
 export const treeItemSize = {
     width: 76,
     height: 80,
-    verticalLine: 10,
-    verticalLongLine: 40,
     containerWidth: 100,
-    margin: 10,
+    marginHorizontal: 0,
+    marginVertical: 5,
+    LRShift: 20,
+    borderRadius: 5
 }
 
 export default env

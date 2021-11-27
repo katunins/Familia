@@ -31,7 +31,7 @@ export interface IRelativeIndex extends IRelativeTypes {
     id: string;
 }
 
-export interface IGeneralUser {
+export interface IGeneralUser extends IParents{
     userPic: string;
     name: string;
     birthday: string;
@@ -40,6 +40,13 @@ export interface IGeneralUser {
 
 interface IServerId {
     _id: string
+}
+
+export interface IParents {
+    parents: {
+        mother: string
+        father: string
+    }
 }
 
 export interface IServerUser extends IGeneralUser {

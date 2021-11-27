@@ -24,6 +24,7 @@ const RelativeScreen: React.FunctionComponent<Props> = ({navigation, route}) => 
             data={filteredNotes}
             ListHeaderComponent={() =>
                 <View style={[globalStyles.row, globalStyles.marginLine,globalStyles.paddingWrapper]}>
+                    {/*@ts-ignore*/}
                     <FastImage style={styles.userPicWrapper}
                                source={uriParse(relative.userPic)} resizeMode={'cover'}/>
                     <View style={globalStyles.marginLine}>
