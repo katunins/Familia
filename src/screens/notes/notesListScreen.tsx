@@ -8,6 +8,8 @@ import {actionLoadNotes} from "../../store/slice/notes.slice";
 import NoteComponent from "../../components/note";
 import globalStyles from "../../styles/styles";
 import styles from "./styles";
+import {useFocusEffect} from "@react-navigation/native";
+import {actionLoadRelatives} from "../../store/slice/relatives.slice";
 
 interface IProps {
     searchText: string
@@ -30,6 +32,7 @@ const NotesListScreen = ({navigation, searchText, setSearchText}: IProps) => {
     const dispatch = useDispatch()
 
     const addNewNote = () => {
+        // @ts-ignore
         navigation.navigate('addNoteStack')
     }
 
@@ -37,6 +40,12 @@ const NotesListScreen = ({navigation, searchText, setSearchText}: IProps) => {
         dispatch(actionLoadNotes())
     }
 
+    useFocusEffect(
+        React.useCallback(() => {
+            dispatch(actionLoadNotes());
+            // return () => dispatch(showTabBarNavigation());
+        }, [])
+    );
 
     return (
         <FlatList

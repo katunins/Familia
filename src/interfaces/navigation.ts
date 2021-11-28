@@ -17,7 +17,7 @@ export type RootStackParamList = {
     NoteDetailScreen: { note: INote }
     AddNoteStepOne: undefined
     AddNoteStepSecond: undefined
-    TreeScreen: { roots: ITreeRoot}
+    TreeScreen: undefined
 };
 
 export interface INavigation {

@@ -18,24 +18,19 @@ import TreeScreen from "../screens/tree/tree";
 const TabsNavigator = () => {
 
     const selectUser = useSelector(userSelector);
-    const notes = useSelector(notesSelector)
     const userAuth = Object.keys(selectUser).length > 0
 
     const Tab = createBottomTabNavigator()
     return (
         <Tab.Navigator
-            // initialRouteName={notes.length === 0 ? 'personalStack' : 'notesListStack'}
-            initialRouteName={'helloScreen'}
+            // initialRouteName={'helloScreen'}
             screenOptions={{tabBarShowLabel: false}}
         >
             <Tab.Screen
-                name={'helloScreen'}
-                component={TreeScreen}
-                // component={HelloScreen}
+                name={'treeScreen'}
+                component={userAuth ? TreeScreen : HelloScreen}
                 options={{
                     tabBarIcon: ({color}) => <InfoTabIcon color={color}/>,
-                    headerShown: false,
-                    tabBarShowLabel: false
                 }}
             />
 

@@ -19,6 +19,8 @@ import {setModal} from "../store/slice/modal.slice";
 import {useDispatch} from "react-redux";
 import CameraIcon from "../ui/svg/cameraIcon";
 import GalleryIcon from "../ui/svg/galeryIcon";
+import SelectParentsComponent from "./selectParents";
+import SeparatorComponent from "./separator";
 
 interface IProps {
     initialRelative: IRelative;
@@ -125,6 +127,7 @@ const RelativeComponent: React.FunctionComponent<IProps> =
                         editMode={editMode}
                         imageChangeButton={addImageModal}
                     />
+
                     <View style={[globalStyles.paddingWrapper, globalStyles.paddingTop]}>
                         <EditPersonalComponent
                             text={relative.name}
@@ -132,7 +135,18 @@ const RelativeComponent: React.FunctionComponent<IProps> =
                             editMode={editMode}
                             editDescription={'Имя'}
                         />
-
+                        <SelectParentsComponent
+                            description={'Мать'}
+                            editMode={editMode}
+                            value={relative.parents.mother}
+                            setValue={(id)=>setRelative({...relative, parents: {...relative.parents, mother: id}})}
+                        />
+                        <SelectParentsComponent
+                            description={'Отец'}
+                            editMode={editMode}
+                            value={relative.parents.father}
+                            setValue={(id)=>setRelative({...relative, parents: {...relative.parents, father: id}})}
+                        />
                         <CalendarComponent
                             editMode={editMode}
                             editDescription={'Дата рождения'}
@@ -140,16 +154,19 @@ const RelativeComponent: React.FunctionComponent<IProps> =
                             setDate={data => setRelative({...relative, birthday: data})}
                         />
 
-                        {editMode && (
-                            <RelativeTypesListComponent
-                                editDescription={'Тип родственника'}
-                                type={type}
-                                setType={setType}
-                            />
-                        )}
+                        {/*{editMode && (*/}
+                        {/*    <RelativeTypesListComponent*/}
+                        {/*        editDescription={'Тип родственника'}*/}
+                        {/*        type={type}*/}
+                        {/*        setType={setType}*/}
+                        {/*    />*/}
+                        {/*)}*/}
+
+
 
                     </View>
-                    {(relative.about !== '' || editMode) && <CloudContainer
+                    {(relative.about !== '' || editMode) &&
+                    <CloudContainer
                         text={relative.about}
                         editDescription={'Краткая биография'}
                         editMode={editMode}

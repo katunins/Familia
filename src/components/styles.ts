@@ -299,6 +299,19 @@ const styles = createStyles({
     loaderWrapper: {
         marginRight: '1rem',
         backgroundColor: 'red'
+    },
+    parentSelectorContainer : {width: '100%', marginVertical: '1rem'},
+    parentSelectorWrapper: {
+        flexDirection: 'row',
+        width: '100%',
+        alignItems: 'center',
+        marginVertical: '0.5rem'
+    },
+    parentSelectorImage: {
+        marginRight: '1rem'
+    },
+    parentSelectorText: {
+        fontSize: '1rem'
     }
 });
 export default styles;

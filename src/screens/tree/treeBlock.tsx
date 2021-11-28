@@ -15,18 +15,18 @@ export interface ITreeRoot {
     }[]
     brothers: ITreeItem[]
 }
-interface IProps {
+export interface ITreeProps {
     roots: ITreeRoot[]
     children: ITreeItem[]
 }
 
-const TreeBlock: React.FunctionComponent<IProps> = ({roots, children}) => {
+const TreeBlock: React.FunctionComponent<ITreeProps> = ({roots, children}) => {
     return (
         <View style={{alignItems: 'center'}}>
             <View style={{flexDirection: 'row'}}>
                 {roots.map((item, index)=>
-                    <View style={{marginHorizontal: 20, justifyContent: 'flex-end'}}>
-                        <TreeElementComponent element={item} position={getTreePosition(index, roots.length)} key={index}/>
+                    <View style={{marginHorizontal: 20, justifyContent: 'flex-end'}}  key={index}>
+                        <TreeElementComponent element={item} position={getTreePosition(index, roots.length)}/>
                     </View>
                 )}
             </View>

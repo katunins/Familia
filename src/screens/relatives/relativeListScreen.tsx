@@ -10,6 +10,7 @@ import {initialRelative} from "../../config";
 import {getRelativeType} from "../../helpers/utils";
 import {actionLoadRelatives} from "../../store/slice/relatives.slice";
 import {NativeStackScreenProps} from "react-native-screens/native-stack";
+import {useFocusEffect} from "@react-navigation/native";
 
 /**
  * Экран со списком родственников
@@ -17,14 +18,16 @@ import {NativeStackScreenProps} from "react-native-screens/native-stack";
  * @constructor
  */
 type IProps = NativeStackScreenProps<RootStackParamList, 'RelativeListScreen'>;
+
 const RelativeListScreen: React.FunctionComponent<IProps> = ({navigation, route}) => {
 
     const selectRelatives = useSelector(relativesSelector);
-    const selectUser = useSelector(userSelector);
+    const user = useSelector(userSelector);
     const dispatch = useDispatch()
     const addNewRelative = () => {
+        // @ts-ignore
         navigation.navigate('RelativeFormScreen', {
-            relativeData: {...initialRelative, access: {...initialRelative.access, creatorId: selectUser._id}}
+            relativeData: {...initialRelative, access: {...initialRelative.access, creatorId: user._id}}
         })
     }
 
@@ -34,8 +37,18 @@ const RelativeListScreen: React.FunctionComponent<IProps> = ({navigation, route}
     }
 
     const onRefresh = () => {
-        dispatch(actionLoadRelatives(selectUser.relatives))
+        dispatch(actionLoadRelatives())
     }
+
+
+
+    useFocusEffect(
+        React.useCallback(() => {
+            dispatch(actionLoadRelatives());
+            // return () => dispatch(showTabBarNavigation());
+        }, [])
+    );
+
     return (
         <View style={globalStyles.containerColor}>
             <FlatList
@@ -43,7 +56,8 @@ const RelativeListScreen: React.FunctionComponent<IProps> = ({navigation, route}
                 renderItem={({item}) =>
                     <RelativeBigComponent
                         item={item}
-                        type={getRelativeType({relative: item, user: selectUser})}
+                        type={getRelativeType({relative: item, user: user})}
+                    // @ts-ignore
                         editButton={editRelative} navigation={navigation}
                     />}
                 refreshing={true}

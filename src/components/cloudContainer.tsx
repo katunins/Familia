@@ -24,11 +24,12 @@ const CloudContainer: React.FunctionComponent<ICloudContainer> = ({
       {editMode ? (
           <>
             <Text style={styles.editDescription}>{editDescription}</Text>
-            <TextInput style={styles.cloudText}
+            <TextInput style={[globalStyles.textInput, {height: 100}]}
                        value={text}
                        multiline={true}
+                       numberOfLines={5}
                        onChangeText={setAbout}
-                       placeholder={'Интересные истории из жизни человка ...'}
+                       placeholder={'Расскажите подробнее ...'}
                        placeholderTextColor={EStyleSheet.value('$colorDarkGrey')}
             />
           </>

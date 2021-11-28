@@ -29,13 +29,7 @@ export const actionDeleteRelative = createAction(
     },
 );
 
-export const actionLoadRelatives = createAction(
-    '_relatives/load', function prepare(payload: IRelativeIndex[]) {
-        return {
-            payload,
-        };
-    },
-);
+export const actionLoadRelatives = createAction('_relatives/load');
 const initialState: IRelative[] = [];
 
 const relativesSlice = createSlice({

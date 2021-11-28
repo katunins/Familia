@@ -66,7 +66,7 @@ function* sagaSignIn(action: PayloadAction<{ data: ILoginData }>) {
 
         yield put(setUser(responseData));
 
-        yield put(actionLoadRelatives(responseData.relatives))
+        yield put(actionLoadRelatives())
         yield put(actionLoadNotes())
 
         yield put(actionLoaderOff());

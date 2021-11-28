@@ -18,7 +18,6 @@ import {_sagaNewUserPic, requestSaga} from "./network.saga";
 import {ISaveRelativeCallback} from "../../screens/relatives/relativeFormScreen";
 import {userSelector} from "../selectors";
 import {actionUserUpdate} from "../slice/user.slice";
-import querystring from "querystring";
 
 const takeLatest: any = Eff.takeLatest;
 
@@ -29,11 +28,11 @@ function* watchRelative() {
     yield takeLatest(actionLoadRelatives.type, sagaLoadRelatives);
 }
 
-function* sagaLoadRelatives(action: PayloadAction<IRelativeIndex[]>) {
+function* sagaLoadRelatives() {
     try {
-        const relativesIds = action.payload.map(item => item.id)
+        const user: IUser = yield select(userSelector)
         const relativesArr: IRelative[] = yield call(requestSaga, {
-            endPoint: `relatives?${querystring.stringify({relativesIds})}`, method: 'GET'
+            endPoint: `relatives?userId=${user._id}`, method: 'GET'
         })
         yield put(setRelatives(relativesArr))
     } catch (error) {

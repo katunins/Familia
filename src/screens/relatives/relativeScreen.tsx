@@ -2,13 +2,15 @@ import React from "react";
 import {RootStackParamList} from "../../interfaces/navigation";
 import {NativeStackScreenProps} from "react-native-screens/native-stack";
 import {FlatList, Text, View} from "react-native";
-import {useSelector} from "react-redux";
-import {notesSelector, relativesSelector} from "../../store/selectors";
+import {useDispatch, useSelector} from "react-redux";
+import {notesSelector, relativesSelector, userSelector} from "../../store/selectors";
 import NoteComponent from "../../components/note";
 import globalStyles from "../../styles/styles";
 import {uriParse} from "../../helpers/utils";;
 import FastImage from "react-native-fast-image";
 import styles from "./styles";
+import {actionLoadRelatives} from "../../store/slice/relatives.slice";
+import {useFocusEffect} from "@react-navigation/native";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'RelativeScreen'>;
 const RelativeScreen: React.FunctionComponent<Props> = ({navigation, route}) => {
