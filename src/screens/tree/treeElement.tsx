@@ -1,22 +1,17 @@
-import {FlatList, Text, View, ViewStyle} from "react-native";
 import ItemTreeComponent from "./item";
 import {treeItemSize} from "../../config";
 import React from "react";
-import TreeEmptyElement from "./treeEmpty";
+import {FlatList, View, ViewStyle} from "react-native";
 import VerticalLineComponent from "./verticalLine";
-import WrapperLine from "./wrapperLine";
-import {ITreeRoot} from "./treeBlock";
+import WrapperLine, {ITreeElementPosition} from "./wrapperLine";
+import {getTreePosition} from "../../helpers/utils";
+import {ITreeRoot} from "./tree";
 import BrothersLineComponent from "./brothersLine";
 import FamilyElemComponent from "./familyElem";
-import {ITreeItem} from "./tree";
-import {getTreePosition} from "../../helpers/utils";
-
-export interface ITreeElementPosition {
-    position?: 'center' | 'left' | 'right'
-}
 
 interface IProps extends ITreeElementPosition {
-    element: ITreeRoot,
+    element: ITreeRoot
+    width?: number
 }
 
 /**
@@ -26,7 +21,7 @@ interface IProps extends ITreeElementPosition {
  * @constructor
  */
 const TreeElementComponent: React.FunctionComponent<IProps> =
-    ({element, position = 'center'}) => {
+    ({element, position = 'center', width}) => {
         let alignItems: ViewStyle['alignItems']
         switch (position) {
             case 'center':
@@ -38,6 +33,7 @@ const TreeElementComponent: React.FunctionComponent<IProps> =
             case 'right':
                 alignItems = 'flex-start'
                 break
+                alignItems = 'center'
         }
         // Если root один без жены, то распределим братьев симмитрично
         const centeredBrothers = {
@@ -47,23 +43,21 @@ const TreeElementComponent: React.FunctionComponent<IProps> =
         if (element.brothers.length > 0 && position === 'center') {
             const minHalf = Math.floor(element.brothers.length / 2)
             // @ts-ignore
-            centeredBrothers.left = element.brothers.slice(0, minHalf)
+            centeredBrothers.right = element.brothers.slice(0, minHalf)
             // @ts-ignore
-            centeredBrothers.right = element.brothers.slice(minHalf)
+            centeredBrothers.left = element.brothers.slice(minHalf)
         }
         return (
-            <View style={{alignItems: alignItems}}>
+            <View style={{alignItems: alignItems, width}}>
 
                 {/*Линия дедов с прадедами*/}
                 <View style={[{flex: 1, alignItems: 'stretch'}]}>
-                    <FlatList data={element.parents}
-                              // contentContainerStyle={{alignItems: 'flex-end'}}
-                              renderItem={({item, index}) =>
-                                  <FamilyElemComponent
-                                      item={item}
-                                  position={getTreePosition(index, element.parents.length)}
-                                      // position={position === 'left' ? (index === 0 ? position : 'center'):(index === 0 ? 'center' : position)}
-                                  />}
+                    <FlatList data={element.parents} renderItem={({item, index}) =>
+                        <FamilyElemComponent
+                            item={item}
+                            position={getTreePosition(index, element.parents.length)}
+                            // position={position === 'left' ? (index === 0 ? position : 'center'):(index === 0 ? 'center' : position)}
+                        />}
                               horizontal={true} scrollEnabled={false}
                     />
                     <View style={{

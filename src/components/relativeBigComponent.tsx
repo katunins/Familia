@@ -12,12 +12,14 @@ import {resetModal, setModal} from "../store/slice/modal.slice";
 import AutoHeightImageComponent from "./autoHeightImage";
 import {stringDateParse} from "../helpers/utils";
 import {INavigation} from "../interfaces/navigation";
+import {useNavigation} from "@react-navigation/native";
+import ButtonComponent from "./button";
 
-interface IProps extends IRelativeTypes {
+interface IProps {
     item: IRelative,
     editButton: (data: IRelative) => void
-    navigation: INavigation['navigation']
     hideButtons?: boolean
+    type: string
 }
 
 const RelativeBigComponent: React.FunctionComponent<IProps> = (
@@ -25,10 +27,10 @@ const RelativeBigComponent: React.FunctionComponent<IProps> = (
         item,
         editButton,
         type,
-        hideButtons=false,
-        navigation
+        hideButtons = false,
     }) => {
     const dispatch = useDispatch()
+    const navigation = useNavigation()
     const deleteButton = () => {
         dispatch(setModal({
             title: 'Внимание!',
@@ -58,10 +60,6 @@ const RelativeBigComponent: React.FunctionComponent<IProps> = (
                 <Pressable onPress={relativeDetail}>
                     <AutoHeightImageComponent uri={item.userPic || defaultUserPic}/>
                 </Pressable>
-                {!hideButtons && <View style={styles.circleIconsContainer}>
-                    <Pressable onPress={() => editButton(item)} style={styles.circleIconWrapper}><EditIcon/></Pressable>
-                    <Pressable onPress={deleteButton} style={[styles.circleIconWrapper]}><TrashIcon/></Pressable>
-                </View>}
             </View>
 
             <View style={[globalStyles.rowSpaceBetween, globalStyles.paddingWrapper]}>
@@ -71,9 +69,12 @@ const RelativeBigComponent: React.FunctionComponent<IProps> = (
                 </View>
                 <View style={styles.rightBigComponentColumn}>
                     <Text>{stringDateParse(item.birthday)}</Text>
-                    <Text style={styles.typeBigComponent}>{
-                        relativeTypes[type]}</Text>
+                    <Text style={styles.typeBigComponent}>{type}</Text>
                 </View>
+            </View>
+            <View style={[globalStyles.paddingWrapper, globalStyles.marginLine]}>
+                <ButtonComponent title={'Редактировать'} type={'invert'} callBack={() => editButton(item)}/>
+                <ButtonComponent title={'Удалить'} callBack={deleteButton}/>
             </View>
         </>
     )

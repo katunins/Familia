@@ -1,7 +1,10 @@
 import {StyleProp, View, ViewStyle} from "react-native";
 import {treeItemSize} from "../../config";
 import React from "react";
-import {ITreeElementPosition} from "./treeElement";
+
+export interface ITreeElementPosition {
+    position?: 'center' | 'left' | 'right'
+}
 
 interface IProps extends ITreeElementPosition {
     items: number

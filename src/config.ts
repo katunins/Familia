@@ -79,7 +79,8 @@ export const treeItemSize = {
     marginHorizontal: 0,
     marginVertical: 5,
     LRShift: 20,
-    borderRadius: 5
+    borderRadius: 5,
+    horizontalLine: 40
 }
 
 export default env

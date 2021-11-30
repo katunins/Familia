@@ -17,6 +17,7 @@ import {useDispatch} from "react-redux";
 import {setModal} from "../store/slice/modal.slice";
 import CameraIcon from "../ui/svg/cameraIcon";
 import GalleryIcon from "../ui/svg/galeryIcon";
+import SelectParentsComponent from "./selectParents";
 
 interface IProps {
     initialUser: IUser
@@ -124,6 +125,19 @@ const UserComponent: React.FunctionComponent<IProps> =
                             setText={data => setUser({...user, name: data})}
                             editMode={editMode}
                             editDescription={'Имя'}
+                        />
+
+                        <SelectParentsComponent
+                            description={'Мать'}
+                            editMode={editMode}
+                            value={user.parents.mother}
+                            setValue={(id)=>setUser({...user, parents: {...user.parents, mother: id}})}
+                        />
+                        <SelectParentsComponent
+                            description={'Отец'}
+                            editMode={editMode}
+                            value={user.parents.father}
+                            setValue={(id)=>setUser({...user, parents: {...user.parents, father: id}})}
                         />
 
                         <CalendarComponent

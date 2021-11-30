@@ -4,7 +4,7 @@ import {treeItemSize} from "../../config";
 
 const HorizontalLineComponent = ({transparent}: { transparent?: boolean }) => {
     return <View style={[{
-        width: 40,
+        width: treeItemSize.horizontalLine,
         height: 1,
         backgroundColor: 'grey',
         alignContent: 'center',

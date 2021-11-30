@@ -38,7 +38,7 @@ export interface IGeneralUser extends IParents{
     about: string;
 }
 
-interface IServerId {
+export interface IServerId {
     _id: string
 }
 

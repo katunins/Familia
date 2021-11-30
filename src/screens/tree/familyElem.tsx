@@ -2,9 +2,8 @@ import React from "react";
 import {FlatList, View, ViewStyle} from "react-native";
 import ItemTreeComponent from "./item";
 import {treeItemSize} from "../../config";
-import WrapperLine from "./wrapperLine";
+import WrapperLine, {ITreeElementPosition} from "./wrapperLine";
 import VerticalLineComponent from "./verticalLine";
-import {ITreeElementPosition} from "./treeElement";
 import {ITreeItem} from "./tree";
 import TreeEmptyElement from "./treeEmpty";
 
@@ -30,20 +29,20 @@ const FamilyElemComponent: React.FunctionComponent<IProps> = ({position, item}) 
     }
     return (
         <View style={{alignItems: alignItems, justifyContent: 'flex-end', minWidth: 2*(treeItemSize.containerWidth + treeItemSize.marginHorizontal*2)}}>
-                <FlatList data={item.grandParents}
-                          renderItem={({item}) => <ItemTreeComponent item={item}/>}
-                          scrollEnabled={false} horizontal={true} style={{flexDirection: 'row'}}
-                    ListHeaderComponent={position === 'right' ? <TreeEmptyElement/> : undefined}
-                    ListFooterComponent={position === 'left' ? <TreeEmptyElement/> : undefined}
-                />
+            <FlatList data={item.grandParents}
+                      renderItem={({item}) => <ItemTreeComponent item={item}/>}
+                      scrollEnabled={false} horizontal={true} style={{flexDirection: 'row'}}
+                      ListHeaderComponent={position === 'right' ? <TreeEmptyElement/> : undefined}
+                      ListFooterComponent={position === 'left' ? <TreeEmptyElement/> : undefined}
+            />
 
-                <View style={{
-                    alignItems: 'stretch',
-                    marginHorizontal: (treeItemSize.containerWidth / 2 + treeItemSize.marginHorizontal),
-                }}>
-                    <WrapperLine items={item.grandParents.length} type={'top'} position={position}/>
-                    {item.grandParents.length>0 && <VerticalLineComponent alignItems={alignItems}/>}
-                </View>
+            <View style={{
+                alignItems: 'stretch',
+                marginHorizontal: (treeItemSize.containerWidth / 2 + treeItemSize.marginHorizontal),
+            }}>
+                <WrapperLine items={item.grandParents.length} type={'top'} position={position}/>
+                {item.grandParents.length > 0 && <VerticalLineComponent alignItems={alignItems}/>}
+            </View>
                 <ItemTreeComponent item={{...item.parent}}/>
         </View>
     )

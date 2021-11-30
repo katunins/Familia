@@ -34,28 +34,39 @@ const SelectParentsComponent: React.FunctionComponent<IProps> = ({value, setValu
     const onPress = () => {
         dispatch(setModal({
             title: 'Выберете родственника',
-            component: <RelativesSelectorComponent relatives={relatives} user={user} onPress={(id)=> {
+            component: <RelativesSelectorComponent relatives={relatives} user={user} onPress={(id) => {
                 setValue(id)
                 closeModal()
-            }}/>,
+            }} clearParents={clearParents}/>,
             buttons: [{title: 'Отменить'}]
         }))
+    }
+
+    const clearParents = () => {
+        setValue('')
+        closeModal()
     }
     type IRelativesSelector = {
         relatives: IRelative[]
         user: IUser
         onPress: (id: string) => void
+        clearParents: () => void
     }
-    const RelativesSelectorComponent = ({relatives, user, onPress}: IRelativesSelector) => {
+    const RelativesSelectorComponent = ({relatives, user, onPress, clearParents}: IRelativesSelector) => {
         return <FlatList data={[...relatives, user]} style={styles.parentSelectorContainer} renderItem={({item}) =>
             <Pressable style={styles.parentSelectorWrapper} onPress={() => onPress(item._id)}>
                 {/*@ts-ignore*/}
-                <FastImage style={[globalStyles.miniUserPic, styles.parentSelectorImage]} source={uriParse(item.userPic)}/>
+                <FastImage style={[globalStyles.miniUserPic, styles.parentSelectorImage]}
+                           source={uriParse(item.userPic)}/>
                 <Text style={styles.parentSelectorText}>{item.name}</Text>
             </Pressable>
-        }/>
+        } ListFooterComponent={<Pressable style={styles.parentSelectorWrapper} onPress={clearParents}>
+            {/*@ts-ignore*/}
+            <FastImage style={[globalStyles.miniUserPic, styles.parentSelectorImage, globalStyles.border]}/>
+            <Text style={styles.parentSelectorText}>Без родителя</Text>
+        </Pressable>}/>
     }
-
+    if (!editMode) return null
     return (
         <View style={styles.inputContainer}>
             <Text style={styles.editDescription}>{description}</Text>

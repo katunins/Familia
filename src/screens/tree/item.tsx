@@ -1,9 +1,9 @@
 import React from "react";
 import {Pressable, Text, View} from "react-native";
-import styles from "./styles";
 import FastImage from "react-native-fast-image";
 import {uriParse} from "../../helpers/utils";
 import {treeItemSize} from "../../config";
+import styles from "./styles";
 import {ITreeItem} from "./tree";
 
 interface IProps {
@@ -31,7 +31,7 @@ const ItemTreeComponent: React.FunctionComponent<IProps> =
                            }]}>
                     {/*@ts-ignore*/}
                     <FastImage style={imageStyle} source={uriParse(userPic)} resizeMode={'cover'}/>
-                    <Text style={styles.name}>{name}</Text>
+                    <View style={styles.nameWrapper}><Text numberOfLines={3} style={styles.name}>{name}</Text></View>
                 </Pressable>
             </View>
         )

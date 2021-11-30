@@ -10,6 +10,7 @@ import {userSelector} from "../../store/selectors";
 import RelativeComponent from "../../components/relativeComponent";
 import {Image} from "react-native-image-crop-picker";
 import {actionUserUpdate} from "../../store/slice/user.slice";
+import {useFocusEffect} from "@react-navigation/native";
 
 export interface ISaveRelativeCallback extends IRelativeTypes {
     relativeData: IRelative;
@@ -70,6 +71,14 @@ const RelativeFormScreen: React.FunctionComponent<IProps> =
         const cancelCallback = () => {
             navigation.goBack()
         }
+
+        useFocusEffect(
+            React.useCallback(() => {
+                return () => {
+                    navigation.goBack()
+                };
+            }, [])
+        );
 
         return (
             <ScrollView>

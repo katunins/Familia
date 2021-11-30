@@ -50,7 +50,7 @@ const NotesListScreen = ({navigation, searchText, setSearchText}: IProps) => {
     return (
         <FlatList
             style={globalStyles.containerColor}
-            data={selectNotes.filter(item => item.creator === selectUser._id && filterList(item))}
+            data={selectNotes.filter(item => item.creator === selectUser._id && filterList(item)).reverse()}
             listKey={`main`}
             refreshing={true}
             refreshControl={

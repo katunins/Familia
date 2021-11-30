@@ -8,40 +8,25 @@ const styles = createStyles({
         borderColor: 'grey',
         borderWidth: 2
     },
+    verticalLineWrapper: {
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+    },
     itemWrapper: {
         alignItems: 'center',
     },
-    lineWrapper: {
-        flexDirection: 'row',
-    },
-    lineBlockContainer: {
-        alignItems: 'center',
-    },
-    verticalLineWrapper: {
-        alignItems: 'center',
-        justifyContent: 'flex-start'
-    },
     name: {
-        fontSize: 14,
+        fontSize: 12,
         marginTop: 8,
-        textAlign: 'center'
+        textAlign: 'center',
     },
-    type: {
-        fontSize: 14,
-        color: '$colorGrey'
+    nameWrapper: {
+        minHeight: 52,
+        justifyContent: 'center'
     },
-    horizontalLine: {
-        height: 1,
-        backgroundColor: '$colorGrey',
-    },
-    verticalLine: {
-        width: 1,
-        backgroundColor: '$colorGrey'
-    },
-    verticalMiniLine: {
-        width: 1,
-        height: 25,
-        backgroundColor: '$colorGrey'
+    parentsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center'
     }
 });
 export default styles;

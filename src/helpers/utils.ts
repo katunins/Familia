@@ -13,30 +13,34 @@ import {IServerImage} from "../store/saga/network.saga";
 import moment from 'moment'
 import 'moment/locale/ru'
 
-/**
- * Обработка ссылки на загруженную фотографию
- * проверяет и если ссылка локальная, то выгружает на сервер и возвращает ссылку на сервер
- */
-
-interface INeedToUpload {
-    userPic: string;
-    id: string;
+type IGetType = {
+    root: IUser | IRelative
+    item: IUser | IRelative
+    relatives: IRelative[]
 }
-
-export const needToUpload = async ({userPic, id}: INeedToUpload) => {
-    try {
-        if (userPic.indexOf('http') > -1) return false;
-        const res = await FirebaseServices.putImage({
-            pathToFile: userPic,
-            remoteFolder: `${id}/userPic`,
-        }) as FirebaseFirestoreTypes.DocumentData
-        const url = await storage().ref(res.metadata.fullPath).getDownloadURL();
-        return url;
-    } catch (e) {
-        console.log(e);
-        return false;
+export const getType:(data:IGetType)=>string = ({root, item, relatives}) => {
+    const _relativeById = (id:string)=>relatives.find(item=>item._id === id)
+    const _getChildren = (id:string)=>relatives.find(item=>item.parents.mother === id || item.parents.father === id)
+    const _isSpouse = (rootId:string, itemId:string) => {
+        const itemChild = _getChildren(itemId)
+        const rootChild = _getChildren(rootId)
+        if (!itemChild || !rootChild) return false
+        return itemChild.parents.mother === rootChild.parents.mother
     }
-};
+    const result = ''
+    if (root.parents.mother === item._id) return 'Мама'
+    if (root.parents.father === item._id) return 'Отец'
+    if (root.parents.mother === item.parents.mother) return 'Братья и сестры'
+    if (_relativeById(root.parents.mother)?.parents.mother === item._id) return 'Тетя'
+    if (_relativeById(root.parents.mother)?.parents.father === item._id) return 'Дядя'
+    if (item.parents.mother === root._id || item.parents.father === root._id) return 'Дети'
+    if (_isSpouse(root._id, item._id)) return 'Супруг'
+    if (_relativeById(root.parents.mother)?.parents.mother === item._id) return 'Бабушка по Маме'
+    if (_relativeById(root.parents.mother)?.parents.father === item._id) return 'Дед по Маме'
+    if (_relativeById(root.parents.father)?.parents.mother === item._id) return 'Бабушка по Отцу'
+    if (_relativeById(root.parents.father)?.parents.father === item._id) return 'Дед по Отцу'
+    return result
+}
 
 /**
  * Функция высчитывания динамического размера

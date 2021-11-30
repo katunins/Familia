@@ -4,7 +4,7 @@ import RelativeFormScreen from "../screens/relatives/relativeFormScreen";
 import RelativeListScreen from "../screens/relatives/relativeListScreen";
 import {RootStackParamList} from "../interfaces/navigation";
 import LoaderComponent from "../components/loader";
-import RelativeScreen from "../screens/relatives/relativeScreen";
+import RelativeDetailScreen from "../screens/relatives/detailScreen";
 
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -20,17 +20,17 @@ const RelativeStack = () => {
                 }}
             />
             <Stack.Screen
+                name={'RelativeDetailScreen'}
+                component={RelativeDetailScreen}
+                options={{
+                    title: '',
+                }}
+            />
+            <Stack.Screen
                 name={'RelativeFormScreen'}
                 component={RelativeFormScreen}
                 options={{
                     title: 'Редактирование родственника',
-                    headerRight: ()=><LoaderComponent/>
-                }}
-            />
-            <Stack.Screen
-                name={'RelativeScreen'}
-                component={RelativeScreen}
-                options={{
                     headerRight: ()=><LoaderComponent/>
                 }}
             />

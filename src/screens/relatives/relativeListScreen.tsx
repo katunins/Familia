@@ -7,10 +7,13 @@ import RelativeBigComponent from "../../components/relativeBigComponent";
 import {IRelative} from "../../interfaces/store";
 import {RootStackParamList} from "../../interfaces/navigation";
 import {initialRelative} from "../../config";
-import {getRelativeType} from "../../helpers/utils";
+import {getType, uriParse} from "../../helpers/utils";
 import {actionLoadRelatives} from "../../store/slice/relatives.slice";
 import {NativeStackScreenProps} from "react-native-screens/native-stack";
 import {useFocusEffect} from "@react-navigation/native";
+import FastImage from "react-native-fast-image";
+import styles from "./styles";
+import ButtonComponent from "../../components/button";
 
 /**
  * Экран со списком родственников
@@ -19,21 +22,22 @@ import {useFocusEffect} from "@react-navigation/native";
  */
 type IProps = NativeStackScreenProps<RootStackParamList, 'RelativeListScreen'>;
 
-const RelativeListScreen: React.FunctionComponent<IProps> = ({navigation, route}) => {
+const RelativeListScreen: React.FunctionComponent<IProps> = ({route, navigation}) => {
 
     const selectRelatives = useSelector(relativesSelector);
     const user = useSelector(userSelector);
     const dispatch = useDispatch()
     const addNewRelative = () => {
-        // @ts-ignore
-        navigation.navigate('RelativeFormScreen', {
-            relativeData: {...initialRelative, access: {...initialRelative.access, creatorId: user._id}}
-        })
+        navigation.navigate('RelativeFormScreen',
+            {
+                relativeData: {...initialRelative, access: {...initialRelative.access, creatorId: user._id}}
+            }
+        )
     }
 
-    const editRelative = (item: IRelative) => {
+    const detailRelative = (item: IRelative) => {
         // @ts-ignore
-        navigation.navigate('RelativeFormScreen', {relativeData: item});
+        navigation.navigate('RelativeDetailScreen', {relativeData: item});
     }
 
     const onRefresh = () => {
@@ -41,11 +45,10 @@ const RelativeListScreen: React.FunctionComponent<IProps> = ({navigation, route}
     }
 
 
-
     useFocusEffect(
         React.useCallback(() => {
             dispatch(actionLoadRelatives());
-            // return () => dispatch(showTabBarNavigation());
+            return;
         }, [])
     );
 
@@ -54,12 +57,17 @@ const RelativeListScreen: React.FunctionComponent<IProps> = ({navigation, route}
             <FlatList
                 data={selectRelatives}
                 renderItem={({item}) =>
-                    <RelativeBigComponent
-                        item={item}
-                        type={getRelativeType({relative: item, user: user})}
-                    // @ts-ignore
-                        editButton={editRelative} navigation={navigation}
-                    />}
+                    <Pressable style={[globalStyles.row, globalStyles.paddingWrapper, styles.itemContainer]}
+                               onPress={() => detailRelative(item)}>
+                        {/*@ts-ignore*/}
+                        <FastImage style={styles.userPicWrapper}
+                                   source={uriParse(item.userPic)} resizeMode={'cover'}/>
+                        <View style={styles.nameWrapper}>
+                            <Text style={styles.relativeName}>{item.name}</Text>
+                            {item.birthday !== '' && <Text style={globalStyles.lightText}>{item.birthday}</Text>}
+                            <Text>{getType({root: user, item, relatives: selectRelatives})}</Text>
+                        </View>
+                    </Pressable>}
                 refreshing={true}
                 refreshControl={
                     <RefreshControl
@@ -67,15 +75,10 @@ const RelativeListScreen: React.FunctionComponent<IProps> = ({navigation, route}
                         onRefresh={onRefresh}
                     />
                 }
-                ItemSeparatorComponent={()=><View style={globalStyles.marginLine}/>}
                 showsVerticalScrollIndicator={false}
                 ListFooterComponentStyle={globalStyles.paddingWrapper}
                 ListFooterComponent={
-                    <Pressable
-                        style={[globalStyles.strokeForm, globalStyles.marginTop, globalStyles.marginBottom]}
-                        onPress={addNewRelative}>
-                        <Text>Добавить родственника</Text>
-                    </Pressable>
+                    <ButtonComponent title={'Добавить родственника'} type={'invert'} callBack={addNewRelative}/>
                 }
             />
         </View>

@@ -9,6 +9,7 @@ const ImageLoader = ({setNewImage}: IProps) => {
     const options: Options = {
         mediaType: 'photo',
         freeStyleCropEnabled: true,
+        avoidEmptySpaceAroundImage: true,
         forceJpg: true,
         cropping: true,
         width: 2000
