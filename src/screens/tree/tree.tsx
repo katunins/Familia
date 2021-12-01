@@ -4,8 +4,7 @@ import {NativeStackScreenProps} from "react-native-screens/native-stack";
 import {RootStackParamList} from "../../interfaces/navigation";
 import {relativesSelector, userSelector} from "../../store/selectors";
 import {useSelector} from "react-redux";
-import {IParents} from "../../interfaces/store";
-import {maxHorizontalTreeItems, treeBuilder} from "../../helpers/treeBuilder";
+import {IParents, IUser} from "../../interfaces/store";
 import WrapperLine from "./wrapperLine";
 import VerticalLineComponent from "./verticalLine";
 import ItemTreeComponent from "./item";
@@ -13,6 +12,11 @@ import styles from "./styles";
 import {getTreePosition} from "../../helpers/utils";
 import TreeElementComponent from "./treeElement";
 import TreeFamilyComponent from "./treeFamily";
+import RootWrapperComponent from "./rootWrapper";
+import {getBrothers, getChildren, getSpouse, itemFromUser} from "../../helpers/tree";
+import HorizontalLineComponent from "./horizontalLine";
+import item from "./item";
+import TreeEmptyElement from "./treeEmpty";
 
 /**
  * Элемент древа
@@ -22,20 +26,6 @@ export interface ITreeItem extends IParents {
     name: string
     userPic: string
     type?: string
-}
-
-export interface ITreeRoot {
-    item: ITreeItem
-    parents: {
-        parent: ITreeItem
-        grandParents: ITreeItem[]
-    }[]
-    brothers: ITreeItem[]
-}
-
-export interface ITree {
-    roots: ITreeRoot[]
-    children: ITreeItem[]
 }
 
 /**
@@ -52,14 +42,27 @@ const TreeScreen: React.FunctionComponent<NativeStackScreenProps<RootStackParamL
         const user = useSelector(userSelector)
         const relatives = useSelector(relativesSelector)
 
+        // создадим объединенный массив пользователя и родственников только из из нужных элементов
+        const unionArr: ITreeItem[] = relatives.map(item => itemFromUser(item))
+        unionArr.push(itemFromUser(user))
+
         const rootUser = route.params?.user || user
-        const [tree, setTree] = useState<ITree>(treeBuilder({relatives, user, item: user}))
+        // const spouse = getSpouse({user: itemFromUser(rootUser), unionArr})
+        const brothers = getBrothers({user: itemFromUser(rootUser), unionArr})
+        // const children = getChildren({parent:itemFromUser(rootUser), unionArr})
+
+        navigation.setOptions({headerTitle: rootUser.name, headerShown: true})
+
         const [scrollDirection, setScrollDirection] = useState('')
 
-        useEffect(() => {
-            navigation.setOptions({headerTitle: rootUser.name, headerShown: true})
-            setTree(treeBuilder({relatives, user, item: user}))
-        }, [relatives])
+        // const getMaxWidth = (data: ITreeRoot[]) => {
+        //     let max = 0
+        //     data.map(item => {
+        //         if (item.parents.length > max) max = item.parents.length
+        //         if (item.brothers.length > max) max = item.brothers.length
+        //     })
+        //     return max
+        // }
 
         return (<ScrollView style={{minWidth: '100%', backgroundColor: 'white'}} horizontal={true} centerContent={true}
                             showsHorizontalScrollIndicator={false}
@@ -70,29 +73,24 @@ const TreeScreen: React.FunctionComponent<NativeStackScreenProps<RootStackParamL
                             scrollEnabled={scrollDirection !== 'horizontal'}
                             onScrollBeginDrag={() => setScrollDirection('vertical')}>
 
-                    {/*Зона родителей, братьев и бабушек*/}
-
-                    <View style={styles.parentsContainer}>
-                        {tree.roots.map((item, index) =>
-                            <View style={{marginHorizontal: 20, justifyContent: 'flex-end'}} key={index}>
-                                <TreeFamilyComponent treeElement={}/>
-                                {/*<TreeElementComponent*/}
-                                {/*    element={item} position={getTreePosition(index, tree.roots.length)}*/}
-                                {/*    width={maxHorizontalTreeItems(tree.roots)}/>*/}
-                            </View>
-                        )}
+                    <View style={{flexDirection: 'row'}}>
+                        <FlatList data={brothers}
+                                  renderItem={({item}) => <ItemTreeComponent item={item}/>}
+                                  horizontal={true} scrollEnabled={false}
+                                  ListFooterComponent={HorizontalLineComponent}
+                        />
+                        <ItemTreeComponent item={itemFromUser(rootUser)}/>
+                        <FlatList data={brothers}
+                                  renderItem={({item}) => <ItemTreeComponent item={null}/>}
+                                  horizontal={true} scrollEnabled={false}
+                                  ListHeaderComponent={HorizontalLineComponent}
+                        />
                     </View>
+                    {/*{spouse.length > 0 ? <FlatList data={} renderItem={({item, index}) => <RootWrapperComponent*/}
+                    {/*    item={item} width={getMaxWidth(tree.roots)}*/}
+                    {/*    position={getTreePosition(index, tree.roots.length)}/>} horizontal={true}/>}*/}
 
-                    {/*Зона детей*/}
-                    {tree.children.length > 0 &&
-                    <>
-                        <WrapperLine items={tree.roots.length} type={'top'} position={'center'}/>
-                        <VerticalLineComponent/>
-                        <WrapperLine items={tree.children.length} type={'bottom'} position={'center'}/>
-                        <FlatList data={tree.children} renderItem={({item}) => <ItemTreeComponent item={item}/>}
-                                  horizontal={true} scrollEnabled={false}/>
-                    </>
-                    }
+
                 </ScrollView>
             </ScrollView>
         )

@@ -7,14 +7,21 @@ import styles from "./styles";
 import {ITreeItem} from "./tree";
 
 interface IProps {
-    item: ITreeItem
-    onPress?: ()=>void
+    item: ITreeItem | null
+    onPress?: () => void
 }
+
 const ItemTreeComponent: React.FunctionComponent<IProps> =
     ({
          item,
-        onPress,
+         onPress,
      }) => {
+        const stylesArr = [styles.itemWrapper, {
+            marginVertical: treeItemSize.marginVertical,
+            marginHorizontal: treeItemSize.marginHorizontal,
+            width: treeItemSize.containerWidth,
+        }]
+        if (!item) return <View style={stylesArr}/>
         const {name, userPic} = item
         const imageStyle = {
             width: treeItemSize.width,
@@ -24,11 +31,7 @@ const ItemTreeComponent: React.FunctionComponent<IProps> =
         return (
             <View style={styles.verticalLineWrapper}>
                 <Pressable onPress={onPress}
-                           style={[styles.itemWrapper, {
-                               marginVertical: treeItemSize.marginVertical,
-                               marginHorizontal: treeItemSize.marginHorizontal,
-                               width: treeItemSize.containerWidth,
-                           }]}>
+                           style={stylesArr}>
                     {/*@ts-ignore*/}
                     <FastImage style={imageStyle} source={uriParse(userPic)} resizeMode={'cover'}/>
                     <View style={styles.nameWrapper}><Text numberOfLines={3} style={styles.name}>{name}</Text></View>

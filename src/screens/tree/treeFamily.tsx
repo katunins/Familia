@@ -1,18 +1,23 @@
 import React from "react";
-import {View, ViewStyle} from "react-native";
+import {FlatList, View, ViewStyle} from "react-native";
 import {ITree, ITreeItem, ITreeRoot} from "./tree";
 import {ITreeElementPosition} from "./wrapperLine";
 import ItemTreeComponent from "./item";
 
 interface IProps extends ITreeElementPosition{
-    treeElement: ITreeRoot[]
+    treeElement: {
+
+    }
 }
 const TreeFamilyComponent:React.FunctionComponent<IProps> = ({position,treeElement}) => {
     const alignItems: ViewStyle['alignItems'] = position === 'center' ? 'center' : position === 'left' ? 'flex-end' : 'flex-start'
-    // const {item, parents, brothers}=treeElement
+    const {item, parents, brothers}=treeElement
     return (
         <View style={{alignItems}}>
-            <ItemTreeComponent item={treeElement[0].item}/>
+            <FlatList data={parents}
+                      renderItem={({item})=><ItemTreeComponent item={item.parent}/>}
+                      horizontal={true} scrollEnabled={false}/>
+            <ItemTreeComponent item={item}/>
         </View>
     )
 }

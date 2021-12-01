@@ -3,7 +3,7 @@ import {treeItemSize} from "../../config";
 import React from "react";
 
 export interface ITreeElementPosition {
-    position?: 'center' | 'left' | 'right'
+    position: 'center' | 'left' | 'right'
 }
 
 interface IProps extends ITreeElementPosition {
