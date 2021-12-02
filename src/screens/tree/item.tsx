@@ -1,5 +1,5 @@
 import React from "react";
-import {Pressable, Text, View} from "react-native";
+import {ImageProps, Pressable, StyleProp, Text, View, ViewStyle} from "react-native";
 import FastImage from "react-native-fast-image";
 import {uriParse} from "../../helpers/utils";
 import {treeItemSize} from "../../config";
@@ -23,16 +23,15 @@ const ItemTreeComponent: React.FunctionComponent<IProps> =
         }]
         if (!item) return <View style={stylesArr}/>
         const {name, userPic} = item
-        const imageStyle = {
-            width: treeItemSize.width,
-            height: treeItemSize.height,
-            ...styles.container
-        }
+        const imageStyle: StyleProp<ImageProps> = {style: {
+                width: treeItemSize.width,
+                height: treeItemSize.height,
+                ...styles.container
+            }}
         return (
             <View style={styles.verticalLineWrapper}>
                 <Pressable onPress={onPress}
                            style={stylesArr}>
-                    {/*@ts-ignore*/}
                     <FastImage style={imageStyle} source={uriParse(userPic)} resizeMode={'cover'}/>
                     <View style={styles.nameWrapper}><Text numberOfLines={3} style={styles.name}>{name}</Text></View>
                 </Pressable>

@@ -1,4 +1,4 @@
-import {ITreeItem} from "../screens/tree/tree";
+import {IRootItem, ITreeItem} from "../screens/tree/tree";
 import {IRelative, IUser} from "../interfaces/store";
 
 
@@ -57,4 +57,12 @@ export const getSpouse: (data: { user: ITreeItem, unionArr: ITreeItem[] }) => IT
 export const itemFromUser: (user: IUser | IRelative) => ITreeItem = user => {
     const {_id, name, parents, userPic} = user
     return {_id, name, parents, userPic}
+}
+
+export const getMaxWidth = (data: IRootItem[]) => {
+    let max = 0
+    data.map(item => {
+        if (item.brothers.length > max) max = item.brothers.length
+    })
+    return max
 }
