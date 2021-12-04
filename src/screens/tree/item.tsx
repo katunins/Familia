@@ -1,10 +1,21 @@
 import React from "react";
-import {ImageProps, Pressable, StyleProp, Text, View, ViewStyle} from "react-native";
-import FastImage from "react-native-fast-image";
+import {Pressable, StyleProp, Text, View} from "react-native";
+import FastImage, {ImageStyle} from "react-native-fast-image";
 import {uriParse} from "../../helpers/utils";
 import {treeItemSize} from "../../config";
 import styles from "./styles";
-import {ITreeItem} from "./tree";
+import {IParents} from "../../interfaces/store";
+
+
+/**
+ * Элемент древа
+ */
+export interface ITreeItem extends IParents {
+    _id: string
+    name: string
+    userPic: string
+    type?: string
+}
 
 interface IProps {
     item: ITreeItem | null
@@ -23,11 +34,12 @@ const ItemTreeComponent: React.FunctionComponent<IProps> =
         }]
         if (!item) return <View style={stylesArr}/>
         const {name, userPic} = item
-        const imageStyle: StyleProp<ImageProps> = {style: {
-                width: treeItemSize.width,
-                height: treeItemSize.height,
-                ...styles.container
-            }}
+        // @ts-ignore
+        const imageStyle: StyleProp<ImageStyle> = {
+            width: treeItemSize.width,
+            height: treeItemSize.height,
+            ...styles.container
+        }
         return (
             <View style={styles.verticalLineWrapper}>
                 <Pressable onPress={onPress}
