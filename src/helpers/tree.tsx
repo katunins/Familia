@@ -1,5 +1,5 @@
-import {IRootItem, ITreeItem} from "../screens/tree/tree";
 import {IRelative, IUser} from "../interfaces/store";
+import {ITreeItem} from "../screens/tree/item";
 
 
 /**
@@ -54,15 +54,17 @@ export const getSpouse: (data: { user: ITreeItem, unionArr: ITreeItem[] }) => IT
     return spouseArr
 }
 
+/**
+ * Делит массив братьев на части
+ */
+export interface ISplitBrothers { left: ITreeItem[], right: ITreeItem[] }
+export const splitBrothers: (brothers: ITreeItem[]) => ISplitBrothers = (brothers) => {
+    if (brothers.length < 2) return {left: brothers, right: []}
+    const m = Math.floor(brothers.length / 2);
+    return {left: brothers.slice(0, m), right: brothers.slice(m, brothers.length)};
+}
+
 export const itemFromUser: (user: IUser | IRelative) => ITreeItem = user => {
     const {_id, name, parents, userPic} = user
     return {_id, name, parents, userPic}
-}
-
-export const getMaxWidth = (data: IRootItem[]) => {
-    let max = 0
-    data.map(item => {
-        if (item.brothers.length > max) max = item.brothers.length
-    })
-    return max
 }

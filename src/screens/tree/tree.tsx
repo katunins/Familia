@@ -4,7 +4,7 @@ import {useSelector} from "react-redux";
 import {userSelector} from "../../store/selectors";
 import {itemFromUser} from "../../helpers/tree";
 import styles from "./styles";
-import TreeComponent from "./treeGenerator";
+import TreeComponent from "../../components/tree";
 
 
 const TreeScreen: React.FunctionComponent = () => {

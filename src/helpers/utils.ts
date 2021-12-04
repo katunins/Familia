@@ -4,10 +4,7 @@ import {
     IRelative,
     IUser,
 } from '../interfaces/store';
-import FirebaseServices from '../api/firebase';
-import storage from '@react-native-firebase/storage';
 import {Dimensions} from "react-native";
-import {FirebaseFirestoreTypes} from "@react-native-firebase/firestore";
 import env from "../config";
 import {IServerImage} from "../store/saga/network.saga";
 import moment from 'moment'
@@ -18,10 +15,10 @@ type IGetType = {
     item: IUser | IRelative
     relatives: IRelative[]
 }
-export const getType:(data:IGetType)=>string = ({root, item, relatives}) => {
-    const _relativeById = (id:string)=>relatives.find(item=>item._id === id)
-    const _getChildren = (id:string)=>relatives.find(item=>item.parents.mother === id || item.parents.father === id)
-    const _isSpouse = (rootId:string, itemId:string) => {
+export const getType: (data: IGetType) => string = ({root, item, relatives}) => {
+    const _relativeById = (id: string) => relatives.find(item => item._id === id)
+    const _getChildren = (id: string) => relatives.find(item => item.parents.mother === id || item.parents.father === id)
+    const _isSpouse = (rootId: string, itemId: string) => {
         const itemChild = _getChildren(itemId)
         const rootChild = _getChildren(rootId)
         if (!itemChild || !rootChild) return false
