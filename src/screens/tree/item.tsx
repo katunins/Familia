@@ -18,35 +18,44 @@ export interface ITreeItem extends IParents {
 }
 
 interface IProps {
-    item: ITreeItem | null
+    item: ITreeItem
     onPress?: () => void
+    root?: boolean
+    badge?: string
 }
 
 const ItemTreeComponent: React.FunctionComponent<IProps> =
     ({
          item,
          onPress,
+         root, badge
      }) => {
         const stylesArr = [styles.itemWrapper, {
             marginVertical: treeItemSize.marginVertical,
             marginHorizontal: treeItemSize.marginHorizontal,
             width: treeItemSize.containerWidth,
         }]
-        if (!item) return <View style={stylesArr}/>
-        const {name, userPic} = item
+
         // @ts-ignore
         const imageStyle: StyleProp<ImageStyle> = {
             width: treeItemSize.width,
             height: treeItemSize.height,
-            ...styles.container
+            ...styles.container,
         }
+        const {name, userPic} = item
         return (
             <View style={styles.verticalLineWrapper}>
                 <Pressable onPress={onPress}
                            style={stylesArr}>
                     <FastImage style={imageStyle} source={uriParse(userPic)} resizeMode={'cover'}/>
-                    <View style={styles.nameWrapper}><Text numberOfLines={3} style={styles.name}>{name}</Text></View>
+                    {badge && <View style={styles.badgeContainer}>
+                        <Text style={styles.badgeText}>{badge}</Text>
+                    </View>}
+                    <View style={styles.nameWrapper}>
+                        <Text numberOfLines={3} style={[styles.name, {color: root ? 'red' : undefined}]}>{name}</Text>
+                    </View>
                 </Pressable>
+
             </View>
         )
     }

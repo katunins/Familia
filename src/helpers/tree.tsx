@@ -57,11 +57,25 @@ export const getSpouse: (data: { user: ITreeItem, unionArr: ITreeItem[] }) => IT
 /**
  * Делит массив братьев на части
  */
-export interface ISplitBrothers { left: ITreeItem[], right: ITreeItem[] }
-export const splitBrothers: (brothers: ITreeItem[]) => ISplitBrothers = (brothers) => {
-    if (brothers.length < 2) return {left: brothers, right: []}
-    const m = Math.floor(brothers.length / 2);
-    return {left: brothers.slice(0, m), right: brothers.slice(m, brothers.length)};
+export interface ISplitBrothers { left: (ITreeItem|null)[], right: (ITreeItem|null)[] }
+export const splitBrothers: (brothers: (ITreeItem|null)[]) => ISplitBrothers = (brothers) => {
+    const result:ISplitBrothers = {left: [], right: []}
+    if (brothers.length === 0) return result
+    if (brothers.length === 1) return {left: brothers, right: [null]}
+    const m = Math.ceil(brothers.length / 2);
+    result.left = brothers.slice(0, m)
+    result.right = brothers.slice(m, brothers.length)
+    if (result.left.length > result.right.length) result.right.push(null)
+    return result;
+}
+interface IItemBadge {
+    item: ITreeItem | null
+    unionArr: ITreeItem[]
+}
+export const itemBadge:(data:IItemBadge)=>string | undefined = ({item, unionArr}) => {
+    if (!item) return undefined
+    const children = getChildren({parent: item, unionArr})
+    return children.length > 0 ? children.length.toString() : undefined
 }
 
 export const itemFromUser: (user: IUser | IRelative) => ITreeItem = user => {

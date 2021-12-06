@@ -300,7 +300,7 @@ const styles = createStyles({
         marginRight: '1rem',
         backgroundColor: 'red'
     },
-    parentSelectorContainer : {width: '100%', marginVertical: '1rem'},
+    parentSelectorContainer: {width: '100%', marginVertical: '1rem'},
     parentSelectorWrapper: {
         flexDirection: 'row',
         width: '100%',
@@ -312,6 +312,7 @@ const styles = createStyles({
     },
     parentSelectorText: {
         fontSize: '1rem'
-    }
+    },
+    homeButton: {marginLeft: '1rem'}
 });
 export default styles;

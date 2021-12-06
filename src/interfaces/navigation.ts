@@ -1,8 +1,7 @@
-import {INote, IRelative, IServerRelative, IUser} from "./store";
+import {INote, IRelative} from "./store";
 import {NativeStackNavigationProp} from "react-native-screens/native-stack";
-import {NavigatorScreenParams, RouteProp} from "@react-navigation/native";
-import {initialRelative} from "../config";
-import {ITreeRoot} from "../screens/tree/treeBlock";
+import { RouteProp} from "@react-navigation/native";
+import {ITreeItem} from "../screens/tree/item";
 
 export type RootStackParamList = {
     UserScreen: undefined;
@@ -18,7 +17,7 @@ export type RootStackParamList = {
     NoteDetailScreen: { note: INote }
     AddNoteStepOne: undefined
     AddNoteStepSecond: undefined
-    TreeScreen: {user : IUser | IRelative}
+    TreeScreen: {rootUser : ITreeItem}
 };
 
 export interface INavigation {

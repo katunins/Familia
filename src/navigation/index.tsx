@@ -9,7 +9,7 @@ import {RelativeStack} from './relative';
 import RelativeTabIcon from '../ui/svg/relativeTabIcon';
 import UserStack from './user';
 import NotesListStack from "./notes";
-import {notesSelector, userSelector} from "../store/selectors";
+import {userSelector} from "../store/selectors";
 import NotesListTabIcon from "../ui/svg/notesListTabIcon";
 import {NewNoteStack} from "./newNote";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
@@ -23,7 +23,6 @@ const TabsNavigator = () => {
     const Tab = createBottomTabNavigator()
     return (
         <Tab.Navigator
-            // initialRouteName={'helloScreen'}
             screenOptions={{tabBarShowLabel: false}}
         >
             <Tab.Screen
