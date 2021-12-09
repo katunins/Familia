@@ -50,7 +50,7 @@ const TreeGenerator: React.FunctionComponent<IProps> = ({
         return (
             <View
                 style={[styles.itemTreeContainer, {alignItems},
-                    {backgroundColor: '#'+((1<<24)*Math.random() | 0).toString(16)}
+                    // {backgroundColor: '#'+((1<<24)*Math.random() | 0).toString(16)}
                 ]}>
                 <View style={styles.itemTreeWrapper}>
                     {father}

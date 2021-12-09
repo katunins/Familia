@@ -61,8 +61,6 @@ const styles = createStyles({
         borderColor: 'grey',
         width: '50%',
         height: 7,
-        borderLeftWidth: 1,
-        borderRightWidth: 1,
     },
     brothersWrapper: {
         flexDirection: 'row',

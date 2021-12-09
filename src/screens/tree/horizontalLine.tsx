@@ -23,7 +23,16 @@ const HorizontalUnionLineComponent: React.FunctionComponent<IProps> = ({alignIte
             }, {
                 alignSelf: alignItems,
                 marginHorizontal: alignItems !== 'center' ? treeItemSize.containerWidth / 2 : 0
-            }]}/>
+            },
+                alignItems !== 'center' ? alignItems === 'flex-end' ?
+                    {borderLeftWidth: 1,} : {borderRightWidth: 1,} : {borderLeftWidth: 1, borderRightWidth: 1}
+            ]}>
+
+                <View style={[styles.verticalLine, {height: 7, position: 'absolute'},
+                    alignItems !== 'center' ? alignItems === 'flex-end' ?
+                        {left: treeItemSize.containerWidth - 2} : {right: treeItemSize.containerWidth - 2} : {}
+                ]}/>
+            </View>
         </View>
     )
 }
