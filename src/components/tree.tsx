@@ -32,10 +32,8 @@ const TreeComponent: React.FunctionComponent<{ rootUser: ITreeItem, setRootUser:
         // ширины главных контейнеров
         const [leftContainerWidth, setLeftContainerWidth] = useState(0)
         const [rightContainerWidth, setRightContainerWidth] = useState(0)
-        // console.log(leftContainerWidth, rightContainerWidth)
-        // const childShift = spouse.length > 0 ? leftContainerWidth - treeItemSize.containerWidth * 2 : 0
 
-        const childShift = spouse.length > 0 ? leftContainerWidth - rightContainerWidth : 0// treeItemSize.containerWidth * 2 : 0
+        const childShift = spouse.length > 0 ? leftContainerWidth - rightContainerWidth : 0 
         return (
             <View style={{alignItems: 'center'}}>
                 <View style={{flexDirection: 'row'}}>
