@@ -54,9 +54,6 @@ const styles = createStyles({
         width: 1,
         backgroundColor: 'grey',
     },
-    horizontalLineWrapper: {
-        width:'100%',
-    },
     horizontalUnionLine: {
         borderColor: 'grey',
         width: '50%',

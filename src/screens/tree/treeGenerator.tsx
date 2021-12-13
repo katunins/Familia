@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {View} from "react-native";
+import {FlatList, View} from "react-native";
 import styles from "./styles";
 import ItemTreeComponent, {ITreeItem} from "./item";
 import VerticalLineComponent from "./verticalLine";
@@ -13,7 +13,12 @@ export interface ITreePosition {
     alignItems: 'flex-start' | 'center' | 'flex-end'
 }
 
-interface IProps extends ITreePosition {
+interface IGetTreeElements extends ITreePosition {
+    item: ITreeItem | undefined
+    level: number
+}
+
+interface ITreeGenerator extends ITreePosition {
     rootUser: ITreeItem
     setRootUser: (user: ITreeItem) => void
     unionArr: ITreeItem[]
@@ -29,39 +34,43 @@ interface IProps extends ITreePosition {
  * @param root - главный пользователь в древе
  * @constructor
  */
-const TreeGenerator: React.FunctionComponent<IProps> = ({
-                                                            rootUser,
-                                                            spouse,
-                                                            setRootUser,
-                                                            unionArr,
-                                                            alignItems,
-                                                            root
-                                                        }) => {
+const TreeGenerator: React.FunctionComponent<ITreeGenerator> = ({
+                                                                    rootUser,
+                                                                    spouse,
+                                                                    setRootUser,
+                                                                    unionArr,
+                                                                    alignItems,
+                                                                    root
+                                                                }) => {
 
-    const getTreeElements: (item: ITreeItem | undefined, alignItems: ITreePosition['alignItems']) => React.ReactElement | null = (item, alignItems) => {
+    const getTreeElements: (data: IGetTreeElements) => React.ReactElement | null = ({item, alignItems, level}) => {
         if (!item) return null
         const onPress = () => {
             if (item._id === rootUser._id && !spouse) return
             setRootUser(item)
         }
         const firstElement = item._id === rootUser._id
-        const father = getTreeElements(unionArr.find(el => item.parents.father === el._id), 'flex-end')
-        const mother = getTreeElements(unionArr.find(el => item.parents.mother === el._id), 'flex-start')
+        level++
+        const parentsArr = Object.keys(item.parents).map(parentType => getTreeElements({
+                item: unionArr.find(el => item.parents[parentType] === el._id),
+                alignItems: item.parents[parentType] === 'father' ? 'flex-start' : 'flex-end', level
+            })
+        ).filter(item => item)
         return (
             <View
                 style={[styles.itemTreeContainer, {alignItems},
                     // {backgroundColor: '#'+((1<<24)*Math.random() | 0).toString(16)}
                 ]}>
                 <View style={styles.itemTreeWrapper}>
-                    {father}
-                    {mother}
+                    {parentsArr[0]}
+                    {parentsArr[1]}
                 </View>
-                {father && mother ?
+                {parentsArr.length > 1 ?
                     <HorizontalUnionLineComponent alignItems={alignItems}/>
                     :
-                    <>{(father || mother) && <VerticalLineComponent height={7} alignItems={alignItems}/>}</>
+                    <>{parentsArr.length > 0 && <VerticalLineComponent height={7} alignItems={alignItems}/>}</>
                 }
-                {(father || mother) && <VerticalLineComponent height={30} alignItems={alignItems}/>}
+                {parentsArr.length > 0 && <VerticalLineComponent height={30} alignItems={alignItems}/>}
                 <View style={{flexDirection: 'row'}}>
                     <BrothersWrapperComponent alignItems={alignItems} unionArr={unionArr}
                                               brothers={firstElement ? getBrothers({user: item, unionArr}) : []}
@@ -78,7 +87,7 @@ const TreeGenerator: React.FunctionComponent<IProps> = ({
             </View>
         )
     }
-    return getTreeElements(rootUser, alignItems)
+    return getTreeElements({item: rootUser, alignItems, level: 0})
 }
 
 export default TreeGenerator

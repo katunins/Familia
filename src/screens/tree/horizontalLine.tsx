@@ -7,11 +7,16 @@ import VerticalLineComponent from "./verticalLine"
 
 interface IProps extends ITreePosition {
     invertDirection?: boolean
+    width?: number
 }
 
-const HorizontalUnionLineComponent: React.FunctionComponent<IProps> = ({alignItems, invertDirection}) => {
+const HorizontalUnionLineComponent: React.FunctionComponent<IProps> = ({
+                                                                           alignItems,
+                                                                           invertDirection,
+                                                                           width = '100%'
+                                                                       }) => {
     return (
-        <View style={styles.horizontalLineWrapper}>
+        <View style={{width}}>
             <View style={[styles.horizontalUnionLine, invertDirection ? {
                 borderTopWidth: 1,
                 borderTopLeftRadius: alignItems === 'flex-start' ? 0 : 5,
@@ -28,10 +33,11 @@ const HorizontalUnionLineComponent: React.FunctionComponent<IProps> = ({alignIte
                     {borderLeftWidth: 1,} : {borderRightWidth: 1,} : {borderLeftWidth: 1, borderRightWidth: 1}
             ]}>
 
+                {alignItems !== 'center' &&
                 <View style={[styles.verticalLine, {height: 7, position: 'absolute'},
-                    alignItems !== 'center' ? alignItems === 'flex-end' ?
-                        {left: treeItemSize.containerWidth - 2} : {right: treeItemSize.containerWidth - 2} : {}
-                ]}/>
+                    alignItems === 'flex-end' ?
+                        {left: treeItemSize.containerWidth - 2} : {right: treeItemSize.containerWidth - 2}
+                ]}/>}
             </View>
         </View>
     )

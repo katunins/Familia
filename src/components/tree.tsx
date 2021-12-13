@@ -33,7 +33,7 @@ const TreeComponent: React.FunctionComponent<{ rootUser: ITreeItem, setRootUser:
         const [leftContainerWidth, setLeftContainerWidth] = useState(0)
         const [rightContainerWidth, setRightContainerWidth] = useState(0)
 
-        const childShift = spouse.length > 0 ? leftContainerWidth - rightContainerWidth : 0 
+        const childShift = spouse.length > 0 ? leftContainerWidth - rightContainerWidth : 0
         return (
             <View style={{alignItems: 'center'}}>
                 <View style={{flexDirection: 'row'}}>
@@ -48,8 +48,7 @@ const TreeComponent: React.FunctionComponent<{ rootUser: ITreeItem, setRootUser:
                           style={styles.itemTreeContainer}>
                         <TreeGenerator rootUser={spouse[0]} unionArr={unionArr}
                                        alignItems={'flex-start'} setRootUser={setRootUser}
-                                       spouse
-                        />
+                                       spouse/>
                     </View>
                     }
                 </View>

@@ -6,6 +6,7 @@ import HorizontalUnionLineComponent from "./horizontalLine";
 import ItemTreeComponent, {ITreeItem} from "./item";
 import {ITreePosition} from "./treeGenerator";
 import {itemBadge} from "../../helpers/tree";
+import {getTreeItemsWidth, treeItemSize} from "../../config";
 
 interface IProps {
     shift: number
@@ -26,16 +27,15 @@ const ChildTreeComponent: React.FunctionComponent<IProps> = ({shift, spouse, _ch
     return (
         <View
             style={[
-                // shift < 0 ? {marginRight: shift} : {marginLeft: shift},
                 {marginLeft: shift},
-                {alignItems: 'center',}]}>
-            {spouse.length>0 && <View style={[styles.itemTreeWrapper, {width: '50%'}]}>
-                <HorizontalUnionLineComponent alignItems={'center'}/>
-            </View>}
+                {alignItems: 'center'}]}>
+            {spouse.length > 0 &&
+                <HorizontalUnionLineComponent alignItems={'center'} width={getTreeItemsWidth(2)}/>
+            }
             <VerticalLineComponent height={30} alignItems={'center'}/>
-            {_children.length > 1 && <View style={[styles.itemTreeWrapper, {width: '50%'}]}>
-                <HorizontalUnionLineComponent alignItems={'center'} invertDirection/>
-            </View>}
+            {_children.length > 1 &&
+                <HorizontalUnionLineComponent alignItems={'center'} width={getTreeItemsWidth(_children.length)} invertDirection/>
+            }
             <FlatList data={_children}
                       renderItem={({item}) =>
                           <ItemTreeComponent item={item} onPress={() => setRootUser(item)}
