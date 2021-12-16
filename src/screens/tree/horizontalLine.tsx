@@ -36,7 +36,7 @@ const HorizontalUnionLineComponent: React.FunctionComponent<IProps> = ({
                 {alignItems !== 'center' &&
                 <View style={[styles.verticalLine, {height: 7, position: 'absolute'},
                     alignItems === 'flex-end' ?
-                        {left: treeItemSize.containerWidth - 2} : {right: treeItemSize.containerWidth - 2}
+                        {right: 0} : {left: 0}
                 ]}/>}
             </View>
         </View>

@@ -85,6 +85,6 @@ export const treeItemSize = {
 
 }
 
-export const getTreeItemsWidth = (count: number) => (treeItemSize.containerWidth + treeItemSize.marginHorizontal / 2) * count
+export const getTreeItemsWidth = (count: number) => (treeItemSize.containerWidth + treeItemSize.marginHorizontal / 2) * (count + (count > 3 ? 2 : 0))
 
 export default env

@@ -50,12 +50,17 @@ const TreeGenerator: React.FunctionComponent<ITreeGenerator> = ({
             setRootUser(item)
         }
         const firstElement = item._id === rootUser._id
-        level++
-        const parentsArr = Object.keys(item.parents).map(parentType => getTreeElements({
-                item: unionArr.find(el => item.parents[parentType] === el._id),
-                alignItems: item.parents[parentType] === 'father' ? 'flex-start' : 'flex-end', level
-            })
+        const parentsArr = Object.keys(item.parents).map((parentType) => {
+            console.log(item)
+                const item: ITreeItem | undefined = unionArr.find((el) => item.parents[parentType] === el._id)
+                return getTreeElements({
+                    item,
+                    alignItems: alignItems === 'center' ? (parentType === 'father' ? 'flex-start' : 'flex-end') : alignItems,
+                    level
+                })
+            }
         ).filter(item => item)
+        level++
         return (
             <View
                 style={[styles.itemTreeContainer, {alignItems},

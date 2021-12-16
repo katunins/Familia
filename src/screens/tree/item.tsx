@@ -14,7 +14,7 @@ export interface ITreeItem extends IParents {
     _id: string
     name: string
     userPic: string
-    type?: string
+    // type?: string
 }
 
 interface IProps {
