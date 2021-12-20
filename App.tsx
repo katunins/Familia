@@ -10,6 +10,10 @@ import {getPersistor, getStore} from "./src/store";
 import {GeneralColors} from "./src/config";
 import RNBootSplash from "react-native-bootsplash";
 
+if(__DEV__) {
+    import('./ReactotronConfig').then(() => console.log('Reactotron Configured'))
+}
+
 EStyleSheet.build({
     "@media ios": {
         $rem: rem,

@@ -28,8 +28,9 @@ const ItemTreeComponent: React.FunctionComponent<IProps> =
     ({
          item,
          onPress,
-         root, badge
+         root, badge,
      }) => {
+
         const stylesArr = [styles.itemWrapper, {
             marginVertical: treeItemSize.marginVertical,
             marginHorizontal: treeItemSize.marginHorizontal,
@@ -43,6 +44,7 @@ const ItemTreeComponent: React.FunctionComponent<IProps> =
             ...styles.container,
         }
         const {name, userPic} = item
+
         return (
             <View style={styles.verticalLineWrapper}>
                 <Pressable onPress={onPress}

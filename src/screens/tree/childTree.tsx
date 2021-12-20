@@ -1,17 +1,13 @@
 import React from "react";
-import VerticalLineComponent from "./verticalLine";
-import {FlatList, View} from "react-native";
-import styles from "./styles";
-import HorizontalUnionLineComponent from "./horizontalLine";
+import {FlatList, Text, View} from "react-native";
 import ItemTreeComponent, {ITreeItem} from "./item";
-import {ITreePosition} from "./treeGenerator";
-import {itemBadge} from "../../helpers/tree";
-import {getTreeItemsWidth, treeItemSize} from "../../config";
+import UnionLineComponent from "./unionLine";
+import {treeItemSize} from "../../config";
+import {itemBadge} from "./treeBase";
 
 interface IProps {
-    shift: number
+    marginLeft: number
     _children: ITreeItem[]
-    unionArr: ITreeItem[]
     setRootUser: (item: ITreeItem) => void
     spouse: ITreeItem[]
 }
@@ -22,24 +18,28 @@ interface IProps {
  * @param _children - массив детей
  * @constructor
  */
-const ChildTreeComponent: React.FunctionComponent<IProps> = ({shift, spouse, _children, unionArr, setRootUser}) => {
+const ChildTreeComponent: React.FunctionComponent<IProps> = ({marginLeft, spouse, _children, setRootUser}) => {
     if (_children.length === 0) return null
     return (
         <View
             style={[
-                {marginLeft: shift},
-                {alignItems: 'center'}]}>
-            {spouse.length > 0 &&
-                <HorizontalUnionLineComponent alignItems={'center'} width={getTreeItemsWidth(2)}/>
-            }
-            <VerticalLineComponent height={30} alignItems={'center'}/>
-            {_children.length > 1 &&
-                <HorizontalUnionLineComponent alignItems={'center'} width={getTreeItemsWidth(_children.length)} invertDirection/>
-            }
+                spouse.length === 0 ? {
+                    alignItems: 'center'
+                } : {
+                    marginLeft,
+                    alignSelf: 'flex-start'
+                },
+            ]}
+        >
+            <View style={{alignSelf: 'stretch', alignItems: 'center'}}>
+                <UnionLineComponent treeCount={spouse.length + 1} direction={'top'} alignItems={'center'}/>
+                <UnionLineComponent treeCount={_children.length} direction={'bottom'} alignItems={'center'} verticalLine width={_children.length*treeItemSize.containerWidth}/>
+            </View>
             <FlatList data={_children}
                       renderItem={({item}) =>
                           <ItemTreeComponent item={item} onPress={() => setRootUser(item)}
-                                             badge={itemBadge({item, unionArr})}/>}
+                                             badge={itemBadge({item, brother:true})}
+                          />}
                       horizontal={true} scrollEnabled={false}/>
         </View>
     )

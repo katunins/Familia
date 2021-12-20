@@ -31,7 +31,7 @@ export interface IRelativeIndex extends IRelativeTypes {
     id: string;
 }
 
-export interface IGeneralUser extends IParents{
+export interface IGeneralUser extends IParents {
     userPic: string;
     name: string;
     birthday: string;
@@ -73,7 +73,7 @@ export interface INoteData {
     title: string,
     description: string,
     relatives: string[],
-    date:string
+    date: string
 }
 
 export interface IServerTimeStamps {
@@ -97,6 +97,7 @@ interface IStore extends Action {
         relatives: IRelative[];
         relativeForm: IRelative | {}
         token: string
+        treeWidth: { [id: string]: number[] }
     };
 }
 

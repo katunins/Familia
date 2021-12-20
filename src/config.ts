@@ -81,8 +81,6 @@ export const treeItemSize = {
     marginVertical: 5,
     LRShift: 20,
     borderRadius: 5,
-    horizontalLine: 40,
-
 }
 
 export const getTreeItemsWidth = (count: number) => (treeItemSize.containerWidth + treeItemSize.marginHorizontal / 2) * (count + (count > 3 ? 2 : 0))

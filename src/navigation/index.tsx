@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment, useMemo} from 'react';
 import PlusTabIcon from '../ui/svg/plusTabIcon';
 import PersonalTabIcon from '../ui/svg/personalTabIcon';
 import InfoTabIcon from '../ui/svg/infoTabIcon';
@@ -21,10 +21,8 @@ const TabsNavigator = () => {
     const userAuth = Object.keys(selectUser).length > 0
 
     const Tab = createBottomTabNavigator()
-    return (
-        <Tab.Navigator
-            screenOptions={{tabBarShowLabel: false}}
-        >
+    const stacks = useMemo(() => (
+        <Fragment>
             <Tab.Screen
                 name={'treeScreen'}
                 component={userAuth ? TreeScreen : HelloScreen}
@@ -67,6 +65,19 @@ const TabsNavigator = () => {
                     headerShown: false
                 }}
             />
+        </Fragment>), [])
+
+    return (
+        <Tab.Navigator
+            screenOptions={{tabBarShowLabel: false}}
+            safeAreaInsets={{
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+            }}
+        >
+            {stacks}
         </Tab.Navigator>
     );
 };

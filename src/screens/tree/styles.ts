@@ -1,4 +1,5 @@
 import {createStyles} from "../../helpers/style";
+import {treeItemSize} from "../../config";
 
 const styles = createStyles({
 
@@ -51,13 +52,20 @@ const styles = createStyles({
         justifyContent: 'flex-end'
     },
     verticalLine: {
-        width: 1,
+        width: 2,
+        height: 20,
         backgroundColor: 'grey',
     },
     horizontalUnionLine: {
+        borderWidth: 2,
         borderColor: 'grey',
-        width: '50%',
-        height: 7,
+        height: 15,
+    },
+    horizontalLine: {
+        width: 25,
+        height: 2,
+        marginTop: treeItemSize.height/2+1,
+        backgroundColor: 'grey',
     },
     brothersWrapper: {
         flexDirection: 'row',

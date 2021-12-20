@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {FlatList, View} from "react-native";
 import {NativeStackScreenProps} from "react-native-screens/native-stack";
 import {RootStackParamList} from "../../interfaces/navigation";
@@ -13,7 +13,7 @@ type IProps = NativeStackScreenProps<RootStackParamList, 'RelativeDetailScreen'>
 const RelativeDetailScreen:React.FunctionComponent<IProps> = ({route, navigation}) => {
 
     const relative = route.params.relativeData
-    navigation.setOptions({headerTitle: relative.name})
+    useEffect(()=>navigation.setOptions({headerTitle: relative.name}), [])
 
     const notes = useSelector(notesSelector)
     const relatives = useSelector(relativesSelector)

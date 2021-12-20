@@ -20,7 +20,7 @@ const Screens = () => {
     }
     useEffect(checkAuth, [])
     return (
-        <SafeAreaView style={globalStyles.body}>
+        <SafeAreaView style={globalStyles.body} >
             <TabsNavigator/>
             {selectModal.active && <ModalScreen
                 {...selectModal.data}

@@ -1,61 +1,91 @@
-import React, {useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {ITreeItem} from "../screens/tree/item";
-import {useSelector} from "react-redux";
-import {relativesSelector, userSelector} from "../store/selectors";
-import {getChildren, getSpouse, itemFromUser} from "../helpers/tree";
-import {View} from "react-native";
+import {LayoutChangeEvent, Text, View} from "react-native";
 import TreeGenerator from "../screens/tree/treeGenerator";
-import {treeItemSize} from "../config";
-import ChildTreeComponent from "../screens/tree/childTree";
 import styles from "../screens/tree/styles";
+import {IUser} from "../interfaces/store";
+import {getBrothers, getChildren, getSpouse} from "../screens/tree/treeBase";
+import ChildTreeComponent from "../screens/tree/childTree";
+import {treeItemSize} from "../config";
 
 /**
  * Компонент построения древа
  * @param rootUser - центральный пользователь
  * @constructor
  */
-const TreeComponent: React.FunctionComponent<{ rootUser: ITreeItem, setRootUser: (user: ITreeItem) => void }> =
+interface IProps {
+    // user: IUser
+    rootUser: ITreeItem,
+    setRootUser: (user: ITreeItem) => void
+    spouse: ITreeItem[]
+    children: ITreeItem[]
+    brothers: ITreeItem[]
+}
+
+const TreeComponent: React.FunctionComponent<IProps> =
     ({
          rootUser,
-         setRootUser
+         setRootUser,
+         spouse,
+         children,
+         brothers,
      }) => {
-        const user = useSelector(userSelector)
-        const relatives = useSelector(relativesSelector)
 
-        // создадим объединенный массив пользователя и родственников только из из нужных элементов
-        const unionArr: ITreeItem[] = relatives.map(item => itemFromUser(item))
-        unionArr.push(itemFromUser(user))
+        // ширина и отступ слева контейнера главного пользователя
+        const [rootContainerWidth, setRootContainerWidth] = useState(0)
+        const [rootContainerMargin, setRootContainerMargin] = useState(0)
+        // Отступ слева контейнера с детьми
+        const [calcMarginLeft, setCalcMarginLeft] = useState(0)
 
-        const spouse: ITreeItem[] = getSpouse({user: rootUser, unionArr})
-        const children = getChildren({parent: rootUser, unionArr})
+        // Устанавливает ширину контейнера главного пользователя
+        const onRootWrapperLayout = useCallback((event: LayoutChangeEvent) => {
+            const {width} = event.nativeEvent.layout
+            if (width !== rootContainerWidth) setRootContainerWidth(width)
+        }, [rootContainerWidth, rootUser])
 
-        // ширины главных контейнеров
-        const [leftContainerWidth, setLeftContainerWidth] = useState(0)
-        const [rightContainerWidth, setRightContainerWidth] = useState(0)
+        // высчитывает marginLeft для контейнера с детьми
+        useEffect(() => {
+            const childrenWidth = children.length * treeItemSize.containerWidth
+            // если ширина контейнера детей шире левого контейнера root
+            if (spouse.length > 0 && rootContainerWidth > 0 && rootContainerWidth) {
+                const diff = childrenWidth / 2 - rootContainerWidth
+                setRootContainerMargin(diff > 0 ? diff :0)
+            }
+            setCalcMarginLeft(rootContainerWidth - (childrenWidth / 2) > 0 ? rootContainerWidth - (childrenWidth / 2) : 0)
+        }, [rootContainerWidth, rootUser])
 
-        const childShift = spouse.length > 0 ? leftContainerWidth - rightContainerWidth : 0
+        // useEffect(()=>{
+        //     setRootContainerMargin(0)
+        //     setRootContainerWidth(0)
+        //     setCalcMarginLeft(0)
+        // }, [rootUser])
+
         return (
-            <View style={{alignItems: 'center'}}>
+            <View style={{alignItems: spouse.length === 0 ? 'center' : 'flex-start'}}>
                 <View style={{flexDirection: 'row'}}>
-                    <View onLayout={event => setLeftContainerWidth(event.nativeEvent.layout.width)}
-                          style={[styles.itemTreeContainer]}>
-                        <TreeGenerator rootUser={rootUser} unionArr={unionArr}
-                                       alignItems={spouse.length > 0 ? 'flex-end' : 'center'}
-                                       root setRootUser={setRootUser}/>
+                    <View
+                        style={[styles.itemTreeContainer, {marginLeft: rootContainerMargin}]}
+                        onLayout={onRootWrapperLayout}
+                    >
+                        <TreeGenerator
+                            item={rootUser} rootUser={rootUser} setRootUser={setRootUser}
+                            alignItems={spouse.length > 0 ? 'flex-end' : 'center'} root brothers={brothers}
+                        />
                     </View>
                     {spouse.length > 0 &&
-                    <View onLayout={event => setRightContainerWidth(event.nativeEvent.layout.width)}
-                          style={styles.itemTreeContainer}>
-                        <TreeGenerator rootUser={spouse[0]} unionArr={unionArr}
-                                       alignItems={'flex-start'} setRootUser={setRootUser}
-                                       spouse/>
+                    <View
+                        style={[styles.itemTreeContainer]}>
+                        <TreeGenerator item={spouse[0]} rootUser={spouse[0]} setRootUser={setRootUser}
+                                       alignItems={'flex-start'} spouse/>
                     </View>
                     }
                 </View>
-                <ChildTreeComponent shift={childShift} _children={children} unionArr={unionArr}
+                {/*<Text>rootContainerWidth = {rootContainerWidth}</Text>*/}
+                {/*<Text>rootContainerMargin = {rootContainerMargin}</Text>*/}
+                {/*<Text>calcMarginLeft = {calcMarginLeft}</Text>*/}
+                <ChildTreeComponent marginLeft={calcMarginLeft} _children={children}
                                     setRootUser={setRootUser} spouse={spouse}/>
             </View>
-
         )
     }
 

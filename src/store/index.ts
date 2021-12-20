@@ -3,8 +3,11 @@ import {configureStore} from '@reduxjs/toolkit';
 import {appPersistReducer} from './reducers';
 import {persistStore} from 'redux-persist';
 import rootSaga from './saga';
+import Reactotron from './../../ReactotronConfig';
+import ReactotronSrc from 'reactotron-react-native';
 
-const sagaMiddleware = createSagaMiddleware();
+const sagaMonitor = (ReactotronSrc as any).createSagaMonitor();
+const sagaMiddleware = createSagaMiddleware({ sagaMonitor });
 
 const store = configureStore({
     reducer: {
@@ -12,6 +15,8 @@ const store = configureStore({
     },
     middleware: [sagaMiddleware],
     preloadedState: {},
+    // @ts-ignore
+    enhancers: [Reactotron.createEnhancer()],
 },);
 
 
@@ -23,7 +28,7 @@ const getState = () => {
 };
 
 sagaMiddleware.run(rootSaga);
-// sagaMiddleware.run(watchForFirebaseAuth);
+
 export {getStore, getState, getPersistor};
 export default {
     getStore,
