@@ -23,6 +23,7 @@ interface IGetTreeElements extends ITreePosition {
     brothers?: ITreeItem[]
     layoutCallBack?: (event: LayoutChangeEvent, index: number) => void
     index?: number
+    parentsOfRoot? :boolean
 }
 
 /**
@@ -45,7 +46,8 @@ const TreeGenerator: React.FunctionComponent<IGetTreeElements> =
          root,
          brothers = [],
          layoutCallBack,
-         index = 0
+         index = 0,
+        parentsOfRoot
      }) => {
         if (!item) return null
 
@@ -79,7 +81,7 @@ const TreeGenerator: React.FunctionComponent<IGetTreeElements> =
         const parentsArr = parentItemsArr.map((parent, index) =>
             <TreeGenerator item={parent} rootUser={rootUser} setRootUser={setRootUser}
                            alignItems={alignItems === 'center' ? index === 0 ? 'flex-end' : 'flex-start' : alignItems}
-                           layoutCallBack={onLayout} index={index} level={level}
+                           layoutCallBack={onLayout} index={index} level={level} parentsOfRoot={root}
             />)
 
         useEffect(() => {
@@ -93,7 +95,9 @@ const TreeGenerator: React.FunctionComponent<IGetTreeElements> =
         }, [parentsWidth])
 
         useEffect(()=>setMarginLeft(0), [rootUser])
-        const badge = useMemo(()=>!root ? itemBadge({item, level, spouse}):undefined, [item])
+        const badge = useMemo(()=>!root && !spouse?
+            itemBadge({item, countDecrease:1, noChildren: parentsOfRoot}):
+            undefined, [item])
         return (
             <View
                 style={[styles.itemTreeContainer, {alignItems},

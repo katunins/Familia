@@ -4,7 +4,6 @@ import {IRelative, IUser} from "../../interfaces/store";
 // корневой массив всех родственников
 let unionArr: ITreeItem[] = []
 
-
 /**
  * Загрузает в unionArr всех родственников
  * @param user
@@ -98,17 +97,16 @@ const getParents: (data: { child: ITreeItem, unionArr: ITreeItem[] }) => ITreeIt
 
 interface IItemBadge {
     item: ITreeItem
-    level?: number
-    spouse?: boolean
-    brother?: boolean
+    noChildren?: boolean
+    noBrothers?:boolean
+    countDecrease?:number
 }
 
-export const itemBadge: (data: IItemBadge) => string | undefined = ({item, level = 0, spouse, brother}) => {
-    const children = spouse ? [] : getChildren(item)
-    if (children.length > 0 && level > 0) children.pop()
-    const brothers = brother ? [] : getBrothers(item)
-    const count = children.length + brothers.length
-    return count > 0 ? '+' : undefined
+export const itemBadge: (data: IItemBadge) => string | undefined = ({item, noBrothers, noChildren, countDecrease=0}) => {
+    const children = noChildren ? [] : getChildren(item)
+    const brothers = noBrothers ? [] : getBrothers(item)
+    const count = children.length + brothers.length - countDecrease
+    return count > 0 ? `+${count}` : undefined
 }
 
 export const itemFromUser: (user: IUser | IRelative) => ITreeItem = user => {

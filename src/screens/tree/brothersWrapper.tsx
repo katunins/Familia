@@ -42,7 +42,7 @@ const BrothersWrapperComponent: React.FunctionComponent<IProps> =
                     renderItem={({item}) => item ?
                         <ItemTreeComponent
                             item={item} onPress={() => onPress(item)}
-                            badge={itemBadge({item, brother: true})}
+                            badge={itemBadge({item, noBrothers:true})}
                         /> : <EmptyTreeComponent/>} horizontal={true} scrollEnabled={false}
 
                     ListFooterComponent={<View style={styles.horizontalLine}/>}

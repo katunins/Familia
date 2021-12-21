@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useLayoutEffect, useMemo, useState} from "react";
 import {ScrollView} from "react-native";
 import {useSelector} from "react-redux";
 import {relativesSelector, userSelector} from "../../store/selectors";
@@ -22,13 +22,13 @@ const TreeScreen: React.FunctionComponent = () => {
     const brothers = useMemo(()=>getBrothers(rootUser), [rootUser])
 
     const navigation = useNavigation()
-    useEffect(()=>{
+    useLayoutEffect(()=>{
         navigation.setOptions({
             title: rootUser.name,
             headerLeft: rootUser._id !== initRootUser._id ? () => <HomeButtonComponent
                 onPress={() => setRootUser(initRootUser)}/> : undefined
         })
-    }, [rootUser])
+    }, [navigation, rootUser])
 
 
     return (

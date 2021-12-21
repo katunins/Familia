@@ -14,6 +14,7 @@ import NotesListTabIcon from "../ui/svg/notesListTabIcon";
 import {NewNoteStack} from "./newNote";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import TreeScreen from "../screens/tree/tree";
+import auth from "../screens/authScreens/auth";
 
 const TabsNavigator = () => {
 
@@ -65,7 +66,7 @@ const TabsNavigator = () => {
                     headerShown: false
                 }}
             />
-        </Fragment>), [])
+        </Fragment>), [userAuth])
 
     return (
         <Tab.Navigator

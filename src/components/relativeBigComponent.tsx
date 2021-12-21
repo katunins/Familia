@@ -42,6 +42,7 @@ const RelativeBigComponent: React.FunctionComponent<IProps> = (
                     callBack: () => {
                         dispatch(actionDeleteRelative(item));
                         dispatch(resetModal());
+                        navigation.goBack()
                     },
                 },
                 {

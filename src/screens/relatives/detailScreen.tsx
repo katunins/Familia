@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useLayoutEffect} from "react";
 import {FlatList, View} from "react-native";
 import {NativeStackScreenProps} from "react-native-screens/native-stack";
 import {RootStackParamList} from "../../interfaces/navigation";
@@ -8,12 +8,13 @@ import globalStyles from "../../styles/styles";
 import NoteComponent from "../../components/note";
 import {useSelector} from "react-redux";
 import {notesSelector, relativesSelector} from "../../store/selectors";
+import HomeButtonComponent from "../../components/home";
+import {useFocusEffect} from "@react-navigation/native";
 
 type IProps = NativeStackScreenProps<RootStackParamList, 'RelativeDetailScreen'>;
 const RelativeDetailScreen:React.FunctionComponent<IProps> = ({route, navigation}) => {
 
     const relative = route.params.relativeData
-    useEffect(()=>navigation.setOptions({headerTitle: relative.name}), [])
 
     const notes = useSelector(notesSelector)
     const relatives = useSelector(relativesSelector)

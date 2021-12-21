@@ -57,7 +57,6 @@ function* sagaAddRelative(action: PayloadAction<ISaveRelativeCallback>) {
         })
         if (!responseData) return
         yield put(updateAndConvertTempRelative({newRelative: responseData, tempId}));
-
         const user: IUser = yield select(userSelector)
         const relatives = [...user.relatives, {id: responseData._id, type}]
         yield put(actionUserUpdate({

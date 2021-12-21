@@ -72,14 +72,6 @@ const RelativeFormScreen: React.FunctionComponent<IProps> =
             navigation.goBack()
         }
 
-        useFocusEffect(
-            React.useCallback(() => {
-                return () => {
-                    navigation.goBack()
-                };
-            }, [])
-        );
-
         return (
             <ScrollView>
                 <RelativeComponent

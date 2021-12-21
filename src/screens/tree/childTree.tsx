@@ -38,7 +38,7 @@ const ChildTreeComponent: React.FunctionComponent<IProps> = ({marginLeft, spouse
             <FlatList data={_children}
                       renderItem={({item}) =>
                           <ItemTreeComponent item={item} onPress={() => setRootUser(item)}
-                                             badge={itemBadge({item, brother:true})}
+                                             badge={itemBadge({item, noBrothers:true})}
                           />}
                       horizontal={true} scrollEnabled={false}/>
         </View>

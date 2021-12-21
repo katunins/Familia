@@ -13,6 +13,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		17756F35932F22B13A2F8928 /* libPods-Familia-FamiliaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DA40ED428063819B44F3906 /* libPods-Familia-FamiliaTests.a */; };
 		7E20DD1B2721703400FD5C96 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7E20DD1A2721703400FD5C96 /* GoogleService-Info.plist */; };
+		7E4911DD2770641A00137BEE /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7E4911DC2770641A00137BEE /* AppCenter-Config.plist */; };
 		7E5535A7273F03B1003C0614 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E5535A6273F03B1003C0614 /* BootSplash.storyboard */; };
 		8992BD7C7D0FB5ECDAA23DC9 /* libPods-Familia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BAF395D08EB4A22D6DE08D51 /* libPods-Familia.a */; };
 /* End PBXBuildFile section */
@@ -42,6 +43,7 @@
 		4B62319AC127EAFBB334A61E /* Pods-Familia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Familia.debug.xcconfig"; path = "Target Support Files/Pods-Familia/Pods-Familia.debug.xcconfig"; sourceTree = "<group>"; };
 		6DA40ED428063819B44F3906 /* libPods-Familia-FamiliaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Familia-FamiliaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E20DD1A2721703400FD5C96 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7E4911DC2770641A00137BEE /* AppCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "AppCenter-Config.plist"; path = "Familia/AppCenter-Config.plist"; sourceTree = "<group>"; };
 		7E5535A6273F03B1003C0614 /* BootSplash.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BootSplash.storyboard; sourceTree = "<group>"; };
 		BAF395D08EB4A22D6DE08D51 /* libPods-Familia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Familia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8556440AD1352D96AA2D59A /* Pods-Familia-FamiliaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Familia-FamiliaTests.release.xcconfig"; path = "Target Support Files/Pods-Familia-FamiliaTests/Pods-Familia-FamiliaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 		13B07FAE1A68108700A75B9A /* Familia */ = {
 			isa = PBXGroup;
 			children = (
+				7E4911DC2770641A00137BEE /* AppCenter-Config.plist */,
 				7E20DD1A2721703400FD5C96 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -247,6 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E5535A7273F03B1003C0614 /* BootSplash.storyboard in Resources */,
+				7E4911DD2770641A00137BEE /* AppCenter-Config.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				7E20DD1B2721703400FD5C96 /* GoogleService-Info.plist in Resources */,
 			);

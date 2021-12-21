@@ -27,7 +27,7 @@ const NoteEditDescriptionComponent: React.FunctionComponent<IProps> = ({note, se
             component: <NoteDateComponent
                 initialDate={note.date}
                 saveCallback={(newDate) => setNote({...note, date: newDate})}
-                closeCallback={() => dispatch(resetModal())}/>
+                closeCallback={() => dispatch(resetModal())} yearMode/>
         }))
     }
 

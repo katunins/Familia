@@ -65,7 +65,7 @@ const RelativeComponent: React.FunctionComponent<IProps> =
                 relativeData: relative,
                 type,
                 newImage,
-                callBack: reset,
+                // callBack: reset,
             });
         };
 

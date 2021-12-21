@@ -11,12 +11,13 @@ interface IProps {
     closeCallback: () => void,
     saveCallback: (date: string) => void
     initialDate: string
+    yearMode?:boolean
 }
 
-const NoteDateComponent: React.FunctionComponent<IProps> = ({closeCallback, saveCallback, initialDate}) => {
+const NoteDateComponent: React.FunctionComponent<IProps> = ({closeCallback, saveCallback, initialDate, yearMode}) => {
 
     const [showDatePicker, setShowDatePicker] = useState(false)
-    const [exactly, setExactly] = useState<boolean>(true)
+    const [exactly, setExactly] = useState<boolean>(!yearMode)
     const [date, setDate] = useState<string>(initialDate.slice(0, 4))
 
     const hideDatePicker = () => {
