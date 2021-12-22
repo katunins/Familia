@@ -3,7 +3,6 @@ import {Pressable, Text, View} from 'react-native';
 import globalStyles from '../styles/styles';
 import styles from './styles';
 import {relativeTypes} from '../config';
-import {IRelativeTypes} from "../interfaces/store";
 
 interface IProps {
   editDescription: string;
@@ -11,7 +10,7 @@ interface IProps {
   setType: (data: IRelativeTypes["type"]) => void;
 }
 
-const RelativeTypesListComponent: React.FunctionComponent<IProps> = ({
+const RelativeTypesListComponent_DELETE: React.FunctionComponent<IProps> = ({
   editDescription,
   type,
   setType,

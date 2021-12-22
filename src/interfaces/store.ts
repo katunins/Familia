@@ -48,7 +48,6 @@ export interface IParents {
 export type ITreeRelative = IUser | IRelative
 
 export interface IServerUser extends IGeneralUser {
-    relatives: string[];
     email: string;
 }
 

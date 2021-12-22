@@ -1,7 +1,7 @@
 import {rem} from '../styles/remStyles';
 import {
     INote,
-    IRelative, ITreeRelative,
+    IRelative, IServerNote, IServerRelative, ITreeRelative,
     IUser,
 } from '../interfaces/store';
 import {Dimensions} from "react-native";
@@ -61,7 +61,7 @@ export const getRelativeUri = ({selectRelatives, id}: IGetRelativeUri) => {
     const uri = selectRelatives.find(item => item?._id === id)?.userPic
     return uri ? `${env.endPointUrl}/${uri}` : undefined
 }
-export const splitDataAndId = (data: ITreeRelative | INote) => {
+export const splitDataAndId = (data: IRelative | INote): { id: string, data: IServerRelative | IServerNote } => {
     const cloneData = Object.assign({}, data)
     const id = data._id
     // @ts-ignore

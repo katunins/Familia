@@ -4,7 +4,7 @@ import globalStyles from '../styles/styles';
 import EditPersonalComponent from './editComponent';
 import CalendarComponent from './calendarComponent';
 import CloudContainer from './cloudContainer';
-import {IRelative, IRelativeTypes, IServerRelative} from '../interfaces/store';
+import {IRelative, IServerRelative} from '../interfaces/store';
 import {Image} from 'react-native-image-crop-picker';
 import UserPicComponent from './userPicComponent';
 import {useFocusEffect} from "@react-navigation/native";
@@ -20,11 +20,10 @@ import GalleryIcon from "../ui/svg/galeryIcon";
 import SelectParentsComponent from "./selectParents";
 
 interface IProps {
-    initialRelative: IRelative;
+    initialRelative: IRelative | IServerRelative;
     saveCallback: (data: ISaveRelativeCallback) => void;
     defaultEditMode: boolean
     cancelCallback: () => void
-    // relativeType: IRelativeTypes["type"]
 }
 
 /**
@@ -41,7 +40,6 @@ const RelativeComponent: React.FunctionComponent<IProps> =
     ({
          initialRelative,
          saveCallback,
-         // relativeType,
          defaultEditMode = false,
         cancelCallback
      }) => {
@@ -57,7 +55,6 @@ const RelativeComponent: React.FunctionComponent<IProps> =
             setEditMode(false)
             saveCallback({
                 relativeData: relative,
-                // type:relativeType,
                 newImage,
                 // callBack: reset,
             });

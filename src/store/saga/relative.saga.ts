@@ -11,13 +11,14 @@ import {
     updateRelative,
 } from '../slice/relatives.slice';
 import {PayloadAction} from '@reduxjs/toolkit';
-import {IRelative, IUser} from '../../interfaces/store';
+import {IRelative, IServerRelative, IUser} from '../../interfaces/store';
 import {idGenerator, splitDataAndId} from '../../helpers/utils';
 import {errorSaga} from "./error.saga";
 import {_sagaNewUserPic, requestSaga} from "./network.saga";
-import {ISaveRelativeCallback} from "../../screens/relatives/relativeFormScreen";
+import {IAddRelativeCallback, ISaveRelativeCallback} from "../../screens/relatives/relativeFormScreen";
 import {userSelector} from "../selectors";
 import {actionUserUpdate} from "../slice/user.slice";
+import {Image} from "react-native-image-crop-picker";
 
 const takeLatest: any = Eff.takeLatest;
 
@@ -40,15 +41,15 @@ function* sagaLoadRelatives() {
     }
 }
 
-function* sagaAddRelative(action: PayloadAction<ISaveRelativeCallback>) {
+function* sagaAddRelative(action: PayloadAction<IAddRelativeCallback>) {
     try {
 
         yield put(actionLoaderOn());
         const {relativeData, callBack, newImage} = action.payload
         const tempId = idGenerator()
         yield put(addRelative({...relativeData, _id: tempId, userPic: newImage ? newImage.path : relativeData.userPic}))
-        const {data} = yield splitDataAndId(relativeData)
-        let newRelativeData = Object.assign({}, data)
+        // const {data} = yield splitDataAndId(relativeData)
+        let newRelativeData = Object.assign({}, relativeData)
         newRelativeData.userPic = yield call(_sagaNewUserPic, {newImage, userPic: relativeData.userPic})
         const responseData: IRelative = yield call(requestSaga, {
             endPoint: 'relatives',
@@ -57,12 +58,7 @@ function* sagaAddRelative(action: PayloadAction<ISaveRelativeCallback>) {
         })
         if (!responseData) return
         yield put(updateAndConvertTempRelative({newRelative: responseData, tempId}));
-        const user: IUser = yield select(userSelector)
-        const relatives = [...user.relatives, responseData._id]
-        yield put(actionUserUpdate({
-            userData: {...user, relatives},
-            callBack
-        }))
+        callBack && callBack()
         yield put(actionLoaderOff());
 
     } catch (error) {
@@ -75,7 +71,7 @@ function* sagaUpdateRelative(action: PayloadAction<ISaveRelativeCallback>) {
         yield put(actionLoaderOn());
         const {relativeData, callBack, newImage} = action.payload
         yield put(updateRelative({...relativeData, userPic: newImage ? newImage.path : relativeData.userPic}))
-        const {id, data} = yield splitDataAndId(relativeData)
+        const {id, data}: { id: string, data: IServerRelative } = yield splitDataAndId(relativeData)
         let newRelativeData = Object.assign({}, data)
         newRelativeData.userPic = yield call(_sagaNewUserPic, {newImage, userPic: relativeData.userPic})
         const responseData: IRelative = yield call(requestSaga, {
@@ -84,8 +80,8 @@ function* sagaUpdateRelative(action: PayloadAction<ISaveRelativeCallback>) {
             data: {id, userData: newRelativeData}
         })
         if (!responseData) return
-        newRelativeData._id = id
-        yield put(updateRelative(newRelativeData))
+        const resultRelative = Object.assign(newRelativeData, {_id:id})
+        yield put(updateRelative(resultRelative))
         callBack && callBack()
         yield put(actionLoaderOff());
 
@@ -107,11 +103,6 @@ function* sagaDeleteRelative(action: PayloadAction<IRelative>) {
             data: {id, userData: data}
         })
         if (!responseData) return
-        // удалим родственника у юзера
-        const relatives = user.relatives.filter(item => item.id !== id)
-        yield put(actionUserUpdate({
-            userData: {...user, relatives}
-        }))
         yield put(actionLoaderOff());
 
     } catch (error) {
