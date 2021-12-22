@@ -49,6 +49,8 @@ export interface IParents {
     }
 }
 
+export type ITreeRelative = IUser | IRelative
+
 export interface IServerUser extends IGeneralUser {
     relatives: IRelativeIndex[];
     email: string;
@@ -97,7 +99,7 @@ interface IStore extends Action {
         relatives: IRelative[];
         relativeForm: IRelative | {}
         token: string
-        treeWidth: { [id: string]: number[] }
+        rootUser: ITreeRelative
     };
 }
 

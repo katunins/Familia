@@ -2,9 +2,9 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import RelativeFormScreen from "../screens/relatives/relativeFormScreen";
 import RelativeListScreen from "../screens/relatives/relativeListScreen";
-import {RootStackParamList} from "../interfaces/navigation";
 import LoaderComponent from "../components/loader";
 import RelativeDetailScreen from "../screens/relatives/detailScreen";
+import {RootStackParamList} from "./declare.navigation";
 
 
 const Stack = createStackNavigator<RootStackParamList>();

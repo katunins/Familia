@@ -1,7 +1,7 @@
 import {rem} from '../styles/remStyles';
 import {
     INote,
-    IRelative,
+    IRelative, ITreeRelative,
     IUser,
 } from '../interfaces/store';
 import {Dimensions} from "react-native";
@@ -11,8 +11,8 @@ import moment from 'moment'
 import 'moment/locale/ru'
 
 type IGetType = {
-    root: IUser | IRelative
-    item: IUser | IRelative
+    root: ITreeRelative
+    item: ITreeRelative
     relatives: IRelative[]
 }
 export const getType: (data: IGetType) => string = ({root, item, relatives}) => {
@@ -61,10 +61,10 @@ export const getRelativeUri = ({selectRelatives, id}: IGetRelativeUri) => {
     const uri = selectRelatives.find(item => item?._id === id)?.userPic
     return uri ? `${env.endPointUrl}/${uri}` : undefined
 }
-
-export const splitDataAndId = (data: IUser | IRelative | INote) => {
+export const splitDataAndId = (data: ITreeRelative | INote) => {
     const cloneData = Object.assign({}, data)
     const id = data._id
+    // @ts-ignore
     delete cloneData._id
     return {id, data: cloneData}
 }
@@ -73,6 +73,7 @@ export const splitDataIdAndTimeStamps = (data: INote) => {
     const cloneData = Object.assign({}, data)
     const id = data._id
     const {createdAt, updatedAt} = data
+    // @ts-ignore
     delete cloneData._id
     delete cloneData.createdAt
     delete cloneData.updatedAt

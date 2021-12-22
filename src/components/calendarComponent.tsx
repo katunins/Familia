@@ -14,7 +14,6 @@ interface ICalendarComponent {
   date: string;
   setDate: (stringDate: string) => void;
   editDescription: string;
-  yearMode?:boolean
 }
 
 const CalendarComponent: React.FunctionComponent<ICalendarComponent> = ({
@@ -22,7 +21,6 @@ const CalendarComponent: React.FunctionComponent<ICalendarComponent> = ({
   date,
   setDate,
   editDescription,
-    yearMode
 }) => {
 
   const dispatch = useDispatch()

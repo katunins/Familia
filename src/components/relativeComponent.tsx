@@ -7,20 +7,17 @@ import CloudContainer from './cloudContainer';
 import {IRelative, IRelativeTypes} from '../interfaces/store';
 import {Image} from 'react-native-image-crop-picker';
 import UserPicComponent from './userPicComponent';
-import RelativeTypesListComponent from './relativeTypesListComponent';
 import {useFocusEffect} from "@react-navigation/native";
 import ButtonComponent from "./button";
 import {ISaveRelativeCallback} from "../screens/relatives/relativeFormScreen";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import ImageLoader from "../helpers/imageLoader";
-import {idGenerator} from "../helpers/utils";
 import {defaultUserPic} from "../config";
 import {setModal} from "../store/slice/modal.slice";
 import {useDispatch} from "react-redux";
 import CameraIcon from "../ui/svg/cameraIcon";
 import GalleryIcon from "../ui/svg/galeryIcon";
 import SelectParentsComponent from "./selectParents";
-import SeparatorComponent from "./separator";
 
 interface IProps {
     initialRelative: IRelative;
@@ -32,13 +29,11 @@ interface IProps {
 
 /**
  *
- * @param initialUser - данные пользователя для редактирования
- * @param saveCallback - callBack кнопки сохранить
+ * @param initialRelative - родственник по умолчанию
+ * @param saveCallback - функция сохранения
  * @param relativeType - тип родственника
- * @param userType - тип пользователя, которого редактируем или создаем
- * @param buttonLogOut - кнопка выхода из аккаунта
- * @param navigation - объект навигации
- * @param defaultEditMode - режим редактирвоания
+ * @param defaultEditMode - режим редактирвоания да / нет
+ * @param cancelCallback
  * @constructor
  */
 
@@ -53,7 +48,6 @@ const RelativeComponent: React.FunctionComponent<IProps> =
 
         const [editMode, setEditMode] = useState(defaultEditMode);
         const [relative, setRelative] = useState(initialRelative);
-        const [type, setType] = useState(relativeType);
         const [newImage, setNewImage] = useState<Image>();
 
         const dispatch = useDispatch();
@@ -63,7 +57,7 @@ const RelativeComponent: React.FunctionComponent<IProps> =
             setEditMode(false)
             saveCallback({
                 relativeData: relative,
-                type,
+                type:relativeType,
                 newImage,
                 // callBack: reset,
             });
@@ -154,16 +148,6 @@ const RelativeComponent: React.FunctionComponent<IProps> =
                             setDate={data => setRelative({...relative, birthday: data})}
                         />
 
-                        {/*{editMode && (*/}
-                        {/*    <RelativeTypesListComponent*/}
-                        {/*        editDescription={'Тип родственника'}*/}
-                        {/*        type={type}*/}
-                        {/*        setType={setType}*/}
-                        {/*    />*/}
-                        {/*)}*/}
-
-
-
                     </View>
                     {(relative.about !== '' || editMode) &&
                     <CloudContainer
@@ -177,7 +161,7 @@ const RelativeComponent: React.FunctionComponent<IProps> =
                             globalStyles.paddingWrapper, globalStyles.paddingTop
                         ]}>
                         <ButtonComponent title={'Сохранить'} callBack={saveButton} type={'invert'}
-                                         disabled={(JSON.stringify(initialRelative) === JSON.stringify(relative) && !newImage && type === relativeType) || !editMode}/>
+                                         disabled={(JSON.stringify(initialRelative) === JSON.stringify(relative) && !newImage) || !editMode}/>
                         <ButtonComponent title={'Отменить'} callBack={cancelButton}/>
                     </View>
                 </>

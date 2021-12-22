@@ -22,7 +22,7 @@ const RelativeTypesListComponent: React.FunctionComponent<IProps> = ({
       <Text style={styles.editDescription}>{editDescription}</Text>
       <Pressable onPress={() => setShowSelect(!showSelect)}>
         <Text style={[globalStyles.textInput]}>
-            {/*@ts-ignore*/}
+          {/*@ts-ignore*/}
           {relativeTypes[type]}
         </Text>
       </Pressable>
@@ -31,7 +31,6 @@ const RelativeTypesListComponent: React.FunctionComponent<IProps> = ({
           Object.keys(relativeTypes).map(key => (
             <Pressable
               onPress={() => {
-                // @ts-ignore
                 setType(key);
                 setShowSelect(false);
               }}
@@ -40,7 +39,7 @@ const RelativeTypesListComponent: React.FunctionComponent<IProps> = ({
                 key === type ? styles.selectedType : {},
               ]}
               key={key}>
-                {/*@ts-ignore*/}
+              {/*@ts-ignore*/}
               <Text>{relativeTypes[key]}</Text>
             </Pressable>
           ))}

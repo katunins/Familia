@@ -4,21 +4,10 @@ import FastImage, {ImageStyle} from "react-native-fast-image";
 import {uriParse} from "../../helpers/utils";
 import {treeItemSize} from "../../config";
 import styles from "./styles";
-import {IParents} from "../../interfaces/store";
-
-
-/**
- * Элемент древа
- */
-export interface ITreeItem extends IParents {
-    _id: string
-    name: string
-    userPic: string
-    // type?: string
-}
+import {ITreeRelative} from "../../interfaces/store";
 
 interface IProps {
-    item: ITreeItem
+    item: ITreeRelative
     onPress?: () => void
     root?: boolean
     badge?: string

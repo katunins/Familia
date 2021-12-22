@@ -1,27 +1,24 @@
-import React, {useEffect, useLayoutEffect} from "react";
+import React from "react";
 import {FlatList, View} from "react-native";
-import {NativeStackScreenProps} from "react-native-screens/native-stack";
-import {RootStackParamList} from "../../interfaces/navigation";
 import RelativeBigComponent from "../../components/relativeBigComponent";
-import {IRelative} from "../../interfaces/store";
 import globalStyles from "../../styles/styles";
 import NoteComponent from "../../components/note";
 import {useSelector} from "react-redux";
 import {notesSelector, relativesSelector} from "../../store/selectors";
-import HomeButtonComponent from "../../components/home";
-import {useFocusEffect} from "@react-navigation/native";
+import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
+import {RootStackParamList} from "../../navigation/declare.navigation";
 
-type IProps = NativeStackScreenProps<RootStackParamList, 'RelativeDetailScreen'>;
-const RelativeDetailScreen:React.FunctionComponent<IProps> = ({route, navigation}) => {
+const RelativeDetailScreen: React.FunctionComponent = () => {
+    const route = useRoute<RouteProp<RootStackParamList, 'RelativeDetailScreen'>>()
+    const navigation = useNavigation()
 
     const relative = route.params.relativeData
-
     const notes = useSelector(notesSelector)
     const relatives = useSelector(relativesSelector)
     const filteredNotes = notes.filter(item => item.relatives.find(el => el === relative._id))
 
     const editRelative = () => {
-        navigation.navigate({name: 'RelativeFormScreen', params: {relativeData: relative}});
+        navigation.navigate('RelativeFormScreen', {relativeData: relative})
     }
 
     return (
@@ -29,10 +26,10 @@ const RelativeDetailScreen:React.FunctionComponent<IProps> = ({route, navigation
             style={globalStyles.containerColor}
             data={filteredNotes}
             ListHeaderComponent={() =>
-                <RelativeBigComponent item={relative} editButton={()=>editRelative()} type={'ff'}/>}
-            renderItem={({item, index}) =>
+                <RelativeBigComponent item={relative} editButton={() => editRelative()} type={'ff'}/>}
+            renderItem={({item}) =>
                 <NoteComponent
-                    item={item} index={index} mini={true}
+                    item={item} mini={true}
                     selectRelatives={relatives}
                 />
             }

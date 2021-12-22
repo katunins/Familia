@@ -1,14 +1,13 @@
 import React, {useCallback, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {RootStackParamList} from "../interfaces/navigation";
 import {initialNote} from "../config";
 import LoaderComponent from "../components/loader";
-import NoteEditScreen from "../screens/notes/noteEditScreen";
 import AddNoteStepOneScreen from "../screens/notes/addNoteStepOne";
 import {IServerNote} from "../interfaces/store";
 import {Image} from "react-native-image-crop-picker";
 import AddNoteStepSecondScreen from "../screens/notes/addNoteStepSecond";
 import {useFocusEffect} from "@react-navigation/native";
+import {RootStackParamList} from "./declare.navigation";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -27,7 +26,6 @@ const NewNoteStack = () => {
             return reset;
         }, [])
     );
-
 
     return (
         <Stack.Navigator>

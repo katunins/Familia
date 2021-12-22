@@ -88,7 +88,6 @@ const SignUpScreen: React.FunctionComponent<IProps> = () => {
                 style={[
                     globalStyles.strokeForm,
                     globalStyles.buttonMargin,
-                    ,
                     globalStyles.marginTop,
                 ]}
             />

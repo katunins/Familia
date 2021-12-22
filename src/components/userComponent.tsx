@@ -27,13 +27,9 @@ interface IProps {
 
 /**
  *
- * @param initialUser - данные пользователя для редактирования
- * @param saveCallback - callBack кнопки сохранить
- * @param relativeType - тип родственника
- * @param userType - тип пользователя, которого редактируем или создаем
- * @param buttonLogOut - кнопка выхода из аккаунта
- * @param navigation - объект навигации
- * @param defaultEditMode - режим редактирвоания
+ * @param initialUser - юзер по дефолту
+ * @param saveCallback - функция сохранения
+ * @param buttonLogOut
  * @constructor
  */
 

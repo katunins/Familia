@@ -1,8 +1,10 @@
 import React, {useState} from "react";
 import FastImage from "react-native-fast-image";
-import {ActivityIndicator, Dimensions} from "react-native";
+import {Dimensions} from "react-native";
 import {uriParse} from "../helpers/utils";
+// @ts-ignore
 import {createImageProgress} from 'react-native-image-progress';
+// @ts-ignore
 import ProgressBar from 'react-native-progress/Bar';
 
 export interface IAutoHeightImageComponent {

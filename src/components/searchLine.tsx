@@ -1,6 +1,5 @@
-import React, {Component, useEffect, useState} from "react";
-import {Pressable, TextInput, View} from "react-native";
-import globalStyles from "../styles/styles";
+import React from "react";
+import {Pressable, TextInput} from "react-native";
 import DeleteIcon from "../ui/svg/deleteIcon";
 import styles from "./styles";
 import EStyleSheet from "react-native-extended-stylesheet";

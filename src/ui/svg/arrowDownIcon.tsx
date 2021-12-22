@@ -1,6 +1,5 @@
 import React from "react";
-import Svg, { Path, Mask, Rect } from "react-native-svg";
-import EStyleSheet from "react-native-extended-stylesheet";
+import Svg, { Path} from "react-native-svg";
 import { remCalc } from "../../helpers/utils";
 
 const ArrowDownIcon = () => {

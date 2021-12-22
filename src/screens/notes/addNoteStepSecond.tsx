@@ -3,20 +3,16 @@ import globalStyles from "../../styles/styles";
 import {ScrollView, View} from "react-native";
 import styles from "./styles";
 import ButtonComponent from "../../components/button";
-import CameraIcon from "../../ui/svg/cameraIcon";
 import {IServerNote} from "../../interfaces/store";
 import {Image} from "react-native-image-crop-picker";
-import {INavigation} from "../../interfaces/navigation";
-import {setModal} from "../../store/slice/modal.slice";
-import GalleryIcon from "../../ui/svg/galeryIcon";
-import ImageLoader from "../../helpers/imageLoader";
 import {useDispatch, useSelector} from "react-redux";
 import ImageAndCountComponent from "../../components/imageAndCount";
 import NoteEditRelativesComponent from "../../components/noteEditRelatives";
 import {relativesSelector, userSelector} from "../../store/selectors";
 import {actionAddNote} from "../../store/slice/notes.slice";
+import {useNavigation} from "@react-navigation/native";
 
-interface IProps extends INavigation {
+interface IProps {
     note: IServerNote
     setNote: (note: IServerNote) => void
     newImages: Image[]
@@ -29,7 +25,6 @@ const AddNoteStepSecondScreen: React.FunctionComponent<IProps> =
          note,
          setNote,
          newImages,
-         navigation,
          reset
      }) => {
 
@@ -37,10 +32,10 @@ const AddNoteStepSecondScreen: React.FunctionComponent<IProps> =
         const user = useSelector(userSelector)
         const dispatch = useDispatch()
 
+        const navigation = useNavigation()
+
         const save = () => {
-            // @ts-ignore
-            navigation.popToTop()
-            // @ts-ignore
+            // navigation.popToTop()
             navigation.navigate('notesListStack', {screen: 'NotesListScreen'})
             dispatch(actionAddNote({
                 note: {...note, creator: user._id},

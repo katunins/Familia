@@ -1,11 +1,15 @@
 import React, {useCallback, useEffect, useMemo, useState} from "react";
-import {LayoutChangeEvent, Text, View} from "react-native";
+import {LayoutChangeEvent, View} from "react-native";
 import styles from "./styles";
-import ItemTreeComponent, {ITreeItem} from "./item";
+import ItemTreeComponent from "./item";
 import BrothersWrapperComponent from "./brothersWrapper";
 import UnionLineComponent from "./unionLine";
-import {getParentsArr, itemBadge} from "./treeBase";
+import {getParentsArr, itemBadge} from "./treeParser";
 import {treeItemSize} from "../../config";
+import {ITreeRelative} from "../../interfaces/store";
+import {useDispatch, useSelector} from "react-redux";
+import {setRootUser} from "../../store/slice/tree.slice";
+import {relativesSelector, userSelector} from "../../store/selectors";
 
 
 export interface ITreePosition {
@@ -14,16 +18,15 @@ export interface ITreePosition {
 
 
 interface IGetTreeElements extends ITreePosition {
-    item: ITreeItem | undefined
+    item: ITreeRelative | undefined
     level?: number
-    rootUser: ITreeItem
+    rootUser: ITreeRelative
     spouse?: boolean
-    setRootUser: (item: ITreeItem) => void
     root?: boolean
-    brothers?: ITreeItem[]
+    brothers?: ITreeRelative[]
     layoutCallBack?: (event: LayoutChangeEvent, index: number) => void
     index?: number
-    parentsOfRoot? :boolean
+    parentsOfRoot?: boolean
 }
 
 /**
@@ -42,17 +45,19 @@ const TreeGenerator: React.FunctionComponent<IGetTreeElements> =
          level = -1,
          rootUser,
          spouse,
-         setRootUser,
          root,
          brothers = [],
          layoutCallBack,
          index = 0,
-        parentsOfRoot
+         parentsOfRoot
      }) => {
         if (!item) return null
+        const dispatch = useDispatch()
+        const user = useSelector(userSelector)
+        const relatives = useSelector(relativesSelector)
 
         // Массив елементов родителей, найденных по ID
-        const parentItemsArr = useMemo(() => getParentsArr(item), [item])
+        const parentItemsArr = useMemo(() => getParentsArr(item, [...relatives, user]), [item])
 
         // ширина родителей в последующем древе [0,0]
         const [parentsWidth, setParentsWidth] = useState(parentItemsArr.map(item => 0))
@@ -61,17 +66,16 @@ const TreeGenerator: React.FunctionComponent<IGetTreeElements> =
 
         // клик по элементу древа
         const onPress = useCallback(() => {
-            if (item._id === rootUser._id && !spouse) return
-            setRootUser(item)
+            if (item._id === rootUser?._id && !spouse) return
+            dispatch(setRootUser(item))
         }, [rootUser])
 
-        const firstElement = item._id === rootUser._id
+        const firstElement = item._id === rootUser?._id
         level++
-
 
         //callBack function возвращающая ширину родительского элемента обратно в ребенка
         //небходимо только, если контейнер ребенка - center
-        const onLayout = useCallback((event: LayoutChangeEvent, index: number) => {
+        const onLayout =  useCallback((event: LayoutChangeEvent, index: number) => {
             const {width} = event.nativeEvent.layout
             if (alignItems !== 'center') return
             setParentsWidth(prevState => prevState.map((item, ind) => index === ind ? width : item))
@@ -79,7 +83,7 @@ const TreeGenerator: React.FunctionComponent<IGetTreeElements> =
 
         // Массив React элементов родителей
         const parentsArr = parentItemsArr.map((parent, index) =>
-            <TreeGenerator item={parent} rootUser={rootUser} setRootUser={setRootUser}
+            <TreeGenerator item={parent} rootUser={rootUser}
                            alignItems={alignItems === 'center' ? index === 0 ? 'flex-end' : 'flex-start' : alignItems}
                            layoutCallBack={onLayout} index={index} level={level} parentsOfRoot={root}
             />)
@@ -94,9 +98,9 @@ const TreeGenerator: React.FunctionComponent<IGetTreeElements> =
 
         }, [parentsWidth])
 
-        useEffect(()=>setMarginLeft(0), [rootUser])
-        const badge = useMemo(()=>!root && !spouse?
-            itemBadge({item, countDecrease:1, noChildren: parentsOfRoot}):
+        useEffect(() => setMarginLeft(0), [rootUser])
+        const badge = useMemo(() => !root && !spouse ?
+            itemBadge({item, countDecrease: 1, noChildren: parentsOfRoot, unionArr: [...relatives, user]}) :
             undefined, [item])
         return (
             <View
@@ -116,14 +120,11 @@ const TreeGenerator: React.FunctionComponent<IGetTreeElements> =
                 <View style={{flexDirection: 'row', marginLeft}}>
                     <BrothersWrapperComponent alignItems={alignItems}
                                               brothers={brothers}
-                                              setRootUser={setRootUser}
-                                              rootUser={rootUser}
                     >
                         <ItemTreeComponent
                             item={item}
                             root={root && firstElement}
                             badge={badge}
-                            // badge={level.toString()}
                             onPress={onPress}
                         />
                     </BrothersWrapperComponent>

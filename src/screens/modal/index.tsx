@@ -34,8 +34,7 @@ const ModalScreen: React.FunctionComponent<IModalData> =
                             {...item}
                             callBack={item.callBack ?
                                 () => {
-                                    // @ts-ignore
-                                    item.callBack()
+                                    item.callBack && item.callBack()
                                     closeModal()
                                 } : closeModal}
                             key={key}/>)

@@ -1,5 +1,4 @@
 import {IServerNote, IServerRelative, IServerUser} from "./interfaces/store";
-import {containerWidth, marginHorizontal} from "./helpers/utils";
 
 const env = {
     endPointUrl: 'https://nestjs.ikatunin.ru'
@@ -82,7 +81,5 @@ export const treeItemSize = {
     LRShift: 20,
     borderRadius: 5,
 }
-
-export const getTreeItemsWidth = (count: number) => (treeItemSize.containerWidth + treeItemSize.marginHorizontal / 2) * (count + (count > 3 ? 2 : 0))
 
 export default env

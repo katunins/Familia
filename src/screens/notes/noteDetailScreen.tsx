@@ -1,17 +1,19 @@
 import React from "react";
-import {INavigation} from "../../interfaces/navigation";
 import NoteImageComponent from "../../components/noteImage";
-import {FlatList, Text, TextInput, View} from "react-native";
+import {FlatList, View} from "react-native";
 import styles from "./styles";
 import ButtonComponent from "../../components/button";
 import globalStyles from "../../styles/styles";
-import {INote} from "../../interfaces/store";
 import {useSelector} from "react-redux";
 import {relativesSelector} from "../../store/selectors";
 import NoteDataBlockComponent from "../../components/noteDataBlock";
+import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
+import {RootStackParamList} from "../../navigation/declare.navigation";
 
-const NoteDetailScreen: React.FunctionComponent<INavigation> = ({route, navigation}) => {
-    const {note}: { note: INote } = route.params
+const NoteDetailScreen: React.FunctionComponent = () => {
+    const navigation = useNavigation()
+    const route = useRoute<RouteProp<RootStackParamList, 'NoteDetailScreen'>>()
+    const {note} = route.params
     const selectRelatives = useSelector(relativesSelector)
     navigation.setOptions({title: note.title})
 

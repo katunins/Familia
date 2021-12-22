@@ -1,5 +1,5 @@
 import {createStyles} from '../helpers/style';
-import {marginHorizontal, squareAvatarSize} from "../helpers/utils";
+import {marginHorizontal} from "../helpers/utils";
 
 const globalStyles = createStyles({
     border:{

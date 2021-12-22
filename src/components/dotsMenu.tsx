@@ -1,10 +1,8 @@
 import React, {useState} from "react";
 import styles from "./styles";
-import {Dimensions, FlatList, Platform, Pressable, Text, View} from "react-native";
+import {Dimensions, FlatList, Pressable, Text, View} from "react-native";
 import SeparatorComponent from "./separator";
-import {TouchableOpacity} from "react-native-gesture-handler";
 import DotsIcon from "../ui/svg/dots";
-import dotsMenu from "./dotsMenu";
 
 export interface DotMenuElem {
     title: string
@@ -12,13 +10,8 @@ export interface DotMenuElem {
     callBack: () => void
 }
 
-interface IProps {
-    menuArr: DotMenuElem[]
-    enable?: boolean
-}
-
-const DotsMenuComponent: React.FunctionComponent<IProps> =
-    ({menuArr, enable = false}) => {
+const DotsMenuComponent: React.FunctionComponent<{menuArr: DotMenuElem[]}> =
+    ({menuArr}) => {
 
         const [bottomShift, setBottomShift] = useState(0)
 

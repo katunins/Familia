@@ -1,26 +1,24 @@
 import {INote, IRelative} from "../interfaces/store";
 import React from "react";
 import ImageAndCountComponent from "./imageAndCount";
-import {DotMenuElem} from "./dotsMenu";
-import {INavigation} from "../interfaces/navigation";
 import NoteDataBlockComponent from "./noteDataBlock";
 import EditIcon from "../ui/svg/editIcon";
 import TrashIcon from "../ui/svg/trashIcon";
 import {setModal} from "../store/slice/modal.slice";
 import {actionDeleteNote} from "../store/slice/notes.slice";
 import {useDispatch} from "react-redux";
-import {useNavigation} from "@react-navigation/native";
+import {useNavigation} from "@react-navigation/core";
+import {StackNavigationProp} from "@react-navigation/stack";
 
 interface IProps {
     item: INote,
-    index: number
     selectRelatives: IRelative[]
     mini?: boolean
 }
 
 
 const NoteComponent: React.FunctionComponent<IProps> =
-    ({item, index, selectRelatives, mini = false}) => {
+    ({item, selectRelatives, mini = false}) => {
 
         const dispatch = useDispatch()
         const navigation = useNavigation()
@@ -28,11 +26,10 @@ const NoteComponent: React.FunctionComponent<IProps> =
         const {images} = item
 
         const openDetail = images.length > 1 ? () => {
-            navigation.navigate('notesListStack', {screen: 'NoteDetailScreen', params: {note: item}})
+            navigation.navigate('NoteDetailScreen', {note:item})
         } : undefined
 
         const editNote = (item: INote) => {
-            // @ts-ignore
             navigation.navigate('NoteEditScreen', {note: item})
         }
         const deleteNote = (note: INote) => {

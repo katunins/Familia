@@ -1,43 +1,39 @@
-import React, {useCallback, useEffect} from "react";
+import React, {useEffect} from "react";
 import {View, Text, Pressable, FlatList, RefreshControl} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import {relativesSelector, userSelector} from "../../store/selectors";
 import globalStyles from "../../styles/styles";
 import {IRelative} from "../../interfaces/store";
-import {RootStackParamList} from "../../interfaces/navigation";
 import {initialRelative} from "../../config";
 import {getType, uriParse} from "../../helpers/utils";
 import {actionLoadRelatives} from "../../store/slice/relatives.slice";
-import {NativeStackScreenProps} from "react-native-screens/native-stack";
-import {useFocusEffect, useIsFocused} from "@react-navigation/native";
+import {RouteProp, useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
 import FastImage from "react-native-fast-image";
 import styles from "./styles";
 import ButtonComponent from "../../components/button";
+import {RootStackParamList} from "../../navigation/declare.navigation";
 
 /**
  * Экран со списком родственников
  * @param navigation
  * @constructor
  */
-type IProps = NativeStackScreenProps<RootStackParamList, 'RelativeListScreen'>;
 
-const RelativeListScreen: React.FunctionComponent<IProps> = ({route, navigation}) => {
+const RelativeListScreen: React.FunctionComponent = () => {
 
     const isFocused = useIsFocused()
     const relatives = useSelector(relativesSelector);
     const user = useSelector(userSelector);
     const dispatch = useDispatch()
+    const navigation = useNavigation()
+    const route = useRoute<RouteProp<RootStackParamList, 'RelativeListScreen'>>()
     const addNewRelative = () => {
         navigation.navigate('RelativeFormScreen',
-            {
-                // @ts-ignore
-                relativeData: {...initialRelative, access: {...initialRelative.access, creatorId: user._id}}
-            }
+            {relativeData: {...initialRelative, access: {...initialRelative.access, creatorId: user._id}}}
         )
     }
 
     const detailRelative = (item: IRelative) => {
-        // @ts-ignore
         navigation.navigate('RelativeDetailScreen', {relativeData: item});
     }
 
@@ -47,7 +43,11 @@ const RelativeListScreen: React.FunctionComponent<IProps> = ({route, navigation}
     }
 
     // загрузка родственников при переходе на экран
-    useEffect(onRefresh, [isFocused])
+    // если noUpdateList, то не будет автоподргузки списка с сервера
+    useEffect(() => {
+        if (route.params?.noUpdateList) return
+        onRefresh()
+    }, [isFocused])
 
     return (
         <View style={globalStyles.containerColor}>

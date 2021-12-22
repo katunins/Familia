@@ -9,19 +9,18 @@ import NoteEditDescriptionComponent from "../../components/noteEditDescription";
 import {KeyboardAwareFlatList} from "react-native-keyboard-aware-scroll-view";
 import {IServerNote} from "../../interfaces/store";
 import {Image} from "react-native-image-crop-picker";
-import {INavigation} from "../../interfaces/navigation";
 import {setModal} from "../../store/slice/modal.slice";
 import GalleryIcon from "../../ui/svg/galeryIcon";
 import ImageLoader from "../../helpers/imageLoader";
 import {useDispatch} from "react-redux";
 import EmptyImageComponent from "../../components/emptyImage";
+import {useNavigation} from "@react-navigation/native";
 
 interface IProps {
     note: IServerNote
     setNote: (note: IServerNote) => void
     newImages: Image[]
     setNewImages: (newImages: Image[]) => void
-    navigation: INavigation['navigation']
     reset: () => void
 }
 
@@ -31,10 +30,10 @@ const AddNoteStepOneScreen: React.FunctionComponent<IProps> =
          setNote,
          newImages,
          setNewImages,
-         navigation,
          reset
      }) => {
 
+        const navigation = useNavigation()
         const {
             loadImages,
             loadCamera
@@ -62,7 +61,6 @@ const AddNoteStepOneScreen: React.FunctionComponent<IProps> =
                 }
                 return
             }
-            // @ts-ignore
             navigation.navigate('AddNoteStepSecond')
         }
 

@@ -70,7 +70,6 @@ function* sagaAddNote(action: PayloadAction<IActionAddNote>) {
         const responseData = yield call(requestSaga, {
             endPoint: 'notes',
             method: 'POST',
-            // @ts-ignore
             data: {...note, images: newNote.images}
         })
         //

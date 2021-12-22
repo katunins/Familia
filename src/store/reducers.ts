@@ -7,12 +7,13 @@ import relatives from './slice/relatives.slice';
 import user from './slice/user.slice';
 import token from './slice/token.slice'
 import notes from "./slice/notes.slice";
+import rootUser from './slice/tree.slice'
 
 const appPersist = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['user', 'relatives', 'notes', 'token'],
-  blacklist: [],
+  // whitelist: ['user', 'relatives', 'notes', 'token', 'tree'],
+  blacklist: ['user', 'relatives', 'notes', 'token', 'tree'],
 };
 
 const appReducers = combineReducers({
@@ -22,5 +23,6 @@ const appReducers = combineReducers({
   user,
   notes,
   token,
+  rootUser
 });
 export const appPersistReducer = persistReducer(appPersist, appReducers);

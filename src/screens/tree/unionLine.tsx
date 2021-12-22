@@ -1,6 +1,6 @@
 import React from "react";
 import {ITreePosition} from "./treeGenerator";
-import {Text, View} from "react-native";
+import {View} from "react-native";
 import styles from "./styles";
 import {treeItemSize} from "../../config";
 

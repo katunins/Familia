@@ -1,5 +1,5 @@
 import {createStyles} from '../helpers/style';
-import {containerWidth, squareAvatarSize} from "../helpers/utils";
+import {squareAvatarSize} from "../helpers/utils";
 
 const styles = createStyles({
     // userPicWrapper: {width: '100%', height: 400},

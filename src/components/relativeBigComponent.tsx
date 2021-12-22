@@ -1,24 +1,20 @@
 import React from "react";
-import {IRelative, IRelativeTypes} from "../interfaces/store";
+import {IRelative} from "../interfaces/store";
 import {Pressable, Text, View} from "react-native";
 import styles from "./styles";
 import globalStyles from "../styles/styles";
-import EditIcon from "../ui/svg/editIcon";
-import {defaultUserPic, relativeTypes} from "../config";
-import TrashIcon from "../ui/svg/trashIcon";
+import {defaultUserPic} from "../config";
 import {actionDeleteRelative} from "../store/slice/relatives.slice";
 import {useDispatch} from "react-redux";
 import {resetModal, setModal} from "../store/slice/modal.slice";
 import AutoHeightImageComponent from "./autoHeightImage";
 import {stringDateParse} from "../helpers/utils";
-import {INavigation} from "../interfaces/navigation";
 import {useNavigation} from "@react-navigation/native";
 import ButtonComponent from "./button";
 
 interface IProps {
     item: IRelative,
     editButton: (data: IRelative) => void
-    hideButtons?: boolean
     type: string
 }
 
@@ -27,7 +23,6 @@ const RelativeBigComponent: React.FunctionComponent<IProps> = (
         item,
         editButton,
         type,
-        hideButtons = false,
     }) => {
     const dispatch = useDispatch()
     const navigation = useNavigation()
@@ -53,8 +48,9 @@ const RelativeBigComponent: React.FunctionComponent<IProps> = (
     }
 
     const relativeDetail = () => {
-        navigation.navigate('RelativeScreen', {relative: item})
+        navigation.navigate('RelativeDetailScreen', {relativeData: item})
     }
+
     return (
         <>
             <View style={[globalStyles.marginBottom]}>

@@ -1,5 +1,5 @@
 import styles from "../screens/notes/styles";
-import {Text, TextInput, View} from "react-native";
+import {TextInput, View} from "react-native";
 import ButtonComponent from "./button";
 import globalStyles from "../styles/styles";
 import {stringDateParse} from "../helpers/utils";

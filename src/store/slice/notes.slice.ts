@@ -1,5 +1,5 @@
 import {createAction, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {INote, IRelative} from "../../interfaces/store";
+import {INote} from "../../interfaces/store";
 import {IActionAddNote, IActionDeleteNote} from "../saga/notes.saga";
 
 export const actionAddNote = createAction(

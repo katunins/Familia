@@ -17,11 +17,9 @@ const RelativeCheckListElementComponent: React.FunctionComponent<IProps> = ({ite
     return (
         <Pressable onPress={callBack} style={[styles.relativeCheckListElementContainer, checked ? styles.relativeCheckListElementChecked : {}]}>
             <View style={styles.imageAndText}>
-                {/*@ts-ignore*/}
                 <FastImage source={{uri: `${env.endPointUrl}/${item.userPic}`}} style={globalStyles.miniUserPic}/>
                 <View style={styles.relativeCheckListElementTextWrapper}>
                     <Text style={globalStyles.boldText}>{item.name}</Text>
-                    {/*@ts-ignore*/}
                     <Text  style={globalStyles.lightText}>{relativeTypes[type]}</Text>
                 </View>
             </View>

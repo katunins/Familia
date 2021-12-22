@@ -1,5 +1,4 @@
 import {NativeStackScreenProps} from "react-native-screens/native-stack";
-import {RootStackParamList} from "../../interfaces/navigation";
 import {View} from "react-native";
 import React, {useState} from "react";
 import ButtonComponent from "../../components/button";
@@ -21,16 +20,20 @@ import NoteEditRelativesComponent from "../../components/noteEditRelatives";
 import {setModal} from "../../store/slice/modal.slice";
 import {KeyboardAwareFlatList} from "react-native-keyboard-aware-scroll-view";
 import EmptyImageComponent from "../../components/emptyImage";
+import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
+import {RootStackParamList} from "../../navigation/declare.navigation";
 
-type IProps = NativeStackScreenProps<RootStackParamList, 'NoteEditScreen'>
-const NoteEditScreen: React.FunctionComponent<IProps> = ({route, navigation}) => {
+const NoteEditScreen: React.FunctionComponent = () => {
 
     const relatives = useSelector(relativesSelector)
     const user = useSelector(userSelector)
 
     const dispatch = useDispatch()
+    const navigation = useNavigation()
+    const route = useRoute<RouteProp<RootStackParamList, 'NoteEditScreen'>>()
 
     const [note, setNote] = useState<INote|IServerNote>(route.params.note)
+
     const [newImages, setNewImages] = useState<Image[]>([])
     const [deleteImages, setDeleteImages] = useState<string[]>([])
 
@@ -51,7 +54,7 @@ const NoteEditScreen: React.FunctionComponent<IProps> = ({route, navigation}) =>
             return
         }
 
-        navigation.popToTop()
+        // navigation.popToTop()
         dispatch(actionUpdateNote({
             note,
             newImages,
@@ -123,7 +126,7 @@ const NoteEditScreen: React.FunctionComponent<IProps> = ({route, navigation}) =>
                             }/>
                         <ButtonComponent title={'Отменить'} callBack={() => {
                             reset()
-                            navigation.popToTop()
+                            // navigation.popToTop()
                         }}/>
                     </View>
                 </View>

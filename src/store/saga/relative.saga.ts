@@ -1,5 +1,5 @@
 import * as Eff from 'redux-saga/effects';
-import {call, put, select, delay} from 'redux-saga/effects';
+import {call, put, select} from 'redux-saga/effects';
 import {actionLoaderOff, actionLoaderOn} from '../slice/loader.slice';
 import {
     actionAddRelative, actionDeleteRelative, actionLoadRelatives,
@@ -11,7 +11,7 @@ import {
     updateRelative,
 } from '../slice/relatives.slice';
 import {PayloadAction} from '@reduxjs/toolkit';
-import {IRelative, IRelativeIndex, IUser} from '../../interfaces/store';
+import {IRelative, IUser} from '../../interfaces/store';
 import {idGenerator, splitDataAndId} from '../../helpers/utils';
 import {errorSaga} from "./error.saga";
 import {_sagaNewUserPic, requestSaga} from "./network.saga";

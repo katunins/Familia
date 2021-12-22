@@ -1,35 +1,32 @@
-import React, {useCallback, useEffect, useLayoutEffect, useMemo, useState} from "react";
+import React, {useEffect, useLayoutEffect, useMemo, useState} from "react";
 import {ScrollView} from "react-native";
-import {useSelector} from "react-redux";
-import {relativesSelector, userSelector} from "../../store/selectors";
+import {useDispatch, useSelector} from "react-redux";
+import {relativesSelector, rootUserSelector, userSelector} from "../../store/selectors";
 import styles from "./styles";
 import TreeComponent from "../../components/tree";
 import {useNavigation} from "@react-navigation/native";
 import HomeButtonComponent from "../../components/home";
-import {getBrothers, getChildren, getSpouse, itemFromUser, loadUnionArr} from "./treeBase";
+import {getTreeRelatives} from "./treeParser";
+import {setRootUser} from "../../store/slice/tree.slice";
 
 const TreeScreen: React.FunctionComponent = () => {
 
     const user = useSelector(userSelector)
     const relatives = useSelector(relativesSelector)
-    useMemo(() => loadUnionArr({user, relatives}), [user, relatives])
-
-    const initRootUser = itemFromUser(user) // пользователь по-умолчанию
-    const [rootUser, setRootUser] = useState(initRootUser)
-
-    const spouse = useMemo(()=>getSpouse(rootUser), [rootUser])
-    const children = useMemo(()=>getChildren(rootUser), [rootUser])
-    const brothers = useMemo(()=>getBrothers(rootUser), [rootUser])
+    const rootUser = useSelector(rootUserSelector)
 
     const navigation = useNavigation()
-    useLayoutEffect(()=>{
-        navigation.setOptions({
-            title: rootUser.name,
-            headerLeft: rootUser._id !== initRootUser._id ? () => <HomeButtonComponent
-                onPress={() => setRootUser(initRootUser)}/> : undefined
-        })
-    }, [navigation, rootUser])
 
+    const dispatch = useDispatch()
+    const resetHomeRootUser = () => dispatch(setRootUser(user))
+    const {spouse, children, brothers} = useMemo(() => getTreeRelatives(rootUser, [...relatives, user]), [rootUser, relatives, user])
+
+    // кнопка возврата в главого пользователя
+    const headerLeft = rootUser._id !== user._id ? () => <HomeButtonComponent onPress={resetHomeRootUser}/> : undefined
+
+    useLayoutEffect(() => {
+        navigation.setOptions({title: rootUser.name, headerLeft})
+    }, [navigation, rootUser])
 
     return (
         <ScrollView
@@ -40,7 +37,8 @@ const TreeScreen: React.FunctionComponent = () => {
                 centerContent={true} showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.itemWrapper}
             >
-                <TreeComponent rootUser={rootUser} setRootUser={setRootUser} spouse={spouse} brothers={brothers} children={children}/>
+                <TreeComponent spouse={spouse} brothers={brothers}
+                               children={children}/>
             </ScrollView>
         </ScrollView>
     )

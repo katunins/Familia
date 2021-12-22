@@ -14,14 +14,14 @@ import NotesListTabIcon from "../ui/svg/notesListTabIcon";
 import {NewNoteStack} from "./newNote";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import TreeScreen from "../screens/tree/tree";
-import auth from "../screens/authScreens/auth";
+import {RootStackParamList} from "./declare.navigation";
 
 const TabsNavigator = () => {
 
     const selectUser = useSelector(userSelector);
     const userAuth = Object.keys(selectUser).length > 0
 
-    const Tab = createBottomTabNavigator()
+    const Tab = createBottomTabNavigator<RootStackParamList>()
     const stacks = useMemo(() => (
         <Fragment>
             <Tab.Screen
@@ -71,6 +71,7 @@ const TabsNavigator = () => {
     return (
         <Tab.Navigator
             screenOptions={{tabBarShowLabel: false}}
+            initialRouteName={'personalStack'}
             safeAreaInsets={{
                 top: 0,
                 bottom: 0,

@@ -1,5 +1,5 @@
 import React from "react";
-import {Pressable, StyleProp, Text, TouchableOpacity, View} from "react-native";
+import {StyleProp, Text, TouchableOpacity, View} from "react-native";
 import styles from "./styles";
 
 export interface IButtonsProps {
@@ -13,7 +13,7 @@ export interface IButtonsProps {
 
 const ButtonComponent: React.FunctionComponent<IButtonsProps> =
     ({
-         type='general',
+         type = 'general',
          customStyle,
          title,
          callBack,
@@ -27,9 +27,8 @@ const ButtonComponent: React.FunctionComponent<IButtonsProps> =
                 {
                     icon && <View style={styles.buttonIconWrapper}>{icon}</View>
                 }
-                <Text
-                    // @ts-ignore
-                    style={[styles.buttonText, type ? styles[`buttonTextType__${type}`] : {}]}>{title}</Text>
+                {/*@ts-ignore*/}
+                <Text style={[styles.buttonText, type ? styles[`buttonTextType__${type}`] : {}]}>{title}</Text>
             </TouchableOpacity>
         )
     }

@@ -11,6 +11,7 @@ import {resetToken} from "../slice/token.slice";
 import {initialUser} from "../../config";
 import {actionLoadNotes, resetNotes} from "../slice/notes.slice";
 import {actionCheckAuth, actionLogOut, actionSignIn, actionSignUp, resetUser, setUser} from "../slice/user.slice";
+import {setRootUser} from "../slice/tree.slice";
 
 const takeLatest: any = Eff.takeLatest;
 
@@ -25,7 +26,7 @@ function* sagaCheckAuth() {
     try {
 
         yield put(actionLoaderOn());
-        const responseData: IUser = yield call(requestSaga, {
+        yield call(requestSaga, {
             endPoint: 'auth',
             method: 'GET',
         })
@@ -65,6 +66,7 @@ function* sagaSignIn(action: PayloadAction<{ data: ILoginData }>) {
         if (!responseData) return
 
         yield put(setUser(responseData));
+        yield put(setRootUser(responseData))
 
         yield put(actionLoadRelatives())
         yield put(actionLoadNotes())

@@ -10,8 +10,8 @@ import EStyleSheet from "react-native-extended-stylesheet";
 interface IProps {}
 
 const SignInScreen: React.FunctionComponent<IProps> = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('katuninat@gmail.com');
+  const [password, setPassword] = useState('1234');
 
   const dispatch = useDispatch();
 

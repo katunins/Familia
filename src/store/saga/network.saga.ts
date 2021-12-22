@@ -2,25 +2,13 @@ import {call, put, select} from "redux-saga/effects";
 import DeviceInfo from "react-native-device-info";
 import {errorSaga} from "./error.saga";
 import {tokenSelector, userSelector} from "../selectors";
-import {ILoginData, ISignUpData} from "../../interfaces";
 import env from "../../config";
-import {IServerRelative, IServerUser, IUser} from "../../interfaces/store";
+import {IUser} from "../../interfaces/store";
 import {setToken} from "../slice/token.slice";
 import {sagaLogOut} from "./auth.saga";
 import * as Eff from "redux-saga/effects";
 import {Image} from "react-native-image-crop-picker";
 import {checkFilename} from "../../helpers/utils";
-
-
-interface IServerUserData {
-    id: string,
-    userData: IServerUser | IServerRelative
-}
-
-interface IRequestSaga {
-    endPoint: string
-    data: ISignUpData | ILoginData | IServerUserData | IServerRelative | string[]
-}
 
 const takeLatest: any = Eff.takeLatest;
 
@@ -37,7 +25,7 @@ interface IResponseHandlerSaga {
 
 function* requestSaga({method, endPoint, data}: IResponseHandlerSaga) {
     try {
-        const accessToken = yield select(tokenSelector)
+        const accessToken:string = yield select(tokenSelector)
         const user: IUser = yield select(userSelector)
         const headers = new Headers()
         headers.append('DeviceId', DeviceInfo.getUniqueId())
@@ -66,10 +54,9 @@ function* _sagaResponseHeader(response: Response) {
         const responseData = yield response.json();
         if (!response.ok) {
             if (response.status === 401) yield call(sagaLogOut)
-            throw {name: 'Ошибка сервера', message: responseData.message}
+            // throw {name: 'Ошибка сервера', message: responseData.message}
         }
 
-        // @ts-ignore
         const {authorization} = response.headers.map
         if (authorization) {
             const bearer = authorization.split(' ')[1]
@@ -115,7 +102,7 @@ function* _sagaUpdateNotesImages({newImages = [], deleteImages = []}: ISagaNewPo
             }
         })
         const uploadResponse: IUploadResponseSaga = yield call(uploadSaga, {files, filesToDelete: deleteImages})
-        return uploadResponse.map(item=>item.thumbnail)
+        return uploadResponse.map(item => item.thumbnail)
     } catch (error) {
         yield call(errorSaga, error)
     }
@@ -142,11 +129,11 @@ function* uploadSaga({files, filesToDelete = []}: IUploadSaga) {
     try {
         const accessToken = yield select(tokenSelector)
         const user: IUser = yield select(userSelector)
-        const formdata = new FormData();
+        const formData = new FormData();
         files.map(item => {
-            formdata.append("file", checkFilename(item))
+            formData.append("file", checkFilename(item))
         })
-        filesToDelete.map(item => formdata.append('filesToDelete[]', item))
+        filesToDelete.map(item => formData.append('filesToDelete[]', item))
         const response = yield fetch(
             `${env.endPointUrl}/storage`,
             {
@@ -157,7 +144,7 @@ function* uploadSaga({files, filesToDelete = []}: IUploadSaga) {
                     'Authorization': `Bearer ${accessToken}`,
                     'UserId': user._id
                 },
-                body: formdata,
+                body: formData,
             })
         const responseData = yield call(_sagaResponseHeader, response)
         return responseData

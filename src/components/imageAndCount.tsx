@@ -1,5 +1,5 @@
 import React from "react";
-import {Pressable, Text, View} from "react-native";
+import {Pressable, Text} from "react-native";
 import styles from "./styles";
 import AutoHeightImageComponent from "./autoHeightImage";
 import EmptyImageComponent from "./emptyImage";

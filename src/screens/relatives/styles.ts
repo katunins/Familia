@@ -1,4 +1,4 @@
-import {containerWidth, marginHorizontal} from "../../helpers/utils";
+import {containerWidth} from "../../helpers/utils";
 import {createStyles} from "../../helpers/style";
 
 const styles = createStyles({

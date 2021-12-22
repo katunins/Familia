@@ -3,10 +3,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import AuthScreen from "../screens/authScreens/auth";
 import SignUpScreen from "../screens/authScreens/signUp";
 import SignInScreen from "../screens/authScreens/signIn";
-import {RootStackParamList} from "../interfaces/navigation";
-import ArrowBackIcon from "../ui/svg/arrowBack";
-import HeaderComponent from "../components/header";
 import LoaderComponent from "../components/loader";
+import {RootStackParamList} from "./declare.navigation";
 
 
 const Stack = createStackNavigator<RootStackParamList>();

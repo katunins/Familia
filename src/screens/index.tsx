@@ -1,10 +1,9 @@
 import React, {useEffect} from "react";
-import {SafeAreaView, View} from "react-native";
+import {SafeAreaView} from "react-native";
 import {TabsNavigator} from "../navigation";
 import ModalScreen from "./modal";
 import {useDispatch, useSelector} from "react-redux";
-import Loader from "./loader";
-import {loaderSelector, modalSelector, userSelector} from "../store/selectors";
+import {modalSelector, userSelector} from "../store/selectors";
 import globalStyles from "../styles/styles";
 import {actionCheckAuth} from "../store/slice/user.slice";
 
