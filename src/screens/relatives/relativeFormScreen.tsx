@@ -1,9 +1,8 @@
 import React from 'react';
 import {ScrollView} from 'react-native';
-import {IRelative, IRelativeTypes} from '../../interfaces/store';
+import {IRelative, IRelativeTypes, IServerRelative} from '../../interfaces/store';
 import {useDispatch, useSelector} from 'react-redux';
 import {actionAddRelative, actionUpdateRelative} from '../../store/slice/relatives.slice';
-import {getRelativeType} from "../../helpers/utils";
 import {userSelector} from "../../store/selectors";
 import RelativeComponent from "../../components/relativeComponent";
 import {Image} from "react-native-image-crop-picker";
@@ -11,7 +10,7 @@ import {actionUserUpdate} from "../../store/slice/user.slice";
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import {RootStackParamList} from "../../navigation/declare.navigation";
 
-export interface ISaveRelativeCallback extends IRelativeTypes {
+export interface ISaveRelativeCallback {
     relativeData: IRelative;
     newImage?: Image
     callBack?: () => void
@@ -29,12 +28,11 @@ const RelativeFormScreen: React.FunctionComponent =() => {
          * @param data - данные родственника
          */
 
-        const saveCallback = ({relativeData, type, callBack, newImage}: ISaveRelativeCallback) => {
+        const saveCallback = ({relativeData, callBack, newImage}: ISaveRelativeCallback) => {
             navigation.navigate('RelativeListScreen', {noUpdateList: true})
 
             const data = {
                 relativeData,
-                type,
                 newImage,
                 callBack: () => {
                     callBack && callBack()
@@ -70,10 +68,10 @@ const RelativeFormScreen: React.FunctionComponent =() => {
                     cancelCallback={cancelCallback}
                     defaultEditMode={true}
                     initialRelative={initialRelativeData}
-                    relativeType={getRelativeType({
-                        user,
-                        relative: initialRelativeData
-                    })}
+                    // relativeType={getRelativeType({
+                    //     user,
+                    //     relative: initialRelativeData
+                    // })}
                 />
             </ScrollView>
         );

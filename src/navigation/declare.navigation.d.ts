@@ -18,7 +18,7 @@ export type RootStackParamList = {
     SignInScreen: undefined;
 
     //NotesStack
-    NotesListScreen: undefined;
+    NotesListScreen: { noUpdateList?: boolean };
     NoteEditScreen: {note: INote};
     NoteDetailScreen: {note: INote};
 

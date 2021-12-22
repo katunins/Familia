@@ -6,4 +6,4 @@ export const modalSelector = (state: IStore) => state.data.modal
 export const loaderSelector = (state: IStore) => state.data.loader
 export const notesSelector = (state: IStore) => state.data.notes
 export const tokenSelector = (state: IStore) => state.data.token
-export const rootUserSelector = (state:IStore)=>state.data.rootUser
+export const rootUserIdSelector = (state:IStore)=>state.data.rootUserId

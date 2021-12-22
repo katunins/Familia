@@ -179,7 +179,7 @@ const styles = createStyles({
         flex: 9
     },
     rightBigComponentColumn: {
-        flex: 4,
+        flex: 5,
         alignItems: 'flex-end'
     },
     typeBigComponent: {

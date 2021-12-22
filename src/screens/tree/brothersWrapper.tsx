@@ -5,8 +5,8 @@ import styles from "./styles";
 import EmptyTreeComponent from "./empty";
 import {ISplitBrothers, itemBadge, splitBrothers} from "./treeParser";
 import {useDispatch, useSelector} from "react-redux";
-import {relativesSelector, rootUserSelector, userSelector} from "../../store/selectors";
-import {setRootUser} from "../../store/slice/tree.slice";
+import {relativesSelector, rootUserIdSelector, userSelector} from "../../store/selectors";
+import {setRootUserId} from "../../store/slice/rootUserId.slice";
 import {ITreeRelative} from "../../interfaces/store";
 import ItemTreeComponent from "./item";
 
@@ -20,7 +20,7 @@ const BrothersWrapperComponent: React.FunctionComponent<IProps> =
          alignItems,
          children,
      }) => {
-        const rootUser = useSelector(rootUserSelector)
+        const rootUser = useSelector(rootUserIdSelector)
         const user = useSelector(userSelector)
         const relatives = useSelector(relativesSelector)
 
@@ -38,7 +38,7 @@ const BrothersWrapperComponent: React.FunctionComponent<IProps> =
 
         const onPress = (item: ITreeRelative | null) => {
             if (!item) return
-            dispatch(setRootUser(item))
+            dispatch(setRootUserId(item._id))
         }
         return (
             <View style={styles.brothersWrapper}>

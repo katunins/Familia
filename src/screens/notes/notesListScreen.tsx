@@ -1,17 +1,23 @@
 import {FlatList, Pressable, RefreshControl, Text, View} from "react-native";
-import React from "react";
+import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {notesSelector, relativesSelector} from "../../store/selectors";
 import {actionLoadNotes} from "../../store/slice/notes.slice";
 import NoteComponent from "../../components/note";
 import globalStyles from "../../styles/styles";
 import styles from "./styles";
-import {useFocusEffect, useNavigation} from "@react-navigation/native";
+import {RouteProp, useFocusEffect, useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
+import {RootStackParamList} from "../../navigation/declare.navigation";
+import ButtonComponent from "../../components/button";
 
 const NotesListScreen = () => {
+
+    const isFocused = useIsFocused()
+
     const selectNotes = useSelector(notesSelector)
     const selectRelatives = useSelector(relativesSelector)
     const navigation = useNavigation()
+    const route = useRoute<RouteProp<RootStackParamList, 'NotesListScreen'>>()
     const dispatch = useDispatch()
 
     const addNewNote = () => {
@@ -22,12 +28,12 @@ const NotesListScreen = () => {
         dispatch(actionLoadNotes())
     }
 
-    useFocusEffect(
-        React.useCallback(() => {
-            dispatch(actionLoadNotes());
-            // return () => dispatch(showTabBarNavigation());
-        }, [])
-    );
+    // загрузка родственников при переходе на экран
+    // если noUpdateList, то не будет автоподргузки списка с сервера
+    useEffect(() => {
+        if (route.params?.noUpdateList) return
+        onRefresh()
+    }, [isFocused])
 
     return (
         <FlatList
@@ -49,11 +55,8 @@ const NotesListScreen = () => {
             ItemSeparatorComponent={()=><View style={globalStyles.marginLine}/>}
             ListFooterComponent={
                 <View style={styles.container}>
-                    <Pressable
-                        style={[globalStyles.strokeForm, globalStyles.marginTop, globalStyles.marginBottom]}
-                        onPress={addNewNote}>
-                        <Text>Добавить запись</Text>
-                    </Pressable>
+                    <ButtonComponent
+                        title={'Добавить запись'} callBack={addNewNote} type={'invert'}/>
                 </View>
             }
             keyExtractor={item => item._id}

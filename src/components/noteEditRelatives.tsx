@@ -25,7 +25,7 @@ const NoteEditRelativesComponent: React.FunctionComponent<IProps> = ({note, setN
 
     return (
         <>
-            <Text style={styles.centerTitleText}>Отметьте родственников</Text>
+            <Text style={styles.centerTitleText}>'Отметьте родственников'</Text>
             <FlatList
                 style={styles.flatListWrapper}
                 data={relatives}

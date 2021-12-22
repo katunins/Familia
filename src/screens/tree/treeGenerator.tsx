@@ -8,7 +8,7 @@ import {getParentsArr, itemBadge} from "./treeParser";
 import {treeItemSize} from "../../config";
 import {ITreeRelative} from "../../interfaces/store";
 import {useDispatch, useSelector} from "react-redux";
-import {setRootUser} from "../../store/slice/tree.slice";
+import {setRootUserId} from "../../store/slice/rootUserId.slice";
 import {relativesSelector, userSelector} from "../../store/selectors";
 
 
@@ -67,7 +67,7 @@ const TreeGenerator: React.FunctionComponent<IGetTreeElements> =
         // клик по элементу древа
         const onPress = useCallback(() => {
             if (item._id === rootUser?._id && !spouse) return
-            dispatch(setRootUser(item))
+            dispatch(setRootUserId(item._id))
         }, [rootUser])
 
         const firstElement = item._id === rootUser?._id

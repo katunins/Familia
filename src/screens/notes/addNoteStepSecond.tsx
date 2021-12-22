@@ -35,8 +35,7 @@ const AddNoteStepSecondScreen: React.FunctionComponent<IProps> =
         const navigation = useNavigation()
 
         const save = () => {
-            // navigation.popToTop()
-            navigation.navigate('notesListStack', {screen: 'NotesListScreen'})
+            navigation.navigate('NotesListScreen', {noUpdateList: true})
             dispatch(actionAddNote({
                 note: {...note, creator: user._id},
                 newImages: newImages,
@@ -45,7 +44,7 @@ const AddNoteStepSecondScreen: React.FunctionComponent<IProps> =
         }
 
         return (
-            <ScrollView style={globalStyles.containerColor}>
+            <View style={globalStyles.containerColor}>
                 <ImageAndCountComponent uriArr={[...note.images, ...newImages.map(item => item.path)]}/>
                 <View style={styles.container}>
                     <NoteEditRelativesComponent note={note} setNote={setNote} relatives={relatives} user={user}/>
@@ -57,7 +56,7 @@ const AddNoteStepSecondScreen: React.FunctionComponent<IProps> =
                         }}/>
                     </View>
                 </View>
-            </ScrollView>
+            </View>
         )
     }
 

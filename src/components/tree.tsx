@@ -6,7 +6,8 @@ import ChildTreeComponent from "../screens/tree/childTree";
 import {treeItemSize} from "../config";
 import {ITreeRelative} from "../interfaces/store";
 import {useSelector} from "react-redux";
-import {relativesSelector, rootUserSelector, userSelector} from "../store/selectors";
+import {relativesSelector, rootUserIdSelector, userSelector} from "../store/selectors";
+import {getUserById} from "../screens/tree/treeParser";
 
 /**
  * Компонент построения древа
@@ -25,7 +26,9 @@ const TreeComponent: React.FunctionComponent<IProps> =
          children,
          brothers,
      }) => {
-        const rootUser = useSelector(rootUserSelector)
+        const rootUserId = useSelector(rootUserIdSelector)
+        const user = useSelector(userSelector)
+        const relatives = useSelector(relativesSelector)
 
         // ширина и отступ слева контейнера главного пользователя
         const [rootContainerWidth, setRootContainerWidth] = useState(0)
@@ -38,7 +41,7 @@ const TreeComponent: React.FunctionComponent<IProps> =
         const onRootWrapperLayout = useCallback((event: LayoutChangeEvent) => {
             const {width} = event.nativeEvent.layout
             if (width !== rootContainerWidth) setRootContainerWidth(width)
-        }, [rootContainerWidth, rootUser])
+        }, [rootContainerWidth, rootUserId])
 
         // высчитывает marginLeft для контейнера с детьми
         useEffect(() => {
@@ -50,7 +53,9 @@ const TreeComponent: React.FunctionComponent<IProps> =
                 setRootContainerMargin(diff > 0 ? diff : 0)
             }
             setCalcMarginLeft(rootContainerWidth - (childrenWidth / 2) > 0 ? rootContainerWidth - (childrenWidth / 2) : 0)
-        }, [rootContainerWidth, rootUser])
+        }, [rootContainerWidth, rootUserId])
+
+        const rootUser = getUserById(rootUserId, [...relatives, user])
 
         return (
             <View style={{alignItems: spouse.length === 0 ? 'center' : 'flex-start'}}>

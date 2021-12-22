@@ -14,22 +14,18 @@ export interface IModal {
     data: IModalData;
 }
 
-export interface IRelativeTypes {
-    type:
-        | 'father'
-        | 'mother'
-        | 'brother'
-        | 'sister'
-        | 'grandmother'
-        | 'grandfather'
-        | 'godmother'
-        | 'godfather'
-        | 'other';
-}
-
-export interface IRelativeIndex extends IRelativeTypes {
-    id: string;
-}
+// export interface IRelativeTypes {
+//     type:
+//         | 'father'
+//         | 'mother'
+//         | 'brother'
+//         | 'sister'
+//         | 'grandmother'
+//         | 'grandfather'
+//         | 'godmother'
+//         | 'godfather'
+//         | 'other';
+// }
 
 export interface IGeneralUser extends IParents {
     userPic: string;
@@ -52,7 +48,7 @@ export interface IParents {
 export type ITreeRelative = IUser | IRelative
 
 export interface IServerUser extends IGeneralUser {
-    relatives: IRelativeIndex[];
+    relatives: string[];
     email: string;
 }
 
@@ -64,7 +60,6 @@ export interface IServerRelative extends IGeneralUser {
         creatorId: string;
         shareId: string[];
     };
-    type?: IRelativeTypes
 }
 
 export interface IRelative extends IServerRelative, IServerId {
@@ -99,7 +94,7 @@ interface IStore extends Action {
         relatives: IRelative[];
         relativeForm: IRelative | {}
         token: string
-        rootUser: ITreeRelative
+        rootUserId: string
     };
 }
 

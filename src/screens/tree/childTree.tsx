@@ -6,8 +6,8 @@ import {treeItemSize} from "../../config";
 import {itemBadge} from "./treeParser";
 import {ITreeRelative} from "../../interfaces/store";
 import {useDispatch, useSelector} from "react-redux";
-import {setRootUser} from "../../store/slice/tree.slice";
-import {relativesSelector, rootUserSelector, userSelector} from "../../store/selectors";
+import {setRootUserId} from "../../store/slice/rootUserId.slice";
+import {relativesSelector, rootUserIdSelector, userSelector} from "../../store/selectors";
 import user from "../../navigation/user";
 
 interface IProps {
@@ -47,7 +47,7 @@ const ChildTreeComponent: React.FunctionComponent<IProps> = ({marginLeft, spouse
             </View>
             <FlatList data={_children}
                       renderItem={({item}) =>
-                          <ItemTreeComponent item={item} onPress={() => dispatch(setRootUser(item))}
+                          <ItemTreeComponent item={item} onPress={() => dispatch(setRootUserId(item._id))}
                                              badge={itemBadge({item, noBrothers: true, unionArr: [...relatives, user]})}
                           />}
                       horizontal={true} scrollEnabled={false}/>

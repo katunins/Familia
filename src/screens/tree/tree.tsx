@@ -1,32 +1,33 @@
 import React, {useEffect, useLayoutEffect, useMemo, useState} from "react";
 import {ScrollView} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
-import {relativesSelector, rootUserSelector, userSelector} from "../../store/selectors";
+import {relativesSelector, rootUserIdSelector, userSelector} from "../../store/selectors";
 import styles from "./styles";
 import TreeComponent from "../../components/tree";
 import {useNavigation} from "@react-navigation/native";
 import HomeButtonComponent from "../../components/home";
-import {getTreeRelatives} from "./treeParser";
-import {setRootUser} from "../../store/slice/tree.slice";
+import {getTreeRelatives, getUserById} from "./treeParser";
+import {setRootUserId} from "../../store/slice/rootUserId.slice";
 
 const TreeScreen: React.FunctionComponent = () => {
 
     const user = useSelector(userSelector)
     const relatives = useSelector(relativesSelector)
-    const rootUser = useSelector(rootUserSelector)
+    const rootUserId = useSelector(rootUserIdSelector)
 
     const navigation = useNavigation()
 
     const dispatch = useDispatch()
-    const resetHomeRootUser = () => dispatch(setRootUser(user))
-    const {spouse, children, brothers} = useMemo(() => getTreeRelatives(rootUser, [...relatives, user]), [rootUser, relatives, user])
+    const resetHomeRootUser = () => dispatch(setRootUserId(user._id))
+    const {spouse, children, brothers} = useMemo(() => getTreeRelatives(rootUserId, [...relatives, user]), [rootUserId, relatives, user])
 
     // кнопка возврата в главого пользователя
-    const headerLeft = rootUser._id !== user._id ? () => <HomeButtonComponent onPress={resetHomeRootUser}/> : undefined
+    const headerLeft = rootUserId !== user._id ? () => <HomeButtonComponent onPress={resetHomeRootUser}/> : undefined
 
     useLayoutEffect(() => {
-        navigation.setOptions({title: rootUser.name, headerLeft})
-    }, [navigation, rootUser])
+        const rootUser = getUserById(rootUserId, [...relatives, user])
+        navigation.setOptions({title:rootUser.name, headerLeft})
+    }, [navigation, rootUserId])
 
     return (
         <ScrollView

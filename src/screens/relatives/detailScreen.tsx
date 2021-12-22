@@ -26,7 +26,7 @@ const RelativeDetailScreen: React.FunctionComponent = () => {
             style={globalStyles.containerColor}
             data={filteredNotes}
             ListHeaderComponent={() =>
-                <RelativeBigComponent item={relative} editButton={() => editRelative()} type={'ff'}/>}
+                <RelativeBigComponent item={relative} editButton={editRelative} type={'ff'}/>}
             renderItem={({item}) =>
                 <NoteComponent
                     item={item} mini={true}

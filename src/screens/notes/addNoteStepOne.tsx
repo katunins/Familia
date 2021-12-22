@@ -12,9 +12,11 @@ import {Image} from "react-native-image-crop-picker";
 import {setModal} from "../../store/slice/modal.slice";
 import GalleryIcon from "../../ui/svg/galeryIcon";
 import ImageLoader from "../../helpers/imageLoader";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import EmptyImageComponent from "../../components/emptyImage";
 import {useNavigation} from "@react-navigation/native";
+import {relativesSelector, userSelector} from "../../store/selectors";
+import {actionAddNote} from "../../store/slice/notes.slice";
 
 interface IProps {
     note: IServerNote
@@ -40,28 +42,42 @@ const AddNoteStepOneScreen: React.FunctionComponent<IProps> =
         } = ImageLoader({setNewImage: (image: Image) => setNewImages([...newImages, image])})
 
         const dispatch = useDispatch()
+        const relatives = useSelector(relativesSelector)
+        const user = useSelector(userSelector)
 
         const deleteImage = (uri: string) => {
             setNewImages(newImages.filter(item => item.path !== uri))
         }
 
-        const nextStep = () => {
+        const validate = () => {
             if (note.title.length === 0 && newImages.length === 0) {
-                if (note.title === '') {
-                    dispatch(setModal({
-                        title: 'Внимание!',
-                        bodyText: 'Необходимо заполнить заголовок или загрузить одну фотографию',
-                        buttons: [{
-                            title: 'Понятно',
-                            callBack: () => {
-                            }
-                        }]
-                    }))
-                    return
-                }
-                return
+                dispatch(setModal({
+                    title: 'Внимание!',
+                    bodyText: 'Необходимо заполнить заголовок или загрузить одну фотографию',
+                    buttons: [{
+                        title: 'Понятно',
+                        callBack: () => {
+                        }
+                    }]
+                }))
+                return false
             }
+            return true
+        }
+
+        const nextStep = () => {
+            if (!validate()) return
             navigation.navigate('AddNoteStepSecond')
+        }
+
+        const save = () => {
+            if (!validate()) return
+            navigation.navigate('NotesListScreen', {noUpdateList: true})
+            dispatch(actionAddNote({
+                note: {...note, creator: user._id},
+                newImages: newImages,
+                callback: reset,
+            }))
         }
 
         const addImageModal = () => {
@@ -81,6 +97,7 @@ const AddNoteStepOneScreen: React.FunctionComponent<IProps> =
                 ]
             }))
         }
+
         const imagesArr = [...note.images, ...newImages.map(item => item.path)]
 
         return (
@@ -102,8 +119,12 @@ const AddNoteStepOneScreen: React.FunctionComponent<IProps> =
                         </View>
                         <NoteEditDescriptionComponent note={note} setNote={setNote}/>
                         <View style={globalStyles.marginLine}>
-                            <ButtonComponent
-                                title={'Далее'} callBack={nextStep} type={'invert'}/>
+                            {relatives.length > 0 ?
+                                <ButtonComponent
+                                    title={'Далее'} callBack={nextStep} type={'invert'}/> :
+                                <ButtonComponent
+                                    title={'Сохранить'} callBack={save} type={'invert'}/>}
+
                             <ButtonComponent title={'Отменить'} callBack={reset}/>
                         </View>
                     </View>

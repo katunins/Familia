@@ -109,6 +109,7 @@ export const isServerUri = (uri: string) => {
 }
 
 export const stringDateParse = (stringDate: string) => {
+    if (stringDate === '') return stringDate
     moment.locale('ru')
     return stringDate.length === 4 ? `${stringDate} г.` : moment(stringDate).format('DD MMMM YYYY')
 }

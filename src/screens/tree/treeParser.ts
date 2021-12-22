@@ -1,4 +1,5 @@
 import {ITreeRelative} from "../../interfaces/store";
+import {initialUser} from "../../config";
 
 interface IGetTreeRelatives {
     spouse: ITreeRelative[],
@@ -6,7 +7,22 @@ interface IGetTreeRelatives {
     brothers: ITreeRelative[]
 }
 
-export const getTreeRelatives = (rootUser: ITreeRelative, unionArr: ITreeRelative[]): IGetTreeRelatives => {
+/**
+ * Возвращает пользователя по Id
+ * @param id
+ * @param unionArr
+ */
+export const getUserById = (id:string, unionArr: ITreeRelative[]) => {
+    return  unionArr.find(user=>user._id === id) || {...initialUser, _id:''}
+}
+
+/**
+ * Возращает стартовый объект пользователей для построения древа
+ * @param rootUser
+ * @param unionArr
+ */
+export const getTreeRelatives = (rootUserId: string, unionArr: ITreeRelative[]): IGetTreeRelatives => {
+    const rootUser = getUserById(rootUserId, unionArr)
     const result = {
         spouse: getSpouse(rootUser, unionArr),
         children: getChildren(rootUser, unionArr),

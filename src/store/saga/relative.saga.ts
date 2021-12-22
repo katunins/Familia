@@ -44,7 +44,7 @@ function* sagaAddRelative(action: PayloadAction<ISaveRelativeCallback>) {
     try {
 
         yield put(actionLoaderOn());
-        const {relativeData, type, callBack, newImage} = action.payload
+        const {relativeData, callBack, newImage} = action.payload
         const tempId = idGenerator()
         yield put(addRelative({...relativeData, _id: tempId, userPic: newImage ? newImage.path : relativeData.userPic}))
         const {data} = yield splitDataAndId(relativeData)
@@ -58,7 +58,7 @@ function* sagaAddRelative(action: PayloadAction<ISaveRelativeCallback>) {
         if (!responseData) return
         yield put(updateAndConvertTempRelative({newRelative: responseData, tempId}));
         const user: IUser = yield select(userSelector)
-        const relatives = [...user.relatives, {id: responseData._id, type}]
+        const relatives = [...user.relatives, responseData._id]
         yield put(actionUserUpdate({
             userData: {...user, relatives},
             callBack

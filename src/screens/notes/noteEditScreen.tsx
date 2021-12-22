@@ -20,7 +20,7 @@ import NoteEditRelativesComponent from "../../components/noteEditRelatives";
 import {setModal} from "../../store/slice/modal.slice";
 import {KeyboardAwareFlatList} from "react-native-keyboard-aware-scroll-view";
 import EmptyImageComponent from "../../components/emptyImage";
-import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
+import {RouteProp, StackActions, useNavigation, useRoute} from "@react-navigation/native";
 import {RootStackParamList} from "../../navigation/declare.navigation";
 
 const NoteEditScreen: React.FunctionComponent = () => {
@@ -54,7 +54,7 @@ const NoteEditScreen: React.FunctionComponent = () => {
             return
         }
 
-        // navigation.popToTop()
+        navigation.dispatch(StackActions.popToTop())
         dispatch(actionUpdateNote({
             note,
             newImages,
@@ -116,7 +116,7 @@ const NoteEditScreen: React.FunctionComponent = () => {
                             type={'invert'} callBack={addImageModal}/>
                     </View>
                     <NoteEditDescriptionComponent note={note} setNote={setNote}/>
-                    <NoteEditRelativesComponent note={note} setNote={setNote} relatives={relatives} user={user}/>
+                    {relatives.length > 0 && <NoteEditRelativesComponent note={note} setNote={setNote} relatives={relatives} user={user}/>}
                     <View style={globalStyles.marginLine}>
                         <ButtonComponent
                             title={'Сохранить'} callBack={save} type={'invert'}
@@ -126,7 +126,7 @@ const NoteEditScreen: React.FunctionComponent = () => {
                             }/>
                         <ButtonComponent title={'Отменить'} callBack={() => {
                             reset()
-                            // navigation.popToTop()
+                            navigation.dispatch(StackActions.popToTop())
                         }}/>
                     </View>
                 </View>
