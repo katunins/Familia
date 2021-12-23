@@ -61,8 +61,9 @@ const RelativeListScreen: React.FunctionComponent = () => {
                                    source={uriParse(item.userPic)} resizeMode={'cover'}/>
                         <View style={styles.nameWrapper}>
                             <Text style={styles.relativeName}>{item.name}</Text>
+                            <Text>dd</Text>
                             {item.birthday !== '' && <Text style={globalStyles.lightText}>{item.birthday}</Text>}
-                            <Text>{getType({root: user, item, relatives: relatives})}</Text>
+                            <Text>{getType({user, item, relatives})}</Text>
                         </View>
                     </Pressable>}
                 refreshing={true}

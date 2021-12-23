@@ -40,7 +40,7 @@ const RelativeFormScreen: React.FunctionComponent = () => {
             }
         }
         navigation.navigate('RelativeListScreen', {noUpdateList: true})
-        "_id" in relativeData ? dispatch(actionUpdateRelative(data)) : dispatch(actionAddRelative(data))
+        "_id" in relativeData ? dispatch(actionUpdateRelative(data as ISaveRelativeCallback)) : dispatch(actionAddRelative(data))
     };
 
     const cancelCallback = () => {

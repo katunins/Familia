@@ -11,11 +11,11 @@ import moment from 'moment'
 import 'moment/locale/ru'
 
 type IGetType = {
-    root: ITreeRelative
+    user: ITreeRelative
     item: ITreeRelative
     relatives: IRelative[]
 }
-export const getType: (data: IGetType) => string = ({root, item, relatives}) => {
+export const getType: (data: IGetType) => string = ({user, item, relatives}) => {
     const _relativeById = (id: string) => relatives.find(item => item._id === id)
     const _getChildren = (id: string) => relatives.find(item => item.parents.mother === id || item.parents.father === id)
     const _isSpouse = (rootId: string, itemId: string) => {
@@ -24,18 +24,18 @@ export const getType: (data: IGetType) => string = ({root, item, relatives}) => 
         if (!itemChild || !rootChild) return false
         return itemChild.parents.mother === rootChild.parents.mother
     }
-    const result = ''
-    if (root.parents.mother === item._id) return 'Мама'
-    if (root.parents.father === item._id) return 'Отец'
-    if (root.parents.mother === item.parents.mother) return 'Братья и сестры'
-    if (_relativeById(root.parents.mother)?.parents.mother === item._id) return 'Тетя'
-    if (_relativeById(root.parents.mother)?.parents.father === item._id) return 'Дядя'
-    if (item.parents.mother === root._id || item.parents.father === root._id) return 'Дети'
-    if (_isSpouse(root._id, item._id)) return 'Супруг'
-    if (_relativeById(root.parents.mother)?.parents.mother === item._id) return 'Бабушка по Маме'
-    if (_relativeById(root.parents.mother)?.parents.father === item._id) return 'Дед по Маме'
-    if (_relativeById(root.parents.father)?.parents.mother === item._id) return 'Бабушка по Отцу'
-    if (_relativeById(root.parents.father)?.parents.father === item._id) return 'Дед по Отцу'
+    const result = '-'
+    if (user.parents.mother === item._id) return 'Мама'
+    if (user.parents.father === item._id) return 'Отец'
+    if (user.parents.mother === item.parents.mother) return 'Братья и сестры'
+    if (_relativeById(user.parents.mother)?.parents.mother === item._id) return 'Тетя'
+    if (_relativeById(user.parents.mother)?.parents.father === item._id) return 'Дядя'
+    if (item.parents.mother === user._id || item.parents.father === user._id) return 'Дети'
+    if (_isSpouse(user._id, item._id)) return 'Супруг'
+    if (_relativeById(user.parents.mother)?.parents.mother === item._id) return 'Бабушка по Маме'
+    if (_relativeById(user.parents.mother)?.parents.father === item._id) return 'Дед по Маме'
+    if (_relativeById(user.parents.father)?.parents.mother === item._id) return 'Бабушка по Отцу'
+    if (_relativeById(user.parents.father)?.parents.father === item._id) return 'Дед по Отцу'
     return result
 }
 
