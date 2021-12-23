@@ -9,7 +9,7 @@ import {Image} from 'react-native-image-crop-picker';
 import UserPicComponent from './userPicComponent';
 import {useFocusEffect} from "@react-navigation/native";
 import ButtonComponent from "./button";
-import {ISaveRelativeCallback} from "../screens/relatives/relativeFormScreen";
+import {IAddRelativeData, ISaveRelativeCallback, ISaveRelativeData} from "../screens/relatives/relativeFormScreen";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import ImageLoader from "../helpers/imageLoader";
 import {defaultUserPic} from "../config";
@@ -19,12 +19,16 @@ import CameraIcon from "../ui/svg/cameraIcon";
 import GalleryIcon from "../ui/svg/galeryIcon";
 import SelectParentsComponent from "./selectParents";
 
+
 interface IProps {
     initialRelative: IRelative | IServerRelative;
-    saveCallback: (data: ISaveRelativeCallback) => void;
+    saveCallback: (data: callBackDataType) => void;
     defaultEditMode: boolean
     cancelCallback: () => void
 }
+
+type callAddDataType = ISaveRelativeCallback extends IAddRelativeData
+type callSaveDataType = ISaveRelativeCallback extends ISaveRelativeData
 
 /**
  *
@@ -41,7 +45,7 @@ const RelativeComponent: React.FunctionComponent<IProps> =
          initialRelative,
          saveCallback,
          defaultEditMode = false,
-        cancelCallback
+         cancelCallback
      }) => {
 
         const [editMode, setEditMode] = useState(defaultEditMode);
@@ -130,13 +134,13 @@ const RelativeComponent: React.FunctionComponent<IProps> =
                             description={'Мать'}
                             editMode={editMode}
                             value={relative.parents.mother}
-                            setValue={(id)=>setRelative({...relative, parents: {...relative.parents, mother: id}})}
+                            setValue={(id) => setRelative({...relative, parents: {...relative.parents, mother: id}})}
                         />
                         <SelectParentsComponent
                             description={'Отец'}
                             editMode={editMode}
                             value={relative.parents.father}
-                            setValue={(id)=>setRelative({...relative, parents: {...relative.parents, father: id}})}
+                            setValue={(id) => setRelative({...relative, parents: {...relative.parents, father: id}})}
                         />
                         <CalendarComponent
                             editMode={editMode}

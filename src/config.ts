@@ -12,7 +12,6 @@ export const initialUser: IServerUser = {
         mother: '',
         father: ''
     },
-    relatives: [],
     about: '',
     email: '',
 };

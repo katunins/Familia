@@ -17,8 +17,6 @@ import {errorSaga} from "./error.saga";
 import {_sagaNewUserPic, requestSaga} from "./network.saga";
 import {IAddRelativeCallback, ISaveRelativeCallback} from "../../screens/relatives/relativeFormScreen";
 import {userSelector} from "../selectors";
-import {actionUserUpdate} from "../slice/user.slice";
-import {Image} from "react-native-image-crop-picker";
 
 const takeLatest: any = Eff.takeLatest;
 
@@ -48,7 +46,6 @@ function* sagaAddRelative(action: PayloadAction<IAddRelativeCallback>) {
         const {relativeData, callBack, newImage} = action.payload
         const tempId = idGenerator()
         yield put(addRelative({...relativeData, _id: tempId, userPic: newImage ? newImage.path : relativeData.userPic}))
-        // const {data} = yield splitDataAndId(relativeData)
         let newRelativeData = Object.assign({}, relativeData)
         newRelativeData.userPic = yield call(_sagaNewUserPic, {newImage, userPic: relativeData.userPic})
         const responseData: IRelative = yield call(requestSaga, {
@@ -93,16 +90,14 @@ function* sagaUpdateRelative(action: PayloadAction<ISaveRelativeCallback>) {
 function* sagaDeleteRelative(action: PayloadAction<IRelative>) {
     try {
         yield put(actionLoaderOn());
-        const user: IUser = yield select(userSelector)
         const {id, data} = yield splitDataAndId(action.payload)
         // Удалим родственника из стор
         yield put(deleteRelative({id}));
-        const responseData = yield call(requestSaga, {
+        yield call(requestSaga, {
             endPoint: 'relatives',
             method: 'DELETE',
             data: {id, userData: data}
         })
-        if (!responseData) return
         yield put(actionLoaderOff());
 
     } catch (error) {
