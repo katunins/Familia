@@ -9,7 +9,6 @@ import {Image} from 'react-native-image-crop-picker';
 import UserPicComponent from './userPicComponent';
 import {useFocusEffect} from "@react-navigation/native";
 import ButtonComponent from "./button";
-import {IAddRelativeData, ISaveRelativeCallback, ISaveRelativeData} from "../screens/relatives/relativeFormScreen";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import ImageLoader from "../helpers/imageLoader";
 import {defaultUserPic} from "../config";
@@ -18,17 +17,15 @@ import {useDispatch} from "react-redux";
 import CameraIcon from "../ui/svg/cameraIcon";
 import GalleryIcon from "../ui/svg/galeryIcon";
 import SelectParentsComponent from "./selectParents";
+import {IAddRelativeCallback, ISaveRelativeCallback} from "../screens/relatives/relativeFormScreen";
 
 
 interface IProps {
     initialRelative: IRelative | IServerRelative;
-    saveCallback: (data: callBackDataType) => void;
+    saveCallback: (data: ISaveRelativeCallback | IAddRelativeCallback) => void;
     defaultEditMode: boolean
     cancelCallback: () => void
 }
-
-type callAddDataType = ISaveRelativeCallback extends IAddRelativeData
-type callSaveDataType = ISaveRelativeCallback extends ISaveRelativeData
 
 /**
  *
@@ -57,11 +54,10 @@ const RelativeComponent: React.FunctionComponent<IProps> =
         const saveButton = () => {
             if (!validate()) return false;
             setEditMode(false)
-            saveCallback({
-                relativeData: relative,
-                newImage,
-                // callBack: reset,
-            });
+                saveCallback({
+                    relativeData: relative,
+                    newImage,
+                });
         };
 
         const cancelButton = () => {

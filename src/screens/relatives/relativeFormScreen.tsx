@@ -11,27 +11,27 @@ import {RootStackParamList} from "../../navigation/declare.navigation";
 export interface ISaveRelativeCallback {
     newImage?: Image
     callBack?: () => void
-}
-
-export interface IAddRelativeData {
-    relativeData: IServerRelative
-}
-
-export interface ISaveRelativeData {
     relativeData: IRelative
+}
+
+export interface IAddRelativeCallback {
+    newImage?: Image
+    callBack?: () => void
+    relativeData: IServerRelative
 }
 
 const RelativeFormScreen: React.FunctionComponent = () => {
     const dispatch = useDispatch();
 
     const route = useRoute<RouteProp<RootStackParamList, 'RelativeFormScreen'>>()
+    const {relativeData} = route.params
     const navigation = useNavigation()
-    const initialRelativeData = route.params.relativeData
+
     /**
      * кнопка сохранить Родственника
      * @param data - данные родственника
      */
-    const addCallBack = ({relativeData, callBack, newImage}: ISaveRelativeCallback extends IAddRelativeData) => {
+    const saveCallback = ({relativeData, callBack, newImage}: ISaveRelativeCallback | IAddRelativeCallback) => {
         const data = {
             relativeData,
             newImage,
@@ -40,18 +40,7 @@ const RelativeFormScreen: React.FunctionComponent = () => {
             }
         }
         navigation.navigate('RelativeListScreen', {noUpdateList: true})
-        dispatch(actionAddRelative(data))
-    }
-    const saveCallback = ({relativeData, callBack, newImage}: ISaveRelativeCallback extends ISaveRelativeCallback) => {
-        const data = {
-            relativeData,
-            newImage,
-            callBack: () => {
-                callBack && callBack()
-            }
-        }
-        navigation.navigate('RelativeListScreen', {noUpdateList: true})
-        dispatch(actionUpdateRelative(data))
+        "_id" in relativeData ? dispatch(actionUpdateRelative(data)) : dispatch(actionAddRelative(data))
     };
 
     const cancelCallback = () => {
@@ -61,10 +50,10 @@ const RelativeFormScreen: React.FunctionComponent = () => {
     return (
         <ScrollView>
             <RelativeComponent
-                saveCallback={initialRelativeData ? addCallBack : saveCallback}
+                saveCallback={saveCallback}
                 cancelCallback={cancelCallback}
                 defaultEditMode={true}
-                initialRelative={initialRelativeData}
+                initialRelative={relativeData}
             />
         </ScrollView>
     );
