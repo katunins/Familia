@@ -1,30 +1,52 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import globalStyles from "../styles/styles";
-import {Text, View} from "react-native";
+import {Dimensions, GestureResponderEvent, Pressable, Text, View} from "react-native";
 import styles from "./styles";
-import DotsMenuComponent, {DotMenuElem} from "./dotsMenu";
 import {INote, IRelative} from "../interfaces/store";
 import RelativesBlockComponent from "./relativesBlock";
 import {stringDateParse} from "../helpers/utils";
+import DotsIcon from "../ui/svg/dots";
+import NoteMenu from "./noteItem";
+import {ISetShowNoteMenu, IShowNoteMenu} from "../screens/notes/notesListScreen";
 
 interface IProps {
     note: INote
-    dotsMenu?: DotMenuElem[],
     selectRelatives: IRelative[],
-    mini?: boolean
+    noteMenu? : {
+        setShowNoteMenu: ISetShowNoteMenu
+        showNoteMenu: IShowNoteMenu
+        editNote: (item: INote) => void
+        deleteNote: (item: INote) => void
+    }
 }
 
-const NoteDataBlockComponent: React.FunctionComponent<IProps> = ({note, dotsMenu, selectRelatives, mini}) => {
+const NoteDataBlockComponent: React.FunctionComponent<IProps> = (
+    {
+        note,
+        selectRelatives,
+        noteMenu
+    }) => {
     const {description, date, title, relatives} = note
+    const dotsButton = (event: GestureResponderEvent) => {
+        const {pageY} = event.nativeEvent
+        if (noteMenu?.showNoteMenu !=='') noteMenu?.setShowNoteMenu(''); else
+        if (pageY < Dimensions.get('window').height - 70) noteMenu?.setShowNoteMenu(note._id)
+    }
+
     return (
-        <View style={globalStyles.paddingContainer}>
+        <View style={[globalStyles.paddingContainer]}>
+            {noteMenu?.showNoteMenu === note._id && noteMenu &&
+            <NoteMenu item={note} editNote={noteMenu.editNote}
+                      deleteNote={noteMenu.deleteNote}/>}
             <View style={styles.noteComponentDotsWrapper}>
                 <Text style={globalStyles.title}>{title}</Text>
-                {dotsMenu && !mini && <DotsMenuComponent menuArr={dotsMenu}/>}
+                <Pressable onPress={dotsButton} hitSlop={16} style={styles.dotsMenuButton}>
+                    <DotsIcon/>
+                </Pressable>
             </View>
-            {!mini && description !=="" && <Text style={styles.noteComponentText}>{description}</Text>}
+            {selectRelatives && description !== "" && <Text style={styles.noteComponentText}>{description}</Text>}
             {date !== '' && <Text style={styles.noteDate}>{stringDateParse(date)}</Text>}
-            {!mini && <RelativesBlockComponent relatives={relatives} selectRelatives={selectRelatives}/>}
+            {selectRelatives && <RelativesBlockComponent relatives={relatives} selectRelatives={selectRelatives}/>}
         </View>
     )
 }

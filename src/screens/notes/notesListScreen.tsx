@@ -1,14 +1,17 @@
 import {FlatList, Pressable, RefreshControl, Text, View} from "react-native";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {notesSelector, relativesSelector} from "../../store/selectors";
 import {actionLoadNotes} from "../../store/slice/notes.slice";
 import NoteComponent from "../../components/note";
 import globalStyles from "../../styles/styles";
 import styles from "./styles";
-import {RouteProp, useFocusEffect, useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
+import {RouteProp, useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
 import {RootStackParamList} from "../../navigation/declare.navigation";
 import ButtonComponent from "../../components/button";
+
+export type IShowNoteMenu = string
+export type ISetShowNoteMenu = (showNoteMenu: IShowNoteMenu | ((showNoteMenu: IShowNoteMenu) => IShowNoteMenu)) => void
 
 const NotesListScreen = () => {
 
@@ -35,6 +38,11 @@ const NotesListScreen = () => {
         onRefresh()
     }, [isFocused])
 
+    const [showNoteMenu, setShowNoteMenu] = useState<IShowNoteMenu>('')
+    const onScroll = () => {
+        if (showNoteMenu !== '') setShowNoteMenu('')
+    }
+
     return (
         <FlatList
             style={globalStyles.containerColor}
@@ -47,12 +55,15 @@ const NotesListScreen = () => {
                     onRefresh={onRefresh}
                 />
             }
+            onScroll={onScroll}
             renderItem={({item}) =>
                 <NoteComponent
                     item={item}
                     selectRelatives={selectRelatives}
+                    showNoteMenu={showNoteMenu}
+                    setShowNoteMenu={setShowNoteMenu}
                 />}
-            ItemSeparatorComponent={()=><View style={globalStyles.marginLine}/>}
+            ItemSeparatorComponent={() => <View style={globalStyles.marginLine}/>}
             ListFooterComponent={
                 <View style={styles.container}>
                     <ButtonComponent

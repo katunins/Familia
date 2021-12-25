@@ -54,6 +54,7 @@ const globalStyles = createStyles({
 
     title: {
         fontSize: '1.5rem',
+        width: '95%'
     },
     textCenter:{textAlign: 'center'},
     strokeForm: {

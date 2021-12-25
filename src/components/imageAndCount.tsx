@@ -12,7 +12,7 @@ interface IProps {
 
 const ImageAndCountComponent: React.FunctionComponent<IProps> = ({uriArr, callBack}) => {
     return (
-        <Pressable onPress={uriArr.length > 1 ? callBack : undefined}>
+        <Pressable onPress={callBack}>
             {uriArr.length === 0 ? <EmptyImageComponent/> :
                 <>
                     <AutoHeightImageComponent uri={uriArr[0]}/>

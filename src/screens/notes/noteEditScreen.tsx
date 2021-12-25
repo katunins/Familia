@@ -22,6 +22,7 @@ import {KeyboardAwareFlatList} from "react-native-keyboard-aware-scroll-view";
 import EmptyImageComponent from "../../components/emptyImage";
 import {RouteProp, StackActions, useNavigation, useRoute} from "@react-navigation/native";
 import {RootStackParamList} from "../../navigation/declare.navigation";
+import {getRelativeType} from "../tree/treeParser";
 
 const NoteEditScreen: React.FunctionComponent = () => {
 
@@ -36,6 +37,11 @@ const NoteEditScreen: React.FunctionComponent = () => {
 
     const [newImages, setNewImages] = useState<Image[]>([])
     const [deleteImages, setDeleteImages] = useState<string[]>([])
+
+    const relativesWithTypes = relatives.map(item => {
+        const type = getRelativeType({user, item, unionArr: [...relatives, user]})
+        return {...item, type}
+    })
 
     const save = () => {
         if (note.title.length === 0) {
@@ -116,7 +122,7 @@ const NoteEditScreen: React.FunctionComponent = () => {
                             type={'invert'} callBack={addImageModal}/>
                     </View>
                     <NoteEditDescriptionComponent note={note} setNote={setNote}/>
-                    {relatives.length > 0 && <NoteEditRelativesComponent note={note} setNote={setNote} relatives={relatives} user={user}/>}
+                    {relatives.length > 0 && <NoteEditRelativesComponent note={note} setNote={setNote} relativesWithTypes={relativesWithTypes} user={user}/>}
                     <View style={globalStyles.marginLine}>
                         <ButtonComponent
                             title={'Сохранить'} callBack={save} type={'invert'}

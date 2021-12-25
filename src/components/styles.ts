@@ -257,19 +257,20 @@ const styles = createStyles({
     noteComponentDotsWrapper: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'flex-start',
     },
     dotsMenuButton: {
-        height: 32, width: 32, alignItems: 'center', justifyContent: 'center'
+         alignItems: 'center', justifyContent: 'center', height: 16
     },
     dotsMenu: {
         width: '13rem',
+        top:16,
         position: 'absolute',
-        zIndex: 100,
+        zIndex: 1,
         padding: '1rem',
         borderRadius: 5,
         backgroundColor: '$colorWhite',
-        right: '3rem',
+        right: '4rem',
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -277,7 +278,7 @@ const styles = createStyles({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        // elevation: 5
+        elevation: 5,
     },
     noteComponentDotsLineWrapper: {
         flexDirection: 'row',
