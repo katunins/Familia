@@ -14,19 +14,6 @@ export interface IModal {
     data: IModalData;
 }
 
-// export interface IRelativeTypes {
-//     type:
-//         | 'father'
-//         | 'mother'
-//         | 'brother'
-//         | 'sister'
-//         | 'grandmother'
-//         | 'grandfather'
-//         | 'godmother'
-//         | 'godfather'
-//         | 'other';
-// }
-
 export interface IGeneralUser extends IParents {
     userPic: string;
     name: string;
@@ -62,6 +49,10 @@ export interface IServerRelative extends IGeneralUser {
 }
 
 export interface IRelative extends IServerRelative, IServerId {
+}
+
+export interface IRelativeAndType extends IRelative {
+    type?: string
 }
 
 export interface INoteData {

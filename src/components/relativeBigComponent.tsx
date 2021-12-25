@@ -15,7 +15,7 @@ import ButtonComponent from "./button";
 interface IProps {
     item: IRelative,
     editButton: (data: IRelative) => void
-    type: string
+    type: string | undefined
 }
 
 const RelativeBigComponent: React.FunctionComponent<IProps> = (

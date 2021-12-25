@@ -21,6 +21,10 @@ const styles = createStyles({
     nameWrapper: {
         flex: 1,
         justifyContent: 'center',
+    },
+    emptyComponent: {
+        alignItems: 'center',
+        marginVertical: 40
     }
 });
 export default styles;

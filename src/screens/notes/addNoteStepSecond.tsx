@@ -1,7 +1,6 @@
 import React from "react";
 import globalStyles from "../../styles/styles";
-import {ScrollView, View} from "react-native";
-import styles from "./styles";
+import {View} from "react-native";
 import ButtonComponent from "../../components/button";
 import {IServerNote} from "../../interfaces/store";
 import {Image} from "react-native-image-crop-picker";
@@ -11,6 +10,7 @@ import NoteEditRelativesComponent from "../../components/noteEditRelatives";
 import {relativesSelector, userSelector} from "../../store/selectors";
 import {actionAddNote} from "../../store/slice/notes.slice";
 import {useNavigation} from "@react-navigation/native";
+import {getRelativeType} from "../tree/treeParser";
 
 interface IProps {
     note: IServerNote
@@ -42,21 +42,29 @@ const AddNoteStepSecondScreen: React.FunctionComponent<IProps> =
                 callback: reset,
             }))
         }
-
+        const relativesWithTypes = relatives.map(item => {
+            const type = getRelativeType({user, item, unionArr: [...relatives, user]})
+            return {...item, type}
+        })
         return (
-            <View style={globalStyles.containerColor}>
-                <ImageAndCountComponent uriArr={[...note.images, ...newImages.map(item => item.path)]}/>
-                <View style={styles.container}>
-                    <NoteEditRelativesComponent note={note} setNote={setNote} relatives={relatives} user={user}/>
+            <NoteEditRelativesComponent
+                note={note} setNote={setNote} relativesWithTypes={relativesWithTypes}
+                ListHeaderComponent={
+                    <View style={globalStyles.containerColor}>
+                        <ImageAndCountComponent
+                            uriArr={[...note.images, ...newImages.map(item => item.path)]}/>
+
+                    </View>}
+                ListFooterComponent={
                     <View style={globalStyles.marginLine}>
                         <ButtonComponent
                             title={'Сохранить'} callBack={save} type={'invert'}/>
                         <ButtonComponent title={'Назад'} callBack={() => {
                             navigation.goBack()
                         }}/>
-                    </View>
-                </View>
-            </View>
+                    </View>}
+            />
+
         )
     }
 

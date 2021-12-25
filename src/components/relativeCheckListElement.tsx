@@ -11,13 +11,15 @@ interface IProps {
     item: IRelative,
     checked?: boolean,
     callBack: () => void
-    type: string
+    type?: string
 }
 
-const RelativeCheckListElementComponent: React.FunctionComponent<IProps> = ({item, type, checked, callBack}) => {
+const RelativeCheckListElementComponent: React.FunctionComponent<IProps> = ({item, type='', checked, callBack}) => {
+
     return (
         <Pressable onPress={callBack} style={[styles.relativeCheckListElementContainer, checked ? styles.relativeCheckListElementChecked : {}]}>
             <View style={styles.imageAndText}>
+                {/*@ts-ignore*/}
                 <FastImage source={{uri: `${env.endPointUrl}/${item.userPic}`}} style={globalStyles.miniUserPic}/>
                 <View style={styles.relativeCheckListElementTextWrapper}>
                     <Text style={globalStyles.boldText}>{item.name}</Text>

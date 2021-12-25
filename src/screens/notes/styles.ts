@@ -24,7 +24,8 @@ const styles = createStyles({
   },
   paddingTextArea:{paddingTop: '1rem'},
   flatListWrapper:{
-    marginTop: '1rem',
+    // marginTop: '1rem',
+    backgroundColor: '$colorWhite'
   },
 
 });

@@ -23,6 +23,6 @@ const appReducers = combineReducers({
   user,
   notes,
   token,
-  rootUserId
+  rootUserId,
 });
 export const appPersistReducer = persistReducer(appPersist, appReducers);

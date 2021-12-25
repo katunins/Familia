@@ -5,13 +5,14 @@ import {relativesSelector, userSelector} from "../../store/selectors";
 import globalStyles from "../../styles/styles";
 import {IRelative} from "../../interfaces/store";
 import {initialRelative} from "../../config";
-import {getType, uriParse} from "../../helpers/utils";
+import {uriParse} from "../../helpers/utils";
 import {actionLoadRelatives} from "../../store/slice/relatives.slice";
 import {RouteProp, useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
 import FastImage from "react-native-fast-image";
 import styles from "./styles";
 import ButtonComponent from "../../components/button";
 import {RootStackParamList} from "../../navigation/declare.navigation";
+import {getRelativeType} from "../tree/treeParser";
 
 /**
  * Экран со списком родственников
@@ -61,12 +62,12 @@ const RelativeListScreen: React.FunctionComponent = () => {
                                    source={uriParse(item.userPic)} resizeMode={'cover'}/>
                         <View style={styles.nameWrapper}>
                             <Text style={styles.relativeName}>{item.name}</Text>
-                            <Text>dd</Text>
                             {item.birthday !== '' && <Text style={globalStyles.lightText}>{item.birthday}</Text>}
-                            <Text>{getType({user, item, relatives})}</Text>
+                            <Text>{getRelativeType({user, item, unionArr: [...relatives, user]})}</Text>
                         </View>
                     </Pressable>}
                 refreshing={true}
+                ListEmptyComponent={<View style={styles.emptyComponent}><Text>Нет добавленных родственников</Text></View>}
                 refreshControl={
                     <RefreshControl
                         refreshing={false}

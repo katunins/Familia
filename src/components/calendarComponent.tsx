@@ -47,6 +47,7 @@ const CalendarComponent: React.FunctionComponent<ICalendarComponent> = ({
     setDate(stringDate);
     hideDatePicker();
   };
+  if (!date) return null
   return (
     <View style={styles.inputContainer}>
       {editMode && (
@@ -65,7 +66,7 @@ const CalendarComponent: React.FunctionComponent<ICalendarComponent> = ({
           editMode ? [globalStyles.strokeForm, globalStyles.spaceBetween] : {}
         }>
         <Text style={editMode ? {} : styles.dateText}>
-          {date === '' ? 'Дата' : stringDateParse(date)}
+          {stringDateParse(date)}
         </Text>
 
         {editMode && <CalendarIcon />}

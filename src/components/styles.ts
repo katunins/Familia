@@ -211,7 +211,8 @@ const styles = createStyles({
         alignItems: 'center'
     },
     relativeCheckListElementTextWrapper: {
-        marginLeft: '1rem'
+        marginLeft: '1rem',
+        width: '80%'
     },
     relativeCheckListElementChecked: {
         opacity: 1
@@ -264,6 +265,7 @@ const styles = createStyles({
     dotsMenu: {
         width: '13rem',
         position: 'absolute',
+        zIndex: 100,
         padding: '1rem',
         borderRadius: 5,
         backgroundColor: '$colorWhite',
@@ -275,7 +277,7 @@ const styles = createStyles({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        elevation: 5
+        // elevation: 5
     },
     noteComponentDotsLineWrapper: {
         flexDirection: 'row',

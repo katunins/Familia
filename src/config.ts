@@ -37,6 +37,10 @@ export const initialNote: IServerNote = {
     relatives: [],
     creator: '',
 }
+export const grandParentTypeNames = {
+    mother: 'бабушка',
+    father: 'дед'
+}
 export const emptyImage = require('../src/ui/images/fastimage_loader.jpg')
 export const defaultUserPic = 'https://alpinabook.ru/resize/1100x1600/upload/iblock/6f9/6f9f5be9fb84ad912ca92b5a0839d9ef.jpg'
 export const defaultRelativeUserPic = 'https://alpinabook.ru/resize/1100x1600/upload/iblock/6f9/6f9f5be9fb84ad912ca92b5a0839d9ef.jpg'

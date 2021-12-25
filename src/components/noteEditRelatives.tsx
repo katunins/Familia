@@ -2,18 +2,28 @@ import React from "react";
 import {FlatList, Text, View} from "react-native";
 import styles from "../screens/notes/styles";
 import RelativeCheckListElementComponent from "./relativeCheckListElement";
-import {getRelativeType, isRelativeChecked} from "../helpers/utils";
-import {INote, IRelative, IServerNote, IUser} from "../interfaces/store";
+import {isRelativeChecked} from "../helpers/utils";
+import {INote, IRelative, IRelativeAndType, IServerNote, IUser} from "../interfaces/store";
 import globalStyles from "../styles/styles";
 
 interface IProps {
     note: INote | IServerNote,
     setNote: (note: INote | IServerNote) => void
-    relatives: IRelative[]
-    user: IUser
+    relativesWithTypes: IRelativeAndType[]
+    ListHeaderComponent?: React.ReactElement
+    ListFooterComponent?: React.ReactElement
 }
 
-const NoteEditRelativesComponent: React.FunctionComponent<IProps> = ({note, setNote, relatives, user}) => {
+const NoteEditRelativesComponent: React.FunctionComponent<IProps> = (
+    {
+        note,
+        setNote,
+        relativesWithTypes,
+        ListHeaderComponent = <Text
+            style={styles.centerTitleText}>'Отметьте
+            родственников'</Text>,
+        ListFooterComponent,
+    }) => {
 
     const switchCheck = (id: string) => {
         if (isRelativeChecked({id, relatives: note.relatives})) {
@@ -24,23 +34,22 @@ const NoteEditRelativesComponent: React.FunctionComponent<IProps> = ({note, setN
     }
 
     return (
-        <>
-            <Text style={styles.centerTitleText}>'Отметьте родственников'</Text>
-            <FlatList
-                style={styles.flatListWrapper}
-                data={relatives}
-                renderItem={({item}) =>
-                    <RelativeCheckListElementComponent
-                        item={item}
-                        checked={isRelativeChecked({id: item._id, relatives: note.relatives})}
-                        callBack={() => {
-                            switchCheck(item._id)
-                        }}
-                        type={getRelativeType({user, relative: item})}
-                    />}
-                ItemSeparatorComponent={() => <View style={globalStyles.marginBottom}/>}
-            />
-        </>
+        <FlatList
+            style={[styles.flatListWrapper, globalStyles.paddingWrapper]}
+            data={relativesWithTypes}
+            renderItem={({item}) =>
+                <RelativeCheckListElementComponent
+                    item={item}
+                    checked={isRelativeChecked({id: item._id, relatives: note.relatives})}
+                    callBack={() => {
+                        switchCheck(item._id)
+                    }}
+                    type={item.type}
+                />}
+            ListHeaderComponent={ListHeaderComponent}
+            ListFooterComponent={ListFooterComponent}
+            ItemSeparatorComponent={() => <View style={globalStyles.marginBottom}/>}
+        />
     )
 }
 

@@ -29,6 +29,7 @@ const DotsMenuComponent: React.FunctionComponent<{menuArr: DotMenuElem[]}> =
                     style={[styles.dotsMenu, {bottom: bottomShift}]}
                     data={menuArr}
                     listKey={'inner'}
+                    scrollEnabled={false}
                     ItemSeparatorComponent={() => <SeparatorComponent/>}
                     renderItem={({item}) =>
                         <Pressable

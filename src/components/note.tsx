@@ -1,5 +1,5 @@
 import {INote, IRelative} from "../interfaces/store";
-import React from "react";
+import React, {Fragment} from "react";
 import ImageAndCountComponent from "./imageAndCount";
 import NoteDataBlockComponent from "./noteDataBlock";
 import EditIcon from "../ui/svg/editIcon";
@@ -53,7 +53,7 @@ const NoteComponent: React.FunctionComponent<IProps> =
         }
 
         return (
-            <>
+            <Fragment>
                 {images.length > 0 && <ImageAndCountComponent uriArr={images} callBack={openDetail}/>}
                 <NoteDataBlockComponent
                     note={item} selectRelatives={selectRelatives}
@@ -70,7 +70,7 @@ const NoteComponent: React.FunctionComponent<IProps> =
                             icon: <TrashIcon/>
                         }
                     ]}/>
-            </>
+            </Fragment>
         );
     }
 

@@ -6,6 +6,7 @@ import ButtonComponent from "../../components/button";
 import {setModal} from "../../store/slice/modal.slice";
 import {actionSignUp} from "../../store/slice/user.slice";
 import EStyleSheet from "react-native-extended-stylesheet";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 interface IProps {
 }
@@ -75,7 +76,10 @@ const SignUpScreen: React.FunctionComponent<IProps> = () => {
         );
     };
     return (
-        <View style={[globalStyles.verticalCentre, globalStyles.paddingWrapper, globalStyles.containerColor]}>
+        <KeyboardAwareScrollView
+            contentContainerStyle={[globalStyles.verticalCentre, globalStyles.paddingWrapper, globalStyles.containerColor]}
+            extraHeight={100}
+        >
             <Text style={globalStyles.title}>Авторизация</Text>
 
             <TextInput
@@ -130,7 +134,7 @@ const SignUpScreen: React.FunctionComponent<IProps> = () => {
             />
 
             <ButtonComponent title={'Регистрация'} callBack={buttonSubmit} type={"invert"}/>
-        </View>
+        </KeyboardAwareScrollView>
     );
 };
 
